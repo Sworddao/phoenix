@@ -1,0 +1,935 @@
+# Phoenix
+Version: 0.1.0
+Status: Draft
+Author: YuzaKi
+Last Updated: 2026-08-05
+
+==================================================================
+
+Table of Contents
+
+1. Vision
+2. Mission
+3. Philosophy
+4. Target Audience
+5. Core Features
+6. Design Pillars
+7. Gameplay Loop
+8. Learning Methodology
+9. World
+10. Story
+11. Characters
+12. Bao
+13. NPC System
+14. Maps
+15. Progression
+16. Curriculum
+17. Speaking System
+18. Listening System
+19. Vocabulary System
+20. Grammar System
+21. Conversation System
+22. UI/UX
+23. Accessibility
+24. Technical Requirements
+25. Roadmap
+
+==================================================================
+
+# 1. Vision
+
+Phoenix is an offline-first Android game that teaches conversational Mandarin Chinese through exploration, storytelling, and real-life interactions.
+
+Instead of studying lessons, players explore a living world inspired by China.
+
+Players learn naturally by talking to characters, completing quests, solving everyday problems, and experiencing authentic situations.
+
+Phoenix should feel closer to playing an adventure game than using a language-learning application.
+
+The learner should gradually develop the confidence to communicate in Mandarin in everyday situations.
+
+The application hides Hanzi by default while teaching through:
+
+• Pinyin
+• Audio
+• Speaking
+• Listening
+• Images
+• Context
+
+Hanzi exists internally for accuracy but remains hidden unless the learner explicitly enables it.
+
+The goal is not to memorize Chinese.
+
+The goal is to live in Mandarin.
+
+Tagline:
+
+Don't memorize Chinese.
+Live it.
+
+# 2. Mission
+
+Our mission is to make spoken Mandarin accessible to everyone, especially learners who are intimidated by Chinese characters.
+
+Phoenix removes unnecessary barriers while preserving authentic spoken Mandarin.
+
+The application should be:
+
+• Fun
+• Beautiful
+• Relaxing
+• Accessible
+• Offline
+• Encouraging
+• Rewarding
+
+A learner should look forward to opening Phoenix every day because they want to continue their adventure—not because they feel obligated to study.
+
+Learning should feel like a natural consequence of exploration.
+
+# 3. Philosophy
+
+Everything in Phoenix must follow these principles.
+
+1. Speaking comes before reading.
+
+2. Listening comes before grammar.
+
+3. Context comes before memorization.
+
+4. Confidence comes before perfection.
+
+5. Curiosity is stronger than obligation.
+
+6. Every interaction should feel rewarding.
+
+7. Every mistake is part of learning.
+
+8. Hanzi is optional.
+
+9. The app should never overwhelm the learner.
+
+10. Every feature must answer one question:
+
+"Does this make learning feel like living?"
+
+If the answer is no,
+the feature should be redesigned or removed.
+
+# 4. Target Audience
+
+Primary Audience
+
+Adults who want conversational Mandarin.
+
+Secondary Audience
+
+Older learners.
+
+Travelers.
+
+Business professionals.
+
+University students.
+
+Language enthusiasts.
+
+Parents learning with children.
+
+Accessibility Goals
+
+Support users aged 18–80+.
+
+Provide:
+
+• Large text
+• High contrast
+• Slow audio
+• Unlimited replay
+• Reduced motion
+• Clear navigation
+
+Special Mode
+
+Dad Mode
+
+Dad Mode removes unnecessary pressure by:
+
+• Disabling hearts
+• Slowing progression
+• Enlarging UI
+• Increasing repetition
+• Providing gentle encouragement
+
+Dad Mode should never feel patronizing.
+
+It should simply reduce cognitive load.
+
+# 5. Core Features
+
+Phoenix includes:
+
+• Story-driven exploration
+• NPC conversations
+• Offline learning
+• Native pronunciation
+• Speaking practice
+• Listening practice
+• Pinyin-first interface
+• Optional Hanzi toggle
+• Vocabulary collection
+• Grammar through context
+• Dynamic quests
+• Passport
+• Inventory
+• Achievements
+• Daily streaks
+• Progress tracking
+• Adaptive review
+• Interactive world map
+• Real-world missions
+• Accessibility settings
+• Local progress storage
+
+# 6. Core Principles
+
+These principles are absolute.
+
+Every feature must respect them.
+
+If a proposed feature violates these principles, redesign it.
+
+------------------------------------------------------------------
+
+1. Offline First
+
+Phoenix must function without an internet connection.
+
+All lessons, vocabulary, audio, maps, conversations and progress tracking should be available locally.
+
+Internet is optional.
+
+Learning is never dependent on servers.
+
+------------------------------------------------------------------
+
+2. Speaking First
+
+The learner's first goal is communication.
+
+Speaking and listening are always prioritized over reading and grammar.
+
+------------------------------------------------------------------
+
+3. Zero Pressure
+
+Phoenix should never make learners feel punished.
+
+Wrong answers should encourage another attempt rather than create frustration.
+
+The experience should always remain positive.
+
+------------------------------------------------------------------
+
+4. Accessibility
+
+Anyone should be able to learn.
+
+Large text.
+
+High contrast.
+
+Slow audio.
+
+Unlimited replay.
+
+Reduced motion.
+
+Comfort Mode.
+
+Simple navigation.
+
+------------------------------------------------------------------
+
+5. Learn Through Context
+
+Do not teach isolated words.
+
+Teach words inside situations.
+
+Restaurant.
+
+Taxi.
+
+Airport.
+
+Family dinner.
+
+Shopping.
+
+Hospital.
+
+Office.
+
+Travel.
+
+Learners remember experiences better than lists.
+
+------------------------------------------------------------------
+
+6. Small Wins
+
+Celebrate every success.
+
+Tiny improvements matter.
+
+Every lesson should end with progress.
+
+------------------------------------------------------------------
+
+7. No Busywork
+
+Every activity must improve one of:
+
+Speaking
+
+Listening
+
+Vocabulary
+
+Confidence
+
+If an activity does not contribute to learning, remove it.
+
+------------------------------------------------------------------
+
+8. Respect the Learner
+
+Do not waste time.
+
+No artificial waiting.
+
+No energy systems requiring payment.
+
+No advertisements.
+
+No manipulative mechanics.
+
+# 7. Design Pillars
+
+Everything in Phoenix is built around five pillars.
+
+-------------------------------------------------------------
+
+Pillar 1
+
+Adventure
+
+The learner should feel like they are travelling through China.
+
+-------------------------------------------------------------
+
+Pillar 2
+
+Conversation
+
+The learner should constantly interact with people.
+
+-------------------------------------------------------------
+
+Pillar 3
+
+Discovery
+
+New places unlock naturally.
+
+Every place teaches something useful.
+
+-------------------------------------------------------------
+
+Pillar 4
+
+Confidence
+
+The learner should become less afraid of speaking.
+
+Perfection is never required.
+
+-------------------------------------------------------------
+
+Pillar 5
+
+Consistency
+
+Learning every day should feel enjoyable rather than difficult.
+
+# 8. Gameplay Loop
+
+Open App
+
+↓
+
+Continue Adventure
+
+↓
+
+Travel to Location
+
+↓
+
+Meet NPC
+
+↓
+
+Conversation
+
+↓
+
+Learn Vocabulary
+
+↓
+
+Complete Quest
+
+↓
+
+Receive XP
+
+↓
+
+Unlock New Area
+
+↓
+
+Return Tomorrow
+
+The player should never feel like they are grinding lessons.
+
+They are progressing through an adventure.
+
+# 9. World
+
+Phoenix takes place inside a fictional version of China.
+
+The world is inspired by real locations but designed specifically for learning.
+
+The player slowly travels from a peaceful village to major cities.
+
+Every region introduces new vocabulary.
+
+Every city introduces new conversations.
+
+The world becomes more complex as the learner improves.
+
+Qingyuan Village
+
+↓
+
+Jade Forest
+
+↓
+
+Riverside Town
+
+↓
+
+Night Market
+
+↓
+
+Mountain Temple
+
+↓
+
+High-Speed Railway
+
+↓
+
+Historic City
+
+↓
+
+Business District
+
+↓
+
+Shanghai
+
+↓
+
+Beijing
+
+↓
+
+Great Wall
+
+↓
+
+Phoenix Summit
+
+Every region introduces:
+
+New music
+
+New NPCs
+
+New vocabulary
+
+New conversations
+
+New collectibles
+
+New achievements
+
+# 10. Story
+
+The player arrives in China with almost no Mandarin knowledge.
+
+A friendly red panda named Bao greets them.
+
+Bao explains that the only way to explore the country is to communicate with the people living there.
+
+Each successful conversation opens new opportunities.
+
+As the player's confidence grows, more of the country becomes accessible.
+
+The story is intentionally simple.
+
+It exists to motivate exploration rather than distract from learning.
+
+The final destination is Phoenix Summit.
+
+There the learner holds an extended conversation entirely in Mandarin.
+
+No translation.
+
+No hints.
+
+The learner succeeds because they genuinely understand.
+
+# 11. Bao - The Learning Companion
+
+Bao is Phoenix's mascot and the learner's lifelong companion.
+
+Bao is a red panda.
+
+Bao is never annoying.
+
+Bao is never loud.
+
+Bao is never childish.
+
+Bao behaves like a supportive best friend.
+
+He celebrates success.
+
+He encourages mistakes.
+
+He explores the world alongside the learner.
+
+He never lectures.
+
+He learns with the player instead of teaching above them.
+
+------------------------------------------------------------
+
+Personality
+
+Curious
+
+Kind
+
+Patient
+
+Playful
+
+Optimistic
+
+Brave
+
+Gentle
+
+Humble
+
+------------------------------------------------------------
+
+Bao should never:
+
+- Shame the learner
+- Pressure the learner
+- Interrupt constantly
+- Force tutorials
+- Speak excessively
+
+------------------------------------------------------------
+
+Bao should:
+
+Celebrate
+
+Point
+
+Wave
+
+Sleep
+
+Stretch
+
+Dance
+
+Think
+
+Laugh
+
+Get surprised
+
+Eat bamboo
+
+Read books
+
+Drink tea
+
+Sketch maps
+
+Take photos
+
+This is important.
+
+Bao should NEVER say
+
+"Wrong."
+
+Instead...
+
+He says...
+
+"Almost!"
+
+or
+
+"Let's try that again."
+
+or
+
+"You're getting closer."
+
+Small difference.
+
+Huge psychological impact.
+
+# 12. NPC System
+
+NPCs are the primary teachers.
+
+Phoenix teaches through people.
+
+Every NPC has:
+
+Name
+
+Occupation
+
+Personality
+
+Daily Schedule
+
+Friendship Level
+
+Dialogue Tree
+
+Vocabulary Pool
+
+Conversation Topics
+
+Rewards
+
+Animations
+
+------------------------------------------------------------
+
+NPCs remember previous interactions.
+
+The learner builds friendships over time.
+
+Returning players should feel welcomed.
+
+NPCs evolve as the learner progresses.
+
+Grandma Mei
+
+Occupation
+
+Retired baker
+
+Personality
+
+Warm
+
+Patient
+
+Funny
+
+Teaches
+
+Greetings
+
+Family
+
+Food
+
+Daily conversation
+
+Friendship Rewards
+
+Homemade Dumplings
+
+Family Vocabulary Pack
+
+Special Story
+
+Restaurant Owner Lin
+
+Occupation
+
+Chef
+
+Teaches
+
+Food
+
+Ordering
+
+Ingredients
+
+Cooking
+
+Payment
+
+Restaurant Etiquette
+
+Taxi Driver Chen
+
+Teaches
+
+Directions
+
+Numbers
+
+Time
+
+Travel
+
+Weather
+
+University Student Wei
+
+Teaches
+
+Friends
+
+Technology
+
+Music
+
+Gaming
+
+Campus Life
+
+Friendships
+
+Every NPC has
+
+Level 1
+
+Stranger
+
+↓
+
+Visitor
+
+↓
+
+Friend
+
+↓
+
+Close Friend
+
+↓
+
+Trusted Friend
+
+↓
+
+Family
+
+As friendship grows
+
+New conversations unlock.
+
+# 13. Quest System
+
+Players never complete "lessons."
+
+They complete quests.
+
+Every quest teaches vocabulary naturally.
+
+------------------------------------------------------------
+
+Quest Types
+
+Conversation
+
+Listening
+
+Speaking
+
+Exploration
+
+Memory
+
+Pronunciation
+
+Story
+
+Mini Games
+
+Photography
+
+Collecting
+
+------------------------------------------------------------
+
+Examples
+
+Help Grandma
+
+Buy Dumplings
+
+Order Tea
+
+Catch the Bus
+
+Find the Hotel
+
+Visit the Temple
+
+Buy a Train Ticket
+
+Reserve a Room
+
+Meet New Friend
+
+Attend Festival
+
+After completing a Restaurant quest
+
+Phoenix suggests:
+
+This week
+
+Try saying
+
+"Nǐ hǎo."
+
+and
+
+"Xièxiè."
+
+at a real Chinese restaurant.
+
+Return and tell Bao how it went.
+
+Reward
+
+Explorer Badge
+
++500 XP
+
+This is OPTIONAL.
+
+Never required.
+
+# 15. Inventory
+
+Phoenix contains collectibles.
+
+Collectibles exist to encourage exploration.
+
+They never block learning.
+
+Examples
+
+Tea
+
+Bamboo
+
+Postcards
+
+Lanterns
+
+Books
+
+Traditional Instruments
+
+Souvenirs
+
+Festival Tickets
+
+Photographs
+
+Recipe Cards
+
+Voice Recordings
+
+Story Scrolls
+
+Vocabulary Cards
+
+Every collectible teaches culture alongside language.
+
+## Functional Requirements
+
+- Bao accompanies the player throughout the entire game.
+- Bao must never block gameplay.
+- Bao provides contextual hints only when requested or when the player repeatedly struggles.
+- Bao celebrates progress through animations and encouraging dialogue.
+- Bao must never shame or punish the player. 
+# Feature Name
+
+## Purpose
+
+Why the feature exists.
+
+## Description
+
+How it works.
+
+## Functional Requirements
+
+- Requirement 1
+- Requirement 2
+- Requirement 3
+
+## User Experience
+
+What the player sees and feels.
+
+## Constraints
+
+Offline only.
+
+No paid APIs.
+
+Accessible.
+
+Performance requirements.
+
+## Acceptance Criteria
+
+- [ ] Feature behaves correctly.
+- [ ] Works offline.
+- [ ] Accessible.
+- [ ] Saves progress.
