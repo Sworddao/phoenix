@@ -93,6 +93,7 @@ Desktop.ini
 # Properties
 *.properties
 !gradle.properties
+!gradle/wrapper/gradle-wrapper.properties
 
 # VS Code
 .vscode/
