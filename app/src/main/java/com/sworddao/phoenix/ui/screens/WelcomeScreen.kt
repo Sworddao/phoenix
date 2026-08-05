@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +29,7 @@ import com.sworddao.phoenix.ui.components.PhoenixLogo
 
 @Composable
 fun WelcomeScreen(
+    onNavigateToOnboarding: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "welcome_pulse")
@@ -77,5 +79,23 @@ fun WelcomeScreen(
             textAlign = TextAlign.Center,
             letterSpacing = 0.5.sp
         )
+
+        Spacer(modifier = Modifier.height(48.dp))
+
+        androidx.compose.material3.Button(
+            onClick = onNavigateToOnboarding,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
+        ) {
+            Text(
+                text = "Begin Journey",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }

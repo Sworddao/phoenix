@@ -17,6 +17,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.sworddao.phoenix.ui.navigation.Screen
 import com.sworddao.phoenix.ui.screens.HomeScreen
+import com.sworddao.phoenix.ui.screens.OnboardingScreen
 import com.sworddao.phoenix.ui.screens.SettingsScreen
 import com.sworddao.phoenix.ui.screens.SplashScreen
 import com.sworddao.phoenix.ui.screens.WelcomeScreen
@@ -70,7 +71,23 @@ fun PhoenixApp() {
             }
 
             composable(Screen.Welcome.route) {
-                WelcomeScreen()
+                WelcomeScreen(
+                    onNavigateToOnboarding = {
+                        navController.navigate(Screen.Onboarding.route) {
+                            popUpTo(Screen.Welcome.route) { inclusive = true }
+                        }
+                    }
+                )
+            }
+
+            composable(Screen.Onboarding.route) {
+                OnboardingScreen(
+                    onOnboardingComplete = {
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(Screen.Onboarding.route) { inclusive = true }
+                        }
+                    }
+                )
             }
 
             composable(Screen.Home.route) {
