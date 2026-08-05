@@ -1,7 +1,5 @@
 package com.sworddao.phoenix.ui
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -13,8 +11,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -23,6 +19,7 @@ import com.sworddao.phoenix.ui.navigation.Screen
 import com.sworddao.phoenix.ui.screens.HomeScreen
 import com.sworddao.phoenix.ui.screens.SettingsScreen
 import com.sworddao.phoenix.ui.screens.SplashScreen
+import com.sworddao.phoenix.ui.screens.WelcomeScreen
 
 @Composable
 fun PhoenixApp() {
@@ -38,38 +35,42 @@ fun PhoenixApp() {
             navController = navController,
             startDestination = Screen.Splash.route,
             enterTransition = {
-                fadeIn(animationSpec = tween(300)) + slideInHorizontally(
-                    animationSpec = tween(300),
-                    initialOffsetX = { fullWidth -> fullWidth / 3 }
+                fadeIn(animationSpec = tween(500)) + slideInHorizontally(
+                    animationSpec = tween(500),
+                    initialOffsetX = { fullWidth -> fullWidth / 4 }
                 )
             },
             exitTransition = {
-                fadeOut(animationSpec = tween(300)) + slideOutHorizontally(
-                    animationSpec = tween(300),
-                    targetOffsetX = { fullWidth -> -fullWidth / 3 }
+                fadeOut(animationSpec = tween(500)) + slideOutHorizontally(
+                    animationSpec = tween(500),
+                    targetOffsetX = { fullWidth -> -fullWidth / 4 }
                 )
             },
             popEnterTransition = {
-                fadeIn(animationSpec = tween(300)) + slideInHorizontally(
-                    animationSpec = tween(300),
-                    initialOffsetX = { fullWidth -> -fullWidth / 3 }
+                fadeIn(animationSpec = tween(500)) + slideInHorizontally(
+                    animationSpec = tween(500),
+                    initialOffsetX = { fullWidth -> -fullWidth / 4 }
                 )
             },
             popExitTransition = {
-                fadeOut(animationSpec = tween(300)) + slideOutHorizontally(
-                    animationSpec = tween(300),
-                    targetOffsetX = { fullWidth -> fullWidth / 3 }
+                fadeOut(animationSpec = tween(500)) + slideOutHorizontally(
+                    animationSpec = tween(500),
+                    targetOffsetX = { fullWidth -> fullWidth / 4 }
                 )
             }
         ) {
             composable(Screen.Splash.route) {
                 SplashScreen(
-                    onNavigateToHome = {
-                        navController.navigate(Screen.Home.route) {
+                    onNavigateToWelcome = {
+                        navController.navigate(Screen.Welcome.route) {
                             popUpTo(Screen.Splash.route) { inclusive = true }
                         }
                     }
                 )
+            }
+
+            composable(Screen.Welcome.route) {
+                WelcomeScreen()
             }
 
             composable(Screen.Home.route) {
