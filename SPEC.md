@@ -1,7 +1,7 @@
 # Phoenix
 Version: 0.1.0
 Status: Draft
-Author: YuzaKi
+Author: sworddao
 Last Updated: 2026-08-05
 
 ==================================================================

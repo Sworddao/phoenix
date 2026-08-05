@@ -101,4 +101,4 @@ This project is licensed under the MIT License — see [LICENSE](LICENSE) for de
 
 ## Author
 
-**YuzaKi** — Project Creator & Lead Designer
+**sworddao** — Project Creator & Lead Designer
