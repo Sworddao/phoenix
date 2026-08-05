@@ -17,7 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,9 +24,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.sworddao.phoenix.R
 import com.sworddao.phoenix.data.model.AccessibilityPreferences
 import com.sworddao.phoenix.ui.components.BaoCharacter
 import com.sworddao.phoenix.ui.components.BaoExpression
@@ -54,17 +55,12 @@ fun LearningPreferencesScreen(
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Bao character
-        BaoCharacter(
-            size = 100.dp,
-            expression = BaoExpression.EXCITED
-        )
+        BaoCharacter(size = 100.dp, expression = BaoExpression.EXCITED)
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Title
         Text(
-            text = "Accessibility Settings",
+            text = stringResource(R.string.preferences_title),
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
@@ -74,7 +70,7 @@ fun LearningPreferencesScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Customize your learning experience",
+            text = stringResource(R.string.preferences_subtitle),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
             textAlign = TextAlign.Center
@@ -82,55 +78,43 @@ fun LearningPreferencesScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Settings list
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Dad Mode
             SettingSwitch(
-                title = "Dad Mode",
-                description = "Reduced pressure, larger UI, gentle encouragement",
+                title = stringResource(R.string.preferences_dad_mode),
+                description = stringResource(R.string.preferences_dad_mode_description),
                 checked = dadMode,
                 onCheckedChange = { dadMode = it }
             )
-
-            // Reduced Motion
             SettingSwitch(
-                title = "Reduced Motion",
-                description = "Minimize animations throughout the app",
+                title = stringResource(R.string.preferences_reduced_motion),
+                description = stringResource(R.string.preferences_reduced_motion_description),
                 checked = reducedMotion,
                 onCheckedChange = { reducedMotion = it }
             )
-
-            // Large Text
             SettingSwitch(
-                title = "Large Text",
-                description = "Increase text size for better readability",
+                title = stringResource(R.string.preferences_large_text),
+                description = stringResource(R.string.preferences_large_text_description),
                 checked = largeText,
                 onCheckedChange = { largeText = it }
             )
-
-            // High Contrast
             SettingSwitch(
-                title = "High Contrast",
-                description = "Enhanced color contrast for visibility",
+                title = stringResource(R.string.preferences_high_contrast),
+                description = stringResource(R.string.preferences_high_contrast_description),
                 checked = highContrast,
                 onCheckedChange = { highContrast = it }
             )
-
-            // Slow Audio
             SettingSwitch(
-                title = "Slow Audio",
-                description = "Play audio at a slower pace",
+                title = stringResource(R.string.preferences_slow_audio),
+                description = stringResource(R.string.preferences_slow_audio_description),
                 checked = slowAudio,
                 onCheckedChange = { slowAudio = it }
             )
-
-            // Show Hanzi
             SettingSwitch(
-                title = "Show Hanzi",
-                description = "Display Chinese characters alongside Pinyin",
+                title = stringResource(R.string.preferences_show_hanzi),
+                description = stringResource(R.string.preferences_show_hanzi_description),
                 checked = showHanzi,
                 onCheckedChange = { showHanzi = it }
             )
@@ -138,7 +122,6 @@ fun LearningPreferencesScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Continue Button
         Button(
             onClick = {
                 onPreferencesSaved(
@@ -160,7 +143,7 @@ fun LearningPreferencesScreen(
             )
         ) {
             Text(
-                text = "Continue",
+                text = stringResource(R.string.preferences_continue),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -182,9 +165,7 @@ private fun SettingSwitch(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
+        Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
@@ -197,7 +178,6 @@ private fun SettingSwitch(
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
             )
         }
-
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,

@@ -32,10 +32,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sworddao.phoenix.R
 import com.sworddao.phoenix.ui.components.BaoCharacter
 import com.sworddao.phoenix.ui.onboarding.OnboardingPage
 import com.sworddao.phoenix.ui.onboarding.onboardingPages
@@ -54,7 +56,6 @@ fun OnboardingScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // Skip button
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -62,18 +63,15 @@ fun OnboardingScreen(
             horizontalArrangement = Arrangement.End
         ) {
             if (!onboardingPages[pagerState.currentPage].isLastPage) {
-                TextButton(
-                    onClick = onOnboardingComplete
-                ) {
+                TextButton(onClick = onOnboardingComplete) {
                     Text(
-                        text = "Skip",
+                        text = stringResource(R.string.onboarding_skip),
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                     )
                 }
             }
         }
 
-        // Pager content
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
@@ -86,14 +84,12 @@ fun OnboardingScreen(
             )
         }
 
-        // Bottom section
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Page indicators
             Row(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.padding(bottom = 24.dp)
@@ -105,25 +101,20 @@ fun OnboardingScreen(
                         animationSpec = tween(300),
                         label = "indicator_width"
                     )
-
                     Box(
                         modifier = Modifier
                             .padding(horizontal = 4.dp)
                             .height(8.dp)
                             .width(width.dp)
                             .background(
-                                color = if (isSelected) {
-                                    MaterialTheme.colorScheme.primary
-                                } else {
-                                    MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
-                                },
+                                color = if (isSelected) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f),
                                 shape = CircleShape
                             )
                     )
                 }
             }
 
-            // Action button
             if (onboardingPages[pagerState.currentPage].isLastPage) {
                 Button(
                     onClick = onOnboardingComplete,
@@ -135,7 +126,7 @@ fun OnboardingScreen(
                     )
                 ) {
                     Text(
-                        text = "Start Adventure",
+                        text = stringResource(R.string.onboarding_start),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -155,7 +146,7 @@ fun OnboardingScreen(
                     )
                 ) {
                     Text(
-                        text = "Continue",
+                        text = stringResource(R.string.onboarding_continue),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -178,34 +169,22 @@ private fun OnboardingPageContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Bao character
         AnimatedVisibility(
             visible = isVisible,
-            enter = fadeIn(
-                animationSpec = tween(
-                    durationMillis = 500,
-                    easing = LinearEasing
-                )
-            ) + slideInHorizontally(
-                animationSpec = tween(
-                    durationMillis = 500,
-                    easing = LinearEasing
-                ),
-                initialOffsetX = { it / 4 }
-            ),
+            enter = fadeIn(animationSpec = tween(durationMillis = 500, easing = LinearEasing)) +
+                    slideInHorizontally(
+                        animationSpec = tween(durationMillis = 500, easing = LinearEasing),
+                        initialOffsetX = { it / 4 }
+                    ),
             exit = fadeOut()
         ) {
-            BaoCharacter(
-                size = 160.dp,
-                expression = page.baoExpression
-            )
+            BaoCharacter(size = 160.dp, expression = page.baoExpression)
         }
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Title
         Text(
-            text = page.title,
+            text = stringResource(page.titleRes),
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
@@ -215,9 +194,8 @@ private fun OnboardingPageContent(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Subtitle
         Text(
-            text = page.subtitle,
+            text = stringResource(page.subtitleRes),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Medium,
@@ -227,9 +205,8 @@ private fun OnboardingPageContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Description
         Text(
-            text = page.description,
+            text = stringResource(page.descriptionRes),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
             textAlign = TextAlign.Center,

@@ -29,10 +29,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sworddao.phoenix.R
 import com.sworddao.phoenix.ui.components.BaoCharacter
 import com.sworddao.phoenix.ui.components.BaoExpression
 import kotlinx.coroutines.delay
@@ -51,10 +53,7 @@ fun BaoGreetingScreen(
         initialValue = 0.8f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 1000,
-                easing = LinearEasing
-            )
+            animation = tween(durationMillis = 1000, easing = LinearEasing)
         ),
         label = "bounce_alpha"
     )
@@ -74,35 +73,21 @@ fun BaoGreetingScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Bao character
-        BaoCharacter(
-            size = 160.dp,
-            expression = BaoExpression.WAVE
-        )
+        BaoCharacter(size = 160.dp, expression = BaoExpression.WAVE)
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Greeting text
         AnimatedVisibility(
             visible = showGreeting,
-            enter = fadeIn(
-                animationSpec = tween(
-                    durationMillis = 800,
-                    easing = LinearEasing
-                )
-            ) + slideInVertically(
-                animationSpec = tween(
-                    durationMillis = 800,
-                    easing = LinearEasing
-                ),
-                initialOffsetY = { it / 4 }
-            )
+            enter = fadeIn(animationSpec = tween(durationMillis = 800, easing = LinearEasing)) +
+                    slideInVertically(
+                        animationSpec = tween(durationMillis = 800, easing = LinearEasing),
+                        initialOffsetY = { it / 4 }
+                    )
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "Hi, $playerName!",
+                    text = stringResource(R.string.bao_greeting_hello, playerName),
                     style = MaterialTheme.typography.headlineLarge,
                     color = MaterialTheme.colorScheme.onBackground,
                     fontWeight = FontWeight.Bold,
@@ -113,7 +98,7 @@ fun BaoGreetingScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "I'm Bao.",
+                    text = stringResource(R.string.bao_greeting_intro),
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Medium,
@@ -123,7 +108,7 @@ fun BaoGreetingScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "I'm excited to explore China together.",
+                    text = stringResource(R.string.bao_greeting_excited),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
                     textAlign = TextAlign.Center,
@@ -133,7 +118,7 @@ fun BaoGreetingScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Let's begin our adventure.",
+                    text = stringResource(R.string.bao_greeting_begin),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
                     textAlign = TextAlign.Center,
@@ -144,15 +129,9 @@ fun BaoGreetingScreen(
 
         Spacer(modifier = Modifier.height(48.dp))
 
-        // Continue button
         AnimatedVisibility(
             visible = showButton,
-            enter = fadeIn(
-                animationSpec = tween(
-                    durationMillis = 600,
-                    easing = LinearEasing
-                )
-            )
+            enter = fadeIn(animationSpec = tween(durationMillis = 600, easing = LinearEasing))
         ) {
             Button(
                 onClick = onContinue,
@@ -164,7 +143,7 @@ fun BaoGreetingScreen(
                 )
             ) {
                 Text(
-                    text = "Start Adventure",
+                    text = stringResource(R.string.bao_greeting_start),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )

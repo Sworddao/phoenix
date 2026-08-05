@@ -1,3 +1,134 @@
 <resources>
     <string name="app_name">Phoenix</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_title">Phoenix</string>
+    <string name="splash_tagline_first">Don\'t memorize Chinese.</string>
+    <string name="splash_tagline_second">Live it.</string>
+
+    <!-- Welcome Screen -->
+    <string name="welcome_title">Welcome to Phoenix</string>
+    <string name="welcome_subtitle">Your Mandarin adventure begins here.</string>
+    <string name="welcome_button">Begin Journey</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_continue">Continue</string>
+    <string name="onboarding_start">Start Adventure</string>
+    <string name="onboarding_page1_title">Welcome to Phoenix</string>
+    <string name="onboarding_page1_subtitle">Your Mandarin Adventure Begins</string>
+    <string name="onboarding_page1_description">You\'ve just arrived in China with almost no Mandarin knowledge. But don\'t worry \u2014 you won\'t be alone.</string>
+    <string name="onboarding_page2_title">Meet Bao</string>
+    <string name="onboarding_page2_subtitle">Your Learning Companion</string>
+    <string name="onboarding_page2_description">This friendly red panda will guide you through your journey. Bao learns alongside you and celebrates every step of progress.</string>
+    <string name="onboarding_page3_title">Learn by Living</string>
+    <string name="onboarding_page3_subtitle">No Lessons. Just Adventure.</string>
+    <string name="onboarding_page3_description">Talk to people, complete quests, and explore real-world situations. Learning happens naturally through conversation.</string>
+    <string name="onboarding_page4_title">Ready to Begin?</string>
+    <string name="onboarding_page4_subtitle">Your Journey Starts Now</string>
+    <string name="onboarding_page4_description">Start in Qingyuan Village and work your way to Phoenix Summit. Every conversation opens new opportunities.</string>
+
+    <!-- Player Profile -->
+    <string name="profile_title">Create Your Profile</string>
+    <string name="profile_subtitle">Tell us a bit about yourself</string>
+    <string name="profile_name_label">Display Name *</string>
+    <string name="profile_name_placeholder">What should we call you?</string>
+    <string name="profile_name_error">Please enter your name</string>
+    <string name="profile_language_label">Native Language</string>
+    <string name="profile_language_placeholder">Optional: Your native language</string>
+    <string name="profile_experience_title">Mandarin Experience</string>
+    <string name="profile_experience_beginner">Complete Beginner</string>
+    <string name="profile_experience_some">Some Mandarin</string>
+    <string name="profile_experience_intermediate">Intermediate</string>
+    <string name="profile_pace_title">Learning Pace</string>
+    <string name="profile_pace_relaxed">Relaxed</string>
+    <string name="profile_pace_standard">Standard</string>
+    <string name="profile_pace_intensive">Intensive</string>
+    <string name="profile_continue">Continue</string>
+
+    <!-- Learning Preferences -->
+    <string name="preferences_title">Accessibility Settings</string>
+    <string name="preferences_subtitle">Customize your learning experience</string>
+    <string name="preferences_dad_mode">Dad Mode</string>
+    <string name="preferences_dad_mode_description">Reduced pressure, larger UI, gentle encouragement</string>
+    <string name="preferences_reduced_motion">Reduced Motion</string>
+    <string name="preferences_reduced_motion_description">Minimize animations throughout the app</string>
+    <string name="preferences_large_text">Large Text</string>
+    <string name="preferences_large_text_description">Increase text size for better readability</string>
+    <string name="preferences_high_contrast">High Contrast</string>
+    <string name="preferences_high_contrast_description">Enhanced color contrast for visibility</string>
+    <string name="preferences_slow_audio">Slow Audio</string>
+    <string name="preferences_slow_audio_description">Play audio at a slower pace</string>
+    <string name="preferences_show_hanzi">Show Hanzi</string>
+    <string name="preferences_show_hanzi_description">Display Chinese characters alongside Pinyin</string>
+    <string name="preferences_continue">Continue</string>
+
+    <!-- Bao Greeting -->
+    <string name="bao_greeting_hello">Hi, %1$s!</string>
+    <string name="bao_greeting_intro">I\'m Bao.</string>
+    <string name="bao_greeting_excited">I\'m excited to explore China together.</string>
+    <string name="bao_greeting_begin">Let\'s begin our adventure.</string>
+    <string name="bao_greeting_start">Start Adventure</string>
+
+    <!-- Qingyuan Village -->
+    <string name="village_title">Qingyuan Village</string>
+    <string name="village_accessibility">Qingyuan Village - Your adventure begins here. Tap on locations to explore.</string>
+    <string name="village_welcome">Welcome to Qingyuan Village</string>
+    <string name="village_instruction">Tap on buildings to explore</string>
+    <string name="village_explore_prompt">Explore the village to meet new friends, %1$s!</string>
+
+    <!-- Village Locations -->
+    <string name="location_bakery_name">Grandma Mei\'s Bakery</string>
+    <string name="location_bakery_description">The warm smell of fresh bread fills the air. Grandma Mei is famous for her mooncakes and steamed buns. She\'ll teach you food vocabulary and how to order treats.</string>
+    <string name="location_restaurant_name">Restaurant</string>
+    <string name="location_restaurant_description">Owner Lin\'s restaurant serves the best hot pot in the village. Learn to order food, ask about ingredients, and understand menus.</string>
+    <string name="location_teahouse_name">Tea House</string>
+    <string name="location_teahouse_description">A peaceful place to practice conversation. The tea master will teach you about Chinese tea culture and help you learn polite expressions.</string>
+    <string name="location_square_name">Village Square</string>
+    <string name="location_square_description">The heart of the village where neighbors gather. A great place to meet new people and practice everyday greetings.</string>
+    <string name="location_exit_name">Village Exit</string>
+    <string name="location_exit_description">The path leads deeper into China. Once you\'ve made friends here, new adventures await beyond the mountains.</string>
+    <string name="location_button_accessibility">%1$s %2$s. Tap to learn more.</string>
+
+    <!-- Village Dialogs -->
+    <string name="dialog_got_it">Got it!</string>
+    <string name="bao_says_title">Bao says:</string>
+    <string name="bao_thanks">Thanks, Bao!</string>
+    <string name="bao_companion_accessibility">Bao the red panda. Tap to hear encouragement.</string>
+
+    <!-- Bao Messages -->
+    <string name="bao_message_1">Let\'s explore together!</string>
+    <string name="bao_message_2">I wonder who we\'ll meet today.</string>
+    <string name="bao_message_3">Every conversation is a new adventure.</string>
+    <string name="bao_message_4">This village is beautiful, isn\'t it?</string>
+    <string name="bao_message_5">I\'m so glad you\'re here!</string>
+    <string name="bao_message_6">Let\'s take our time and enjoy the scenery.</string>
+    <string name="bao_message_7">The mountains look peaceful today.</string>
+    <string name="bao_message_8">I can smell something delicious from the bakery!</string>
+    <string name="bao_message_9">Shall we visit the tea house?</string>
+    <string name="bao_message_10">You\'re doing great, %1$s!</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">Phoenix</string>
+    <string name="home_welcome">Welcome to Phoenix</string>
+    <string name="home_subtitle">Your Mandarin adventure begins here.</string>
+    <string name="home_vocabulary">Vocabulary</string>
+    <string name="home_xp">XP</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_back">Back</string>
+    <string name="settings_display">Display</string>
+    <string name="settings_accessibility">Accessibility</string>
+    <string name="settings_show_hanzi">Show Hanzi</string>
+    <string name="settings_show_hanzi_description">Display Chinese characters alongside Pinyin</string>
+    <string name="settings_dad_mode">Dad Mode</string>
+    <string name="settings_dad_mode_description">Reduced pressure, larger UI, gentle encouragement</string>
+
+    <!-- Navigation -->
+    <string name="navigation_home">Home</string>
+    <string name="navigation_settings">Settings</string>
+
+    <!-- Generic -->
+    <string name="default_player_name">Friend</string>
 </resources>

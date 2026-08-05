@@ -23,8 +23,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.sworddao.phoenix.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,7 +38,7 @@ fun HomeScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Phoenix",
+                        text = stringResource(R.string.home_title),
                         fontWeight = FontWeight.Bold
                     )
                 },
@@ -44,7 +46,7 @@ fun HomeScreen(
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(
                             imageVector = Icons.Default.Settings,
-                            contentDescription = "Settings"
+                            contentDescription = stringResource(R.string.navigation_settings)
                         )
                     }
                 },
@@ -70,19 +72,15 @@ fun HomeScreen(
                     containerColor = MaterialTheme.colorScheme.primaryContainer
                 )
             ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
+                Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Welcome to Phoenix",
+                        text = stringResource(R.string.home_welcome),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
-
                     Spacer(modifier = Modifier.height(8.dp))
-
                     Text(
-                        text = "Your Mandarin adventure begins here.",
+                        text = stringResource(R.string.home_subtitle),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
@@ -112,7 +110,7 @@ fun HomeScreen(
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Vocabulary",
+                            text = stringResource(R.string.home_vocabulary),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
@@ -136,7 +134,7 @@ fun HomeScreen(
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "XP",
+                            text = stringResource(R.string.home_xp),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onTertiaryContainer
                         )

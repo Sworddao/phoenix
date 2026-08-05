@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -33,6 +34,7 @@ import com.sworddao.phoenix.ui.screens.QingyuanVillageScreen
 import com.sworddao.phoenix.ui.screens.SettingsScreen
 import com.sworddao.phoenix.ui.screens.SplashScreen
 import com.sworddao.phoenix.ui.screens.WelcomeScreen
+import com.sworddao.phoenix.R
 import com.sworddao.phoenix.ui.viewmodel.ProfileViewModel
 
 @Composable
@@ -138,7 +140,8 @@ fun PhoenixApp(
                     navArgument("playerName") { type = NavType.StringType }
                 )
             ) { backStackEntry ->
-                val playerName = backStackEntry.arguments?.getString("playerName") ?: "Friend"
+                val playerName = backStackEntry.arguments?.getString("playerName")
+                    ?: LocalContext.current.getString(R.string.default_player_name)
                 BaoGreetingScreen(
                     playerName = playerName,
                     onContinue = {
@@ -155,7 +158,8 @@ fun PhoenixApp(
                     navArgument("playerName") { type = NavType.StringType }
                 )
             ) { backStackEntry ->
-                val playerName = backStackEntry.arguments?.getString("playerName") ?: "Friend"
+                val playerName = backStackEntry.arguments?.getString("playerName")
+                    ?: LocalContext.current.getString(R.string.default_player_name)
                 QingyuanVillageScreen(
                     playerName = playerName
                 )

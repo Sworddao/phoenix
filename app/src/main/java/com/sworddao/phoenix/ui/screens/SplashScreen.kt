@@ -30,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,14 +44,12 @@ fun SplashScreen(
     onNavigateToWelcome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
     val reduceMotion = android.provider.Settings.Global.getFloat(
-        context.contentResolver,
+        androidx.compose.ui.platform.LocalContext.current.contentResolver,
         android.provider.Settings.Global.ANIMATOR_DURATION_SCALE,
         1f
     ) == 0f
 
-    // Animation states
     val backgroundAlpha = remember { Animatable(0f) }
     val logoAlpha = remember { Animatable(0f) }
     val logoScale = remember { Animatable(0.95f) }
@@ -60,10 +57,8 @@ fun SplashScreen(
     val taglineAlpha = remember { Animatable(0f) }
     var showContent by remember { mutableStateOf(false) }
 
-    // Animation sequence
     LaunchedEffect(Unit) {
         if (reduceMotion) {
-            // Skip animations for accessibility
             backgroundAlpha.snapTo(1f)
             logoAlpha.snapTo(1f)
             logoScale.snapTo(1f)
@@ -73,72 +68,38 @@ fun SplashScreen(
             delay(2000)
             onNavigateToWelcome()
         } else {
-            // Step 1: Fade in background
             backgroundAlpha.animateTo(
                 targetValue = 1f,
-                animationSpec = tween(
-                    durationMillis = 500,
-                    easing = LinearEasing
-                )
+                animationSpec = tween(durationMillis = 500, easing = LinearEasing)
             )
-
-            // Step 2: Logo fades in
             logoAlpha.animateTo(
                 targetValue = 1f,
-                animationSpec = tween(
-                    durationMillis = 800,
-                    easing = LinearEasing
-                )
+                animationSpec = tween(durationMillis = 800, easing = LinearEasing)
             )
-
-            // Step 3: Logo scales from 95% to 100%
             logoScale.animateTo(
                 targetValue = 1f,
-                animationSpec = tween(
-                    durationMillis = 600,
-                    easing = LinearEasing
-                )
+                animationSpec = tween(durationMillis = 600, easing = LinearEasing)
             )
-
             showContent = true
-
-            // Step 4: Title fades in
             delay(200)
             titleAlpha.animateTo(
                 targetValue = 1f,
-                animationSpec = tween(
-                    durationMillis = 600,
-                    easing = LinearEasing
-                )
+                animationSpec = tween(durationMillis = 600, easing = LinearEasing)
             )
-
-            // Step 5: Tagline fades in
             delay(200)
             taglineAlpha.animateTo(
                 targetValue = 1f,
-                animationSpec = tween(
-                    durationMillis = 600,
-                    easing = LinearEasing
-                )
+                animationSpec = tween(durationMillis = 600, easing = LinearEasing)
             )
-
-            // Step 6: Pause
             delay(1500)
-
-            // Step 7: Fade out and navigate
             backgroundAlpha.animateTo(
                 targetValue = 0f,
-                animationSpec = tween(
-                    durationMillis = 500,
-                    easing = LinearEasing
-                )
+                animationSpec = tween(durationMillis = 500, easing = LinearEasing)
             )
-
             onNavigateToWelcome()
         }
     }
 
-    // Background fade
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -152,7 +113,6 @@ fun SplashScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Logo with scale animation
             PhoenixLogo(
                 size = 140.dp,
                 animated = true,
@@ -163,19 +123,13 @@ fun SplashScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Title
             AnimatedVisibility(
                 visible = showContent,
-                enter = fadeIn(
-                    animationSpec = tween(
-                        durationMillis = 600,
-                        easing = LinearEasing
-                    )
-                ),
+                enter = fadeIn(animationSpec = tween(durationMillis = 600, easing = LinearEasing)),
                 exit = fadeOut()
             ) {
                 Text(
-                    text = "Phoenix",
+                    text = stringResource(R.string.splash_title),
                     style = MaterialTheme.typography.displayMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                     fontWeight = FontWeight.Bold,
@@ -187,15 +141,9 @@ fun SplashScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Tagline
             AnimatedVisibility(
                 visible = showContent,
-                enter = fadeIn(
-                    animationSpec = tween(
-                        durationMillis = 600,
-                        easing = LinearEasing
-                    )
-                ),
+                enter = fadeIn(animationSpec = tween(durationMillis = 600, easing = LinearEasing)),
                 exit = fadeOut()
             ) {
                 Column(
@@ -203,14 +151,14 @@ fun SplashScreen(
                     modifier = Modifier.alpha(taglineAlpha.value)
                 ) {
                     Text(
-                        text = "Don't memorize Chinese.",
+                        text = stringResource(R.string.splash_tagline_first),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                         textAlign = TextAlign.Center,
                         letterSpacing = 1.sp
                     )
                     Text(
-                        text = "Live it.",
+                        text = stringResource(R.string.splash_tagline_second),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Medium,

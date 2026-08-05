@@ -2,7 +2,6 @@
 *.apk
 *.aab
 *.ap_
-*.aab
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -36,8 +35,10 @@ proguard/
 captures/
 
 # IntelliJ
-*.iml
 .idea/
+*.iml
+*.iws
+*.ipr
 
 # Keystore files
 # Uncomment the following lines if you do not want to check your keystore files in.
@@ -81,6 +82,7 @@ lint/tmp/
 .Trashes
 ehthumbs.db
 Thumbs.db
+Desktop.ini
 
 # Kotlin
 *.kotlin_module
@@ -92,28 +94,8 @@ Thumbs.db
 *.properties
 !gradle.properties
 
-# macOS
-.DS_Store
-
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# Linux
-*~
-
-# IntelliJ IDEA
-.idea/
-*.iml
-*.iws
-*.ipr
-
 # VS Code
 .vscode/
 
 # Node (if using any scripts)
 node_modules/
-
-# Logs
-*.log

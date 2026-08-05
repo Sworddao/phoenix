@@ -16,7 +16,7 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 
 ## Planned Features
 
-> **Note:** These features are planned and documented in [SPEC.md](SPEC.md). None are implemented yet.
+> **Note:** These features are planned and documented in [SPEC.md](SPEC.md). Some are partially implemented (see CHANGELOG.md for details).
 
 - **Story-driven exploration** — Travel from Qingyuan Village to Phoenix Summit
 - **NPC conversations** — Learn through interaction with memorable characters
@@ -36,7 +36,7 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 
 | Layer | Technology |
 |-------|-----------|
-| Language | Kotlin |
+| Language | Kotlin 2.0.21 |
 | UI | Jetpack Compose |
 | Architecture | MVVM + Clean Architecture |
 | Database | Room (SQLite) |
@@ -44,7 +44,7 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 | Maps | Custom Compose Canvas |
 | Build | Gradle (Kotlin DSL) |
 | Min SDK | 26 (Android 8.0) |
-| Target SDK | 34 |
+| Target SDK | 35 |
 
 ---
 
