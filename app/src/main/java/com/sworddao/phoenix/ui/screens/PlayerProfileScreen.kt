@@ -1,0 +1,257 @@
+package com.sworddao.phoenix.ui.screens
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.sworddao.phoenix.data.model.ExperienceLevel
+import com.sworddao.phoenix.data.model.LearningPace
+import com.sworddao.phoenix.data.model.PlayerProfile
+import com.sworddao.phoenix.ui.components.BaoCharacter
+import com.sworddao.phoenix.ui.components.BaoExpression
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayerProfileScreen(
+    onProfileCreated: (PlayerProfile) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var displayName by remember { mutableStateOf("") }
+    var nativeLanguage by remember { mutableStateOf("") }
+    var experienceLevel by remember { mutableStateOf(ExperienceLevel.BEGINNER) }
+    var learningPace by remember { mutableStateOf(LearningPace.STANDARD) }
+    var nameError by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(rememberScrollState())
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Bao character
+        BaoCharacter(
+            size = 120.dp,
+            expression = BaoExpression.HAPPY
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Title
+        Text(
+            text = "Create Your Profile",
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onBackground,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "Tell us a bit about yourself",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Display Name
+        OutlinedTextField(
+            value = displayName,
+            onValueChange = {
+                displayName = it
+                nameError = false
+            },
+            label = { Text("Display Name *") },
+            placeholder = { Text("What should we call you?") },
+            isError = nameError,
+            supportingText = if (nameError) {
+                { Text("Please enter your name") }
+            } else null,
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Native Language
+        OutlinedTextField(
+            value = nativeLanguage,
+            onValueChange = { nativeLanguage = it },
+            label = { Text("Native Language") },
+            placeholder = { Text("Optional: Your native language") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Experience Level
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Mandarin Experience",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+                fontWeight = FontWeight.Medium
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            ExperienceLevel.entries.forEach { level ->
+                val isSelected = experienceLevel == level
+                val label = when (level) {
+                    ExperienceLevel.BEGINNER -> "Complete Beginner"
+                    ExperienceLevel.SOME_MANDARIN -> "Some Mandarin"
+                    ExperienceLevel.INTERMEDIATE -> "Intermediate"
+                }
+
+                Button(
+                    onClick = { experienceLevel = level },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (isSelected) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.surfaceVariant
+                        },
+                        contentColor = if (isSelected) {
+                            MaterialTheme.colorScheme.onPrimary
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        }
+                    )
+                ) {
+                    Text(
+                        text = label,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Start
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Learning Pace
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Learning Pace",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+                fontWeight = FontWeight.Medium
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            LearningPace.entries.forEach { pace ->
+                val isSelected = learningPace == pace
+                val label = when (pace) {
+                    LearningPace.RELAXED -> "Relaxed"
+                    LearningPace.STANDARD -> "Standard"
+                    LearningPace.INTENSIVE -> "Intensive"
+                }
+
+                Button(
+                    onClick = { learningPace = pace },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (isSelected) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.surfaceVariant
+                        },
+                        contentColor = if (isSelected) {
+                            MaterialTheme.colorScheme.onPrimary
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        }
+                    )
+                ) {
+                    Text(
+                        text = label,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Start
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Continue Button
+        Button(
+            onClick = {
+                if (displayName.isBlank()) {
+                    nameError = true
+                } else {
+                    onProfileCreated(
+                        PlayerProfile(
+                            displayName = displayName.trim(),
+                            nativeLanguage = nativeLanguage.trim(),
+                            experienceLevel = experienceLevel,
+                            learningPace = learningPace
+                        )
+                    )
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
+        ) {
+            Text(
+                text = "Continue",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}

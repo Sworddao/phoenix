@@ -9,6 +9,14 @@ sealed class Screen(val route: String) {
     data object Splash : Screen("splash")
     data object Welcome : Screen("welcome")
     data object Onboarding : Screen("onboarding")
+    data object PlayerProfile : Screen("player_profile")
+    data object LearningPreferences : Screen("learning_preferences")
+    data object BaoGreeting : Screen("bao_greeting/{playerName}") {
+        fun createRoute(playerName: String) = "bao_greeting/$playerName"
+    }
+    data object QingyuanVillage : Screen("qingyuan_village/{playerName}") {
+        fun createRoute(playerName: String) = "qingyuan_village/$playerName"
+    }
     data object Home : Screen("home")
     data object Settings : Screen("settings")
 }
