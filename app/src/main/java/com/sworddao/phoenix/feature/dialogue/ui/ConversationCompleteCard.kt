@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -29,7 +31,8 @@ import com.sworddao.phoenix.feature.dialogue.data.DialogueHistoryEntry
 fun ConversationCompleteCard(
     history: List<DialogueHistoryEntry>,
     onContinue: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onPractice: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val contentDescription = context.getString(R.string.conversation_complete_accessibility)
@@ -63,6 +66,24 @@ fun ConversationCompleteCard(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        if (onPractice != null) {
+            Button(
+                onClick = onPractice,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(28.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary
+                )
+            ) {
+                Text(
+                    text = stringResource(R.string.pronunciation_practice_button),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+        }
 
         TextButton(
             onClick = onContinue

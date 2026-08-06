@@ -27,6 +27,7 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 - **Passport & collectibles** — Journey tracking with stamps and collectibles
 - **Vocabulary learning** — 100+ words across 12 categories with mastery tracking
 - **Vocabulary discovery** — Natural word unlocking through gameplay interactions
+- **Speaking & pronunciation** — Offline speaking practice foundation with speech engine abstraction
 - **Accessibility** — Dad Mode, reduced motion, large text, high contrast
 
 ---
@@ -123,6 +124,12 @@ Phoenix/
 │       │       ├── ui/              # Compose components
 │       │       ├── viewmodel/       # ViewModel
 │       │       └── di/              # Hilt module
+│       │   └── pronunciation/       # Speaking & pronunciation practice
+│       │       ├── data/            # Models, engine & repository
+│       │       ├── domain/          # Repository interface
+│       │       ├── ui/              # Compose components
+│       │       ├── viewmodel/       # ViewModel
+│       │       └── di/              # Hilt module
 │       └── ui/                      # UI layer
 │           ├── components/          # Reusable composables
 │           ├── navigation/          # Navigation routes
@@ -178,8 +185,9 @@ Each feature follows a consistent structure:
 13. **Passport** — Journey tracking with stamps, collectibles, and timeline
 14. **Vocabulary** — Vocabulary learning with search, filter, and mastery tracking
 15. **Discovery** — Vocabulary discovery tracking and history
-16. **Home** — Main dashboard
-17. **Settings** — App configuration
+16. **Pronunciation** — Speaking practice with exercises, feedback, and rewards
+17. **Home** — Main dashboard
+18. **Settings** — App configuration
 
 ---
 

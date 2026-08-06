@@ -340,6 +340,11 @@ class MockDialogueRepository @Inject constructor() : DialogueRepository {
                     pinyin = "Ni he Nainai Mei liao de hen kaixin. Ta kanqilai shi cunli hen hao de pengyou.",
                     actions = listOf(
                         DialogueAction(
+                            type = ActionType.PRACTICE_SPEAKING,
+                            targetId = "pronunciation",
+                            value = "pron_ex_dlg_hao_chi,pron_ex_dlg_meet"
+                        ),
+                        DialogueAction(
                             type = ActionType.ADD_FRIENDSHIP_XP,
                             targetId = "grandma_mei",
                             value = "10"

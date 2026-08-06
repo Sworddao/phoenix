@@ -107,6 +107,13 @@ feature/
 - Discovery dialog and timeline components
 - Integration with all game systems
 
+### Speaking & Pronunciation (`feature/pronunciation/`)
+- Pronunciation data models (SpeakingExercise, PronunciationAttempt, SpeakingMastery, etc.)
+- PronunciationEngine interface with offline MockPronunciationEngine
+- Pronunciation repository with session lifecycle, streaks, badges, and rewards
+- Pronunciation screen, speaking button, and feedback components
+- Integration with dialogue, vocabulary, quest, game progress, and passport systems
+
 ## Data Layer
 
 ```
@@ -159,7 +166,8 @@ di/
 ├── world/di/WorldModule.kt
 ├── passport/di/PassportModule.kt
 ├── vocabulary/di/VocabularyModule.kt
-└── discovery/di/DiscoveryModule.kt
+├── discovery/di/DiscoveryModule.kt
+└── pronunciation/di/PronunciationModule.kt
 ```
 
 ## Testing Structure
@@ -181,8 +189,12 @@ test/
     │   ├── vocabulary/data/VocabularyModelsTest.kt
     │   ├── vocabulary/data/VocabularyRepositoryTest.kt
     │   ├── discovery/data/DiscoveryModelsTest.kt
-    │   └── discovery/data/DiscoveryRepositoryTest.kt
-    └── ui/viewmodel/ProfileViewModelTest.kt
+    │   ├── discovery/data/DiscoveryRepositoryTest.kt
+    │   ├── pronunciation/data/PronunciationModelsTest.kt
+    │   ├── pronunciation/data/PronunciationRepositoryTest.kt
+    │   ├── dialogue/data/DialogueModelsTest.kt
+    │   ├── dialogue/data/DialogueViewModelActionTest.kt
+    │   └── ui/viewmodel/ProfileViewModelTest.kt
 ```
 
 ## Documentation Structure
@@ -197,6 +209,7 @@ docs/
 ├── passport-system.md
 ├── vocabulary-system.md
 ├── discovery-system.md
+├── pronunciation-system.md
 ├── project-structure.md          # This file
 ├── architecture.md               # Architecture details
 └── templates/

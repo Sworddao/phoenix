@@ -15,9 +15,15 @@ import com.sworddao.phoenix.feature.dialogue.viewmodel.DialogueViewModel
 import com.sworddao.phoenix.feature.dialogue.viewmodel.ProcessedAction
 import com.sworddao.phoenix.feature.friendship.domain.FriendshipRepository
 import com.sworddao.phoenix.feature.friendship.data.FriendshipState
+import com.sworddao.phoenix.feature.friendship.data.MockFriendshipRepository
 import com.sworddao.phoenix.feature.gameplay.data.DialogueResultHolder
+import com.sworddao.phoenix.feature.gameplay.data.MockGameProgressRepository
+import com.sworddao.phoenix.feature.passport.data.MockPassportRepository
+import com.sworddao.phoenix.feature.pronunciation.data.MockPronunciationRepository
 import com.sworddao.phoenix.feature.quest.domain.QuestRepository
+import com.sworddao.phoenix.feature.quest.data.MockQuestRepository
 import com.sworddao.phoenix.feature.quest.data.QuestResult
+import com.sworddao.phoenix.feature.vocabulary.data.MockVocabularyRepository
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyResult
 import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
 import kotlinx.coroutines.Dispatchers
@@ -49,6 +55,7 @@ class DialogueViewModelActionTest {
     private lateinit var mockFriendshipRepository: FakeFriendshipRepository
     private lateinit var mockQuestRepository: FakeQuestRepository
     private lateinit var mockVocabularyRepository: FakeVocabularyRepository
+    private lateinit var mockPronunciationRepository: MockPronunciationRepository
     private lateinit var dialogueResultHolder: DialogueResultHolder
 
     @Before
@@ -58,6 +65,13 @@ class DialogueViewModelActionTest {
         mockFriendshipRepository = FakeFriendshipRepository()
         mockQuestRepository = FakeQuestRepository()
         mockVocabularyRepository = FakeVocabularyRepository()
+        mockPronunciationRepository = MockPronunciationRepository(
+            vocabularyRepository = MockVocabularyRepository(),
+            questRepository = MockQuestRepository(),
+            friendshipRepository = MockFriendshipRepository(),
+            gameProgressRepository = MockGameProgressRepository(),
+            passportRepository = MockPassportRepository(),
+        )
         dialogueResultHolder = DialogueResultHolder()
     }
 
@@ -82,7 +96,8 @@ class DialogueViewModelActionTest {
             friendshipRepository = mockFriendshipRepository,
             questRepository = mockQuestRepository,
             vocabularyRepository = mockVocabularyRepository,
-            dialogueResultHolder = dialogueResultHolder
+            dialogueResultHolder = dialogueResultHolder,
+            pronunciationRepository = mockPronunciationRepository,
         )
     }
 

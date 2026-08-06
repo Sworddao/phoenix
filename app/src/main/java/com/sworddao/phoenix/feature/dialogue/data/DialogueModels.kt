@@ -57,6 +57,8 @@ enum class ActionType {
     UNLOCK_VOCABULARY,
     @SerialName("complete_quest")
     COMPLETE_QUEST,
+    @SerialName("practice_speaking")
+    PRACTICE_SPEAKING,
     @SerialName("give_item")
     GIVE_ITEM
 }

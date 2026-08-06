@@ -13,6 +13,7 @@ interface GameProgressRepository {
     suspend fun recordQuestCompleted(questId: String)
     suspend fun recordFriendshipLevelUp(npcId: String)
     suspend fun recordPassportStampEarned(regionId: String)
+    suspend fun recordSpeakingPractice()
     suspend fun unlockMilestone(milestone: GameMilestone)
     suspend fun resetSession()
 }

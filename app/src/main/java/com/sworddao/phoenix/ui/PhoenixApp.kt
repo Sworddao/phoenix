@@ -44,6 +44,7 @@ import com.sworddao.phoenix.feature.quest.ui.QuestDetailScreen
 import com.sworddao.phoenix.feature.quest.ui.QuestListScreen
 import com.sworddao.phoenix.feature.world.ui.WorldMapScreen
 import com.sworddao.phoenix.feature.passport.ui.PassportScreen
+import com.sworddao.phoenix.feature.pronunciation.ui.PronunciationScreen
 import com.sworddao.phoenix.feature.vocabulary.ui.VocabularyScreen
 import com.sworddao.phoenix.feature.vocabulary.ui.VocabularyDetailScreen
 import com.sworddao.phoenix.feature.vocabulary.viewmodel.VocabularyViewModel
@@ -204,6 +205,27 @@ fun PhoenixApp(
                         navController.navigate(Screen.Celebration.createRoute(dialogueId, npcId)) {
                             popUpTo(Screen.Dialogue.route) { inclusive = true }
                         }
+                    },
+                    onPractice = {
+                        navController.navigate(Screen.Pronunciation.createRoute())
+                    }
+                )
+            }
+
+            composable(
+                route = Screen.Pronunciation.route,
+                arguments = listOf(
+                    navArgument("wordId") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+                val wordId = backStackEntry.arguments?.getString("wordId") ?: ""
+                PronunciationScreen(
+                    wordId = wordId,
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    onComplete = {
+                        navController.popBackStack()
                     }
                 )
             }
@@ -335,6 +357,9 @@ fun PhoenixApp(
                         onBack = { navController.popBackStack() },
                         onToggleFavorite = { vocabularyViewModel.toggleFavorite(it) },
                         onUpdateMastery = { id, mastery -> vocabularyViewModel.updateMastery(id, mastery) },
+                        onPractice = { wordId ->
+                            navController.navigate(Screen.Pronunciation.createRoute(wordId))
+                        },
                     )
                 }
             }

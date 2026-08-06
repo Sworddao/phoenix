@@ -413,6 +413,7 @@
     <string name="celebration_quest_description">任务已完成！</string>
     <string name="celebration_item_title">获得物品</string>
     <string name="celebration_item_description">你获得了一个新物品！</string>
+    <string name="celebration_speaking_description">可以开始口语练习了！</string>
 
     <!-- Game Progress -->
     <string name="game_progress_screen_accessibility">Game progress screen</string>
@@ -425,6 +426,29 @@
     <string name="game_progress_friendship">友谊提升</string>
     <string name="game_progress_stamps">护照盖章</string>
     <string name="game_progress_reset">重置进度</string>
+
+    <!-- Pronunciation -->
+    <string name="pronunciation_screen_accessibility">Speaking practice with pronunciation feedback</string>
+    <string name="pronunciation_title">练习开口说</string>
+    <string name="pronunciation_practice_button">练习说</string>
+    <string name="pronunciation_bao_demo">听 Bao 示范</string>
+    <string name="pronunciation_bao_tip">跟 Bao 一起说</string>
+    <string name="pronunciation_record_tap">按住录音</string>
+    <string name="pronunciation_record_stop">录音中，松手结束</string>
+    <string name="pronunciation_listening">正在听……</string>
+    <string name="pronunciation_next_exercise">下一个</string>
+    <string name="pronunciation_try_again">再试一次</string>
+    <string name="pronunciation_complete_title">练习完成！</string>
+    <string name="pronunciation_complete_message">你已经完成了这组口语练习，真棒！</string>
+    <string name="pronunciation_complete_continue">继续冒险</string>
+    <string name="pronunciation_streak_label">连续练习</string>
+    <string name="pronunciation_session_progress">练习进度</string>
+    <string name="pronunciation_xp_earned">+%1$d XP</string>
+    <string name="pronunciation_friendship_bonus">+%1$d 友谊值</string>
+    <string name="pronunciation_new_personal_best">刷新了你的最佳记录！</string>
+    <string name="pronunciation_streak_continued">连续练习 %1$d 天！</string>
+    <string name="pronunciation_from_dialogue">对话练习</string>
+    <string name="pronunciation_from_vocabulary">词汇练习</string>
 
     <!-- Generic -->
     <string name="default_player_name">Friend</string>

@@ -244,6 +244,11 @@ Quest details with:
 - NPC friendship unlocks quests
 - Quests teach NPC vocabulary
 
+### Speaking & Pronunciation System
+- Objectives with type `PRACTICE_SPEAKING` (e.g. `obj_2_3` on 买饺子, `obj_3_3` on 买茶) are progressed automatically
+- Every successful pronunciation attempt contributes +1 to all active quests' speaking objectives via `updateObjectiveProgress`
+- The pronunciation feature also tracks game progress milestones and passport entries for first practice and earned badges
+
 ## Future Enhancements
 
 - Room persistence for offline storage

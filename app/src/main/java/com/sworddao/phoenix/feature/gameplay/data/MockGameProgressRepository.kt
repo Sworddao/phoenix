@@ -136,6 +136,25 @@ class MockGameProgressRepository @Inject constructor() : GameProgressRepository 
         )
     }
 
+    override suspend fun recordSpeakingPractice() {
+        val current = _gameProgress.value
+        val milestones = current.milestonesCompleted.toMutableList()
+        if (!current.hasCompletedFirstSpeaking) {
+            milestones.add(GameMilestone.FIRST_SPEAKING)
+        }
+
+        _gameProgress.value = current.copy(
+            totalSpeakingPractices = current.totalSpeakingPractices + 1,
+            milestonesCompleted = milestones,
+            lastActivityTime = System.currentTimeMillis()
+        )
+
+        _sessionSummary.value = _sessionSummary.value.copy(
+            milestonesUnlocked = _sessionSummary.value.milestonesUnlocked +
+                    milestones.filter { it !in _sessionSummary.value.milestonesUnlocked }
+        )
+    }
+
     override suspend fun unlockMilestone(milestone: GameMilestone) {
         val current = _gameProgress.value
         if (milestone !in current.milestonesCompleted) {

@@ -281,6 +281,11 @@ private fun CelebrationActionCard(
             stringResource(R.string.celebration_quest_title),
             stringResource(R.string.celebration_quest_description)
         )
+        ActionType.PRACTICE_SPEAKING -> Triple(
+            Icons.Default.Star,
+            stringResource(R.string.pronunciation_practice_button),
+            stringResource(R.string.celebration_speaking_description)
+        )
         ActionType.GIVE_ITEM -> Triple(
             Icons.Default.Star,
             stringResource(R.string.celebration_item_title),

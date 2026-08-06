@@ -205,10 +205,17 @@ Compose displays error message
 - **DataStore** — Preferences
 - **Assets** — Static content
 
+### Engine Abstraction Pattern
+Hardware-adjacent capabilities are hidden behind interface abstractions so the offline-first mock can be swapped for a real implementation without touching higher layers:
+
+- **PronunciationEngine** — Speaking analysis. `MockPronunciationEngine` simulates offline phonetic similarity evaluation and streamed partial results; a future Android `SpeechRecognizer`, Vosk, or Whisper.cpp backend implements the same interface.
+- The interface exposes `startListening()` (Flow of partial results), `stopListening()`, and `evaluatePronunciation()`.
+
 ### Benefits
 - **No internet required** — Full functionality offline
 - **Fast performance** — Local data access
 - **Reliable** — No network dependencies
+- **Extensible** — Real engines drop in behind the same contract
 
 ## Future Architecture
 

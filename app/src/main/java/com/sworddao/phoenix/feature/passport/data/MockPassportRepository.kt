@@ -17,6 +17,7 @@ class MockPassportRepository @Inject constructor() : PassportRepository {
     private val _collectibles = MutableStateFlow(createInitialCollectibles())
     private val _timeline = MutableStateFlow(createInitialTimeline())
     private val _achievements = MutableStateFlow(createInitialAchievements())
+    private val _entries = MutableStateFlow<List<PassportEntry>>(emptyList())
 
     override fun getPassport(): Flow<Passport> = _passport
 
@@ -57,10 +58,9 @@ class MockPassportRepository @Inject constructor() : PassportRepository {
 
     override fun getRecentEntries(limit: Int): Flow<List<PassportEntry>> =
         _passport.map { passport ->
-            passport.regions.values
+            val regionEntries = passport.regions.values
                 .filter { it.isDiscovered }
                 .sortedByDescending { it.discoveredAt }
-                .take(limit)
                 .map { region ->
                     PassportEntry(
                         id = "entry_${region.regionId}",
@@ -71,6 +71,9 @@ class MockPassportRepository @Inject constructor() : PassportRepository {
                         timestamp = region.discoveredAt ?: System.currentTimeMillis(),
                     )
                 }
+            (_entries.value + regionEntries)
+                .sortedByDescending { it.timestamp }
+                .take(limit)
         }
 
     override suspend fun discoverRegion(regionId: String): PassportResult {
@@ -227,6 +230,7 @@ class MockPassportRepository @Inject constructor() : PassportRepository {
     }
 
     override suspend fun recordEntry(entry: PassportEntry): PassportResult {
+        _entries.update { entries -> listOf(entry) + entries }
         _passport.update { passport ->
             passport.copy(
                 lastUpdated = System.currentTimeMillis(),

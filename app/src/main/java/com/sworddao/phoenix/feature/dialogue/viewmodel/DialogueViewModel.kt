@@ -15,6 +15,7 @@ import com.sworddao.phoenix.feature.dialogue.data.DialogueResult
 import com.sworddao.phoenix.feature.dialogue.domain.DialogueRepository
 import com.sworddao.phoenix.feature.friendship.domain.FriendshipRepository
 import com.sworddao.phoenix.feature.gameplay.data.DialogueResultHolder
+import com.sworddao.phoenix.feature.pronunciation.domain.PronunciationRepository
 import com.sworddao.phoenix.feature.quest.domain.QuestRepository
 import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,6 +42,7 @@ data class DialogueUiState(
     val isConversationComplete: Boolean = false,
     val completedActions: List<DialogueAction> = emptyList(),
     val processedActions: List<ProcessedAction> = emptyList(),
+    val isPracticeAvailable: Boolean = false,
     val isLoading: Boolean = true,
     val isProcessingActions: Boolean = false,
     val error: String? = null
@@ -53,6 +55,7 @@ class DialogueViewModel @Inject constructor(
     private val friendshipRepository: FriendshipRepository,
     private val questRepository: QuestRepository,
     private val vocabularyRepository: VocabularyRepository,
+    private val pronunciationRepository: PronunciationRepository,
     private val dialogueResultHolder: DialogueResultHolder
 ) : ViewModel() {
 
@@ -199,6 +202,11 @@ class DialogueViewModel @Inject constructor(
                 processedActions = processed
             )
         }
+
+        val hasPracticeAction = actions.any {
+            it.type == ActionType.PRACTICE_SPEAKING
+        }
+        _uiState.value = _uiState.value.copy(isPracticeAvailable = hasPracticeAction)
     }
 
     private suspend fun processActions(actions: List<DialogueAction>): List<ProcessedAction> {
@@ -222,6 +230,21 @@ class DialogueViewModel @Inject constructor(
                         }
                     }
                     allSuccess
+                }
+                ActionType.PRACTICE_SPEAKING -> {
+                    val exerciseIds = action.value.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+                    if (exerciseIds.isEmpty()) {
+                        false
+                    } else {
+                        var allSuccess = true
+                        exerciseIds.forEach { exerciseId ->
+                            val result = pronunciationRepository.unlockExercise(exerciseId)
+                            if (result is com.sworddao.phoenix.feature.pronunciation.data.PronunciationResultStatus.Error) {
+                                allSuccess = false
+                            }
+                        }
+                        allSuccess
+                    }
                 }
                 ActionType.COMPLETE_QUEST -> {
                     val result = questRepository.completeQuest(action.targetId)

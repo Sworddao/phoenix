@@ -195,6 +195,7 @@ Detailed word view with:
 - Mastery indicator
 - Example sentence with translation
 - Action buttons (review, speak, hear)
+- Practice pronunciation button — navigates to `Screen.Pronunciation.createRoute(wordId)` to start a speaking session for the word
 - Favorite toggle
 - Notes section
 
@@ -263,6 +264,7 @@ Integration:
 - **Friendship System** — Friendship milestone vocabulary
 - **World Map System** — Region-specific vocabulary
 - **Passport System** — Vocabulary tracking in passport
+- **Speaking System** — Successful pronunciation practice increments `timesSpoken`; vocabulary detail opens speaking sessions for a specific word; discovered words without a matching exercise get a dynamically generated speaking exercise
 
 ## Testing
 
@@ -298,7 +300,7 @@ Integration:
 - Quiz mode
 
 ### Phase 3
-- Voice recognition for speaking practice
+- Real speech recognition for speaking practice (engine abstraction is in place via `PronunciationEngine`)
 - Social vocabulary sharing
 - Vocabulary challenges
 - Achievement integration

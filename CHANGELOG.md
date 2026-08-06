@@ -93,6 +93,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Navigation routes for discovery history
   - Unit tests for models and repository
 - Accessibility settings (Dad Mode, reduced motion, large text, high contrast)
+- Speaking & pronunciation foundation (Feature 4.4)
+  - Pronunciation data models (SpeakingExercise, PronunciationAttempt, SpeakingMastery, etc.)
+  - 11 initial speaking exercises (vocabulary, tone, dialogue, and freestyle types)
+  - PronunciationEngine interface with MockPronunciationEngine for offline-first speech analysis
+  - PronunciationRepository interface with MockPronunciationRepository
+  - Session lifecycle with exercise selection, progress tracking, and completion
+  - Offline phonetic similarity evaluation (SUCCESS_THRESHOLD = 0.7) with encouraging feedback
+  - Streak tracking with daily persistence semantics and 8 pronunciation badges
+  - XP, friendship bonus, and personal-best rewards
+  - Integration with Dialogue (PRACTICE_SPEAKING action), Vocabulary (timesSpoken), Quest (PRACTICE_SPEAKING objectives), Game Progress (FIRST_SPEAKING milestone), and Passport (SPEAKING_PRACTICE & ACHIEVEMENT_UNLOCKED entries)
+  - PronunciationViewModel with recording state machine (startRecording, nextExercise, repeatExercise)
+  - PronunciationScreen, SpeakingButton with pulse animation, RecordingIndicator, and Bao tip components
+  - Reduced-motion support via animator duration scale
+  - Navigation route `pronunciation/{wordId}` accessible from dialogue completion and vocabulary detail
+  - Passport mock now persists recorded entries (recordEntry) for observable timeline history
+  - Unit tests for models and repository
 - Unit tests for data models and friendship system
 - Documentation for dialogue, NPC, quest, world, passport, and vocabulary systems
 - SPEC.md restructuring with fixed numbering, Non-Goals, Graduate Outcomes sections
@@ -109,10 +125,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- Audio playback
+- Real speech recognition (Android SpeechRecognizer / Vosk / Whisper.cpp) behind PronunciationEngine
+- Audio playback for words and phrases
 - Additional NPC dialogues
-- Game progression system
-- Discovery animations and celebration effects
+- Game progression system (further milestones and rewards)
 
 ---
 

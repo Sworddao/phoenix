@@ -118,11 +118,19 @@ An action triggered during conversation.
 
 ```kotlin
 data class DialogueAction(
-    val type: ActionType,  // ADD_FRIENDSHIP_XP, UNLOCK_VOCABULARY, etc.
+    val type: ActionType,  // ADD_FRIENDSHIP_XP, UNLOCK_VOCABULARY, PRACTICE_SPEAKING, etc.
     val targetId: String,
     val value: String
 )
 ```
+
+Action types include:
+
+- `ADD_FRIENDSHIP_XP` — Increases NPC friendship XP
+- `UNLOCK_VOCABULARY` — Unlocks vocabulary categories
+- `COMPLETE_QUEST` — Records quest completion
+- `GIVE_ITEM` — Records gift giving
+- `PRACTICE_SPEAKING` — Unlocks speaking exercises (comma-separated exercise ids in `value`) and surfaces the practice prompt on the completion card
 
 ### DialogueCondition
 
@@ -148,6 +156,7 @@ data class DialogueUiState(
     val history: List<DialogueHistoryEntry>,
     val availableChoices: List<DialogueChoice>,
     val isConversationComplete: Boolean,
+    val isPracticeAvailable: Boolean,
     val completedActions: List<DialogueAction>,
     val isLoading: Boolean,
     val error: String?
@@ -159,6 +168,8 @@ data class DialogueUiState(
 - `selectChoice(choiceId)` — Process player choice
 - `advanceDialogue()` — Move to next node
 - `dismissError()` — Clear error state
+
+The ViewModel injects a `PronunciationRepository` to unlock exercises for `PRACTICE_SPEAKING` actions. When a completed conversation offered practice, the completion card shows a "练习说" button that navigates to the pronunciation screen via `onPractice`.
 
 ## Repository
 
@@ -216,6 +227,16 @@ The dialogue system integrates with the Friendship System through actions:
 - `GIVE_ITEM` — Records gift giving
 
 When a conversation completes, the `DialogueViewModel` processes completed actions and triggers friendship updates.
+
+## Pronunciation Integration
+
+Conversations can offer speaking practice after completion:
+
+- Dialogue end nodes may declare a `PRACTICE_SPEAKING` action with a comma-separated list of exercise ids (e.g. `pron_ex_dlg_hao_chi,pron_ex_dlg_meet`)
+- `DialogueViewModel` unlocks those exercises via `PronunciationRepository`
+- `ConversationCompleteCard` renders a practice button when `isPracticeAvailable` is true
+- `DialogueScreen` forwards the callback as `onPractice` to navigate to `Screen.Pronunciation.createRoute()`
+- Grandma Mei's conversation includes practice exercises that reinforce the newly learned dialogue phrases
 
 ## Future Extensibility
 
