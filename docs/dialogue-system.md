@@ -30,6 +30,10 @@ feature/dialogue/
 ```
 User taps NPC marker
     ↓
+Navigation to NPCProfileScreen
+    ↓
+User taps "Start Conversation"
+    ↓
 Navigation to DialogueScreen
     ↓
 DialogueViewModel loads dialogue
@@ -47,6 +51,8 @@ Next node displayed
 ... (repeats until conversation ends)
     ↓
 ConversationCompleteCard shown
+    ↓
+Friendship actions processed
     ↓
 User taps "Continue Adventure"
     ↓
@@ -198,7 +204,18 @@ Header showing NPC avatar, name, and occupation.
 
 ### ConversationCompleteCard
 
-Completion card shown at conversation end.
+Completion card shown at conversation end with friendship XP summary.
+
+## Friendship Integration
+
+The dialogue system integrates with the Friendship System through actions:
+
+- `ADD_FRIENDSHIP_XP` — Increases NPC friendship XP
+- `UNLOCK_VOCABULARY` — Unlocks vocabulary categories
+- `COMPLETE_QUEST` — Records quest completion
+- `GIVE_ITEM` — Records gift giving
+
+When a conversation completes, the `DialogueViewModel` processes completed actions and triggers friendship updates.
 
 ## Future Extensibility
 
@@ -207,18 +224,7 @@ The system is designed for easy expansion:
 1. **New NPCs** — Add dialogue to MockDialogueRepository
 2. **Conditions** — Implement condition checking in repository
 3. **Actions** — Add new action types for game mechanics
-4. **Friendship** — Integrate with NPC friendship system
-5. **Quests** — Trigger quests from dialogue actions
-6. **Vocabulary** — Unlock vocabulary from conversations
-7. **Audio** — Add audio playback for NPC speech
-8. **Hanzi** — Toggle Chinese character display
-
-## Integration
-
-The dialogue system integrates with:
-
-- **NPC Framework** — Uses NPC data for speakers
-- **Navigation** — Routes to DialogueScreen
-- **Village** — NPC markers launch dialogues
-- **Friendship** — Actions can modify friendship XP
-- **Vocabulary** — Actions can unlock vocabulary categories
+4. **Audio** — Add audio playback for NPC speech
+5. **Hanzi** — Toggle Chinese character display
+6. **Branching Stories** — Complex narrative paths based on friendship
+7. **Quest Triggers** — Start quests from dialogue actions

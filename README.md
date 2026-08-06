@@ -21,6 +21,7 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 - **Qingyuan Village** — Interactive village with animated canvas scene
 - **NPC framework** — Reusable NPC system with friendship levels
 - **Dialogue system** — Branching conversations with player choices
+- **Friendship system** — NPC relationship progression with persistence
 - **Accessibility** — Dad Mode, reduced motion, large text, high contrast
 
 ---
@@ -75,8 +76,14 @@ Phoenix/
 │       │   │   ├── ui/              # Compose components
 │       │   │   ├── viewmodel/       # ViewModel
 │       │   │   └── di/              # Hilt module
-│       │   └── dialogue/            # Dialogue system
-│       │       ├── data/            # Models & repository
+│       │   ├── dialogue/            # Dialogue system
+│       │   │   ├── data/            # Models & repository
+│       │   │   ├── domain/          # Repository interface
+│       │   │   ├── ui/              # Compose components
+│       │   │   ├── viewmodel/       # ViewModel
+│       │   │   └── di/              # Hilt module
+│       │   └── friendship/          # Friendship system
+│       │       ├── data/            # Models, entities, repository
 │       │       ├── domain/          # Repository interface
 │       │       ├── ui/              # Compose components
 │       │       ├── viewmodel/       # ViewModel
@@ -128,9 +135,10 @@ Each feature follows a consistent structure:
 5. **Learning Preferences** — Accessibility settings
 6. **Bao Greeting** — Meet your companion
 7. **Qingyuan Village** — Interactive village exploration
-8. **Dialogue** — NPC conversations with branching choices
-9. **Home** — Main dashboard
-10. **Settings** — App configuration
+8. **NPC Profile** — NPC details, friendship progress, conversation history
+9. **Dialogue** — NPC conversations with branching choices
+10. **Home** — Main dashboard
+11. **Settings** — App configuration
 
 ---
 

@@ -43,8 +43,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sworddao.phoenix.R
+import com.sworddao.phoenix.feature.friendship.viewmodel.FriendshipViewModel
 import com.sworddao.phoenix.feature.npc.data.Npc
-import com.sworddao.phoenix.feature.npc.ui.NpcInfoDialog
 import com.sworddao.phoenix.feature.npc.ui.NpcMarker
 import com.sworddao.phoenix.feature.npc.viewmodel.NpcViewModel
 import com.sworddao.phoenix.ui.components.BaoCharacter
@@ -59,13 +59,14 @@ import com.sworddao.phoenix.ui.screens.village.drawVillageScene
 fun QingyuanVillageScreen(
     playerName: String,
     onNavigateToDialogue: (String) -> Unit = {},
+    onNavigateToNpcProfile: (String) -> Unit = {},
     modifier: Modifier = Modifier,
-    npcViewModel: NpcViewModel = hiltViewModel()
+    npcViewModel: NpcViewModel = hiltViewModel(),
+    friendshipViewModel: FriendshipViewModel = hiltViewModel()
 ) {
     var selectedLocation by remember { mutableStateOf<VillageLocation?>(null) }
     var showBaoMessage by remember { mutableStateOf(false) }
     var baoMessage by remember { mutableStateOf("") }
-    var selectedNpc by remember { mutableStateOf<Npc?>(null) }
 
     val context = LocalContext.current
     val npcUiState by npcViewModel.uiState.collectAsState()
@@ -274,11 +275,7 @@ fun QingyuanVillageScreen(
                     NpcMarker(
                         npc = npc,
                         onClick = {
-                            if (npc.id == "grandma_mei") {
-                                onNavigateToDialogue("grandma_mei_greeting")
-                            } else {
-                                selectedNpc = npc
-                            }
+                            onNavigateToNpcProfile(npc.id)
                         },
                         modifier = Modifier.offset { IntOffset(offsetX.toPx().toInt(), offsetY.toPx().toInt()) }
                     )
@@ -363,13 +360,6 @@ fun QingyuanVillageScreen(
         BaoMessageDialog(
             message = baoMessage,
             onDismiss = { showBaoMessage = false }
-        )
-    }
-
-    selectedNpc?.let { npc ->
-        NpcInfoDialog(
-            npc = npc,
-            onDismiss = { selectedNpc = null }
         )
     }
 }

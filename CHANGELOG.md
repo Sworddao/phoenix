@@ -21,12 +21,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Qingyuan Village with interactive canvas scene
 - NPC framework with friendship system
 - Dialogue system with branching conversations
+- Friendship system with NPC relationship progression
+  - FriendshipState tracking XP, level, and history
+  - ConversationMemory for dialogue history
+  - FriendshipEvent for relationship milestones
+  - Room persistence for offline data storage
+  - NPCProfileScreen with full NPC details
+  - FriendshipCard, FriendshipProgressBar, RelationshipBadge UI components
+  - LevelUpDialog for celebration moments
+  - Integration with dialogue engine for automatic XP gains
 - Accessibility settings (Dad Mode, reduced motion, large text, high contrast)
-- Unit tests for data models
-- Documentation for dialogue system
+- Unit tests for data models and friendship system
+- Documentation for dialogue, NPC, and friendship systems
 
 ### Changed
 
+- Updated NPC markers to navigate to NPCProfileScreen instead of info dialog
+- Updated QingyuanVillageScreen with friendship context
+- Updated PhoenixApp navigation for NPC profile route
 - Updated README with current project status
 - Updated CHANGELOG with feature history
 

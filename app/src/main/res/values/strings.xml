@@ -154,6 +154,33 @@
     <string name="conversation_continue">Continue Adventure</string>
     <string name="conversation_complete_accessibility">Conversation completed. Tap continue to return to the village.</string>
 
+    <!-- Friendship System -->
+    <string name="friendship_card_accessibility">%1$s. Friendship level: %2$s with %3$s XP. Tap to view profile.</string>
+    <string name="friendship_xp_format">%1$d XP</string>
+    <string name="friendship_xp_progress_format">%1$d / %2$d XP</string>
+    <string name="friendship_next_level">Next level: %1$s</string>
+    <string name="friendship_max_level">Maximum friendship reached!</string>
+    <string name="friendship_conversations_format">%1$d conversations</string>
+    <string name="friendship_section_title">Friendship</string>
+    <string name="friendship_stat_conversations">Conversations</string>
+    <string name="friendship_stat_xp">Total XP</string>
+    <string name="friendship_stat_topics">Topics</string>
+    <string name="friendship_last_interaction">Last interaction: %1$s</string>
+    <string name="friendship_not_started">Start a conversation to begin building your friendship!</string>
+    <string name="friendship_start_conversation">Start Conversation</string>
+    <string name="friendship_conversation_history">Conversation History</string>
+    <string name="friendship_back_accessibility">Go back</string>
+    <string name="friendship_xp_gained">+%1$d XP</string>
+    <string name="conversation_history_accessibility">%1$s on %2$s</string>
+
+    <!-- Level Up -->
+    <string name="level_up_title">Level Up!</string>
+    <string name="level_up_congratulations">Your friendship with %1$s has grown!</string>
+    <string name="level_up_new_level">New Level: %1$s</string>
+    <string name="level_up_message">You\'re building a meaningful connection. Keep talking and exploring together to unlock new conversations and rewards.</string>
+    <string name="level_up_celebrate">Celebrate!</string>
+    <string name="level_up_accessibility">Friendship level up with %1$s to %2$s</string>
+
     <!-- Generic -->
     <string name="default_player_name">Friend</string>
 </resources>

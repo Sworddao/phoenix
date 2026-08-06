@@ -3,6 +3,7 @@ package com.sworddao.phoenix.di
 import android.content.Context
 import androidx.room.Room
 import com.sworddao.phoenix.data.local.PhoenixDatabase
+import com.sworddao.phoenix.feature.friendship.data.FriendshipDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +24,13 @@ object DatabaseModule {
             context,
             PhoenixDatabase::class.java,
             "phoenix_database"
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFriendshipDao(database: PhoenixDatabase): FriendshipDao {
+        return database.friendshipDao()
     }
 }

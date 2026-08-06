@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +37,8 @@ import com.sworddao.phoenix.ui.screens.SplashScreen
 import com.sworddao.phoenix.ui.screens.WelcomeScreen
 import com.sworddao.phoenix.R
 import com.sworddao.phoenix.feature.dialogue.ui.DialogueScreen
+import com.sworddao.phoenix.feature.friendship.ui.NPCProfileScreen
+import com.sworddao.phoenix.feature.npc.viewmodel.NpcViewModel
 import com.sworddao.phoenix.ui.viewmodel.ProfileViewModel
 
 @Composable
@@ -165,6 +168,9 @@ fun PhoenixApp(
                     playerName = playerName,
                     onNavigateToDialogue = { dialogueId ->
                         navController.navigate(Screen.Dialogue.createRoute(dialogueId))
+                    },
+                    onNavigateToNpcProfile = { npcId ->
+                        navController.navigate(Screen.NpcProfile.createRoute(npcId))
                     }
                 )
             }
@@ -180,6 +186,30 @@ fun PhoenixApp(
                         navController.popBackStack()
                     }
                 )
+            }
+
+            composable(
+                route = Screen.NpcProfile.route,
+                arguments = listOf(
+                    navArgument("npcId") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+                val npcId = backStackEntry.arguments?.getString("npcId") ?: ""
+                val npcViewModel: NpcViewModel = hiltViewModel()
+                val npcUiState by npcViewModel.uiState.collectAsState()
+                val npc = npcUiState.npcs.find { it.id == npcId }
+
+                if (npc != null) {
+                    NPCProfileScreen(
+                        npc = npc,
+                        onStartConversation = { dialogueId ->
+                            navController.navigate(Screen.Dialogue.createRoute(dialogueId))
+                        },
+                        onNavigateBack = {
+                            navController.popBackStack()
+                        }
+                    )
+                }
             }
 
             composable(Screen.Home.route) {
