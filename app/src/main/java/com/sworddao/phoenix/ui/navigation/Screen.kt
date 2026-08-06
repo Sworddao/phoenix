@@ -17,6 +17,9 @@ sealed class Screen(val route: String) {
     data object QingyuanVillage : Screen("qingyuan_village/{playerName}") {
         fun createRoute(playerName: String) = "qingyuan_village/$playerName"
     }
+    data object Dialogue : Screen("dialogue/{dialogueId}") {
+        fun createRoute(dialogueId: String) = "dialogue/$dialogueId"
+    }
     data object Home : Screen("home")
     data object Settings : Screen("settings")
 }

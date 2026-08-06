@@ -142,6 +142,18 @@
     <string name="npc_list_title">Village Residents</string>
     <string name="npc_empty_state">No NPCs found in this location.</string>
 
+    <!-- Dialogue System -->
+    <string name="dialogue_screen_accessibility">Dialogue conversation screen.</string>
+    <string name="dialogue_bubble_accessibility">%1$s says: %2$s</string>
+    <string name="dialogue_header_accessibility">%1$s, %2$s</string>
+    <string name="dialogue_choose_response">Choose your response:</string>
+    <string name="dialogue_continue">Continue</string>
+    <string name="player_choice_accessibility">%1$s. %2$s</string>
+    <string name="conversation_complete_title">Conversation Complete</string>
+    <string name="conversation_complete_message">You\'ve had a lovely conversation. Come back anytime to chat again!</string>
+    <string name="conversation_continue">Continue Adventure</string>
+    <string name="conversation_complete_accessibility">Conversation completed. Tap continue to return to the village.</string>
+
     <!-- Generic -->
     <string name="default_player_name">Friend</string>
 </resources>

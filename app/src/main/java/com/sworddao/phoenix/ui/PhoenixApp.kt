@@ -35,6 +35,7 @@ import com.sworddao.phoenix.ui.screens.SettingsScreen
 import com.sworddao.phoenix.ui.screens.SplashScreen
 import com.sworddao.phoenix.ui.screens.WelcomeScreen
 import com.sworddao.phoenix.R
+import com.sworddao.phoenix.feature.dialogue.ui.DialogueScreen
 import com.sworddao.phoenix.ui.viewmodel.ProfileViewModel
 
 @Composable
@@ -161,7 +162,23 @@ fun PhoenixApp(
                 val playerName = backStackEntry.arguments?.getString("playerName")
                     ?: LocalContext.current.getString(R.string.default_player_name)
                 QingyuanVillageScreen(
-                    playerName = playerName
+                    playerName = playerName,
+                    onNavigateToDialogue = { dialogueId ->
+                        navController.navigate(Screen.Dialogue.createRoute(dialogueId))
+                    }
+                )
+            }
+
+            composable(
+                route = Screen.Dialogue.route,
+                arguments = listOf(
+                    navArgument("dialogueId") { type = NavType.StringType }
+                )
+            ) {
+                DialogueScreen(
+                    onConversationComplete = {
+                        navController.popBackStack()
+                    }
                 )
             }
 

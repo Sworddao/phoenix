@@ -16,15 +16,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MIT License
 - Contributing guidelines
 - Code of Conduct
+- Core Android application with onboarding flow
+- Bao companion with animated expressions
+- Qingyuan Village with interactive canvas scene
+- NPC framework with friendship system
+- Dialogue system with branching conversations
+- Accessibility settings (Dad Mode, reduced motion, large text, high contrast)
+- Unit tests for data models
+- Documentation for dialogue system
+
+### Changed
+
+- Updated README with current project status
+- Updated CHANGELOG with feature history
 
 ### Planned
 
-- Core Android application
-- NPC conversation system
 - Quest system
 - Audio playback
 - Vocabulary tracking
-- Bao companion
+- Additional NPC dialogues
+- Game progression system
 
 ---
 

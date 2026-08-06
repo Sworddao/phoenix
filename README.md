@@ -14,6 +14,17 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 
 ---
 
+## Implemented Features
+
+- **Onboarding flow** — Welcome, profile creation, accessibility settings
+- **Bao companion** — Red panda mascot with animated expressions
+- **Qingyuan Village** — Interactive village with animated canvas scene
+- **NPC framework** — Reusable NPC system with friendship levels
+- **Dialogue system** — Branching conversations with player choices
+- **Accessibility** — Dad Mode, reduced motion, large text, high contrast
+
+---
+
 ## Planned Features
 
 > **Note:** These features are planned and documented in [SPEC.md](SPEC.md). Some are partially implemented (see CHANGELOG.md for details).
@@ -24,15 +35,13 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 - **Native pronunciation** — Authentic Mandarin audio throughout
 - **Speaking & listening practice** — Communication first, reading second
 - **Pinyin-first interface** — Hanzi hidden by default, optional toggle
-- **Bao companion** — A friendly red panda who guides and encourages
 - **Quest system** — Real-world missions that teach vocabulary naturally
 - **Passport & collectibles** — Track your journey and discoveries
 - **Dad Mode** — Reduced pressure, larger UI, gentle encouragement
-- **Accessibility** — Large text, high contrast, slow audio, reduced motion
 
 ---
 
-## Technology Stack (Planned)
+## Technology Stack
 
 | Layer | Technology |
 |-------|-----------|
@@ -52,28 +61,76 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 
 ```
 Phoenix/
-├── app/                    # Android application module
-├── assets/                 # Game assets
-│   ├── audio/              # Voice recordings
-│   ├── music/              # Background music
-│   ├── sfx/                # Sound effects
-│   ├── icons/              # Game icons
-│   ├── maps/               # Map data
-│   ├── npc/                # NPC assets
-│   ├── ui/                 # UI assets
-│   └── logo/               # App logo
-├── curriculum/             # Language curriculum data
-├── database/               # Database schemas & migrations
-├── design/                 # Design documents & wireframes
-├── scripts/                # Build & utility scripts
-├── docs/                   # Documentation
-├── .github/                # GitHub templates & workflows
-├── SPEC.md                 # Full project specification
-├── LICENSE                 # MIT License
-├── CONTRIBUTING.md         # Contribution guidelines
-├── CODE_OF_CONDUCT.md      # Community standards
-└── CHANGELOG.md            # Version history
+├── app/
+│   └── src/main/java/com/sworddao/phoenix/
+│       ├── data/                    # Data layer
+│       │   ├── local/               # Room database
+│       │   ├── model/               # Data models
+│       │   └── preferences/         # DataStore preferences
+│       ├── di/                      # Dependency injection
+│       ├── feature/
+│       │   ├── npc/                 # NPC framework
+│       │   │   ├── data/            # Models & repository
+│       │   │   ├── domain/          # Repository interface
+│       │   │   ├── ui/              # Compose components
+│       │   │   ├── viewmodel/       # ViewModel
+│       │   │   └── di/              # Hilt module
+│       │   └── dialogue/            # Dialogue system
+│       │       ├── data/            # Models & repository
+│       │       ├── domain/          # Repository interface
+│       │       ├── ui/              # Compose components
+│       │       ├── viewmodel/       # ViewModel
+│       │       └── di/              # Hilt module
+│       └── ui/                      # UI layer
+│           ├── components/          # Reusable composables
+│           ├── navigation/          # Navigation routes
+│           ├── screens/             # Screen composables
+│           ├── theme/               # Material3 theme
+│           └── viewmodel/           # ViewModels
+├── assets/                          # Game assets
+├── docs/                            # Documentation
+├── SPEC.md                          # Project specification
+├── CHANGELOG.md                     # Version history
+├── CONTRIBUTING.md                  # Contribution guidelines
+└── README.md                        # This file
 ```
+
+---
+
+## Architecture
+
+Phoenix follows **MVVM + Clean Architecture** with:
+
+- **Hilt** for dependency injection
+- **StateFlow** for reactive state management
+- **Jetpack Compose** for declarative UI
+- **Material 3** for design system
+- **Kotlin Coroutines** for async operations
+- **Offline-first** philosophy throughout
+
+### Feature Organization
+
+Each feature follows a consistent structure:
+- `data/` — Models and repository implementations
+- `domain/` — Repository interfaces
+- `ui/` — Compose components and screens
+- `viewmodel/` — ViewModels with StateFlow
+- `di/` — Hilt dependency injection modules
+
+---
+
+## Screens
+
+1. **Splash** — App loading screen
+2. **Welcome** — Introduction to Phoenix
+3. **Onboarding** — Feature walkthrough (4 pages)
+4. **Player Profile** — Name, language, experience level
+5. **Learning Preferences** — Accessibility settings
+6. **Bao Greeting** — Meet your companion
+7. **Qingyuan Village** — Interactive village exploration
+8. **Dialogue** — NPC conversations with branching choices
+9. **Home** — Main dashboard
+10. **Settings** — App configuration
 
 ---
 

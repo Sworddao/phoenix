@@ -58,6 +58,7 @@ import com.sworddao.phoenix.ui.screens.village.drawVillageScene
 @Composable
 fun QingyuanVillageScreen(
     playerName: String,
+    onNavigateToDialogue: (String) -> Unit = {},
     modifier: Modifier = Modifier,
     npcViewModel: NpcViewModel = hiltViewModel()
 ) {
@@ -272,7 +273,13 @@ fun QingyuanVillageScreen(
 
                     NpcMarker(
                         npc = npc,
-                        onClick = { selectedNpc = npc },
+                        onClick = {
+                            if (npc.id == "grandma_mei") {
+                                onNavigateToDialogue("grandma_mei_greeting")
+                            } else {
+                                selectedNpc = npc
+                            }
+                        },
                         modifier = Modifier.offset { IntOffset(offsetX.toPx().toInt(), offsetY.toPx().toInt()) }
                     )
                 }
