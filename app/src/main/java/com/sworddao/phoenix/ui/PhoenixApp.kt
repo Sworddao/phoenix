@@ -54,6 +54,9 @@ import com.sworddao.phoenix.feature.gameplay.ui.CelebrationScreen
 import com.sworddao.phoenix.feature.gameplay.viewmodel.CelebrationViewModel
 import com.sworddao.phoenix.feature.gameplay.viewmodel.GameProgressViewModel
 import com.sworddao.phoenix.feature.progression.ui.ProgressionScreen
+import com.sworddao.phoenix.feature.review.data.ReviewType
+import com.sworddao.phoenix.feature.review.ui.ReviewScreen
+import com.sworddao.phoenix.feature.review.ui.ReviewSessionScreen
 import com.sworddao.phoenix.ui.viewmodel.ProfileViewModel
 
 @Composable
@@ -195,6 +198,9 @@ fun PhoenixApp(
                     },
                     onNavigateToProgression = {
                         navController.navigate(Screen.Progression.route)
+                    },
+                    onNavigateToReview = {
+                        navController.navigate(Screen.Review.route)
                     }
                 )
             }
@@ -429,6 +435,33 @@ fun PhoenixApp(
 
             composable(Screen.Progression.route) {
                 ProgressionScreen(
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+            composable(Screen.Review.route) {
+                ReviewScreen(
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    onOpenSession = { type ->
+                        navController.navigate(Screen.ReviewSession.createRoute(type))
+                    }
+                )
+            }
+
+            composable(
+                route = Screen.ReviewSession.route,
+                arguments = listOf(
+                    navArgument("type") { type = NavType.StringType }
+                )
+            ) {
+                val typeName = it.arguments?.getString("type") ?: ReviewType.DAILY_REVIEW.name
+                ReviewSessionScreen(
+                    type = runCatching { ReviewType.valueOf(typeName) }
+                        .getOrDefault(ReviewType.DAILY_REVIEW),
                     onBack = {
                         navController.popBackStack()
                     }

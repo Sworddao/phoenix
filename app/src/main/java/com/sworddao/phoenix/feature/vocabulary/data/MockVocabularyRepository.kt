@@ -195,6 +195,22 @@ class MockVocabularyRepository @Inject constructor() : VocabularyRepository {
         return VocabularyResult.Success("Words added: ${words.size}")
     }
 
+    fun resetVocabularySystem() {
+        _words.update { wordList ->
+            wordList.map { word ->
+                word.copy(
+                    discoveredAt = null,
+                    mastery = VocabularyMastery.UNKNOWN,
+                    timesReviewed = 0,
+                    timesSpoken = 0,
+                    timesHeard = 0,
+                    timesRead = 0,
+                    isFavorite = false,
+                )
+            }
+        }
+    }
+
     private fun createInitialWords(): List<VocabularyWord> = listOf(
         // Greetings
         VocabularyWord("greet_001", "nǐ hǎo", "nǐ hǎo", "hello", "你好", category = VocabularyCategory.GREETINGS, difficulty = VocabularyDifficulty.BEGINNER, exampleSentence = "Nǐ hǎo! Wǒ jiào Bao.", exampleTranslation = "Hello! My name is Bao.", examplePinyin = "nǐ hǎo! wǒ jiào bao.", relatedRegionId = "qingyuan_village", relatedNpcId = "grandma_mei", discoveredAt = System.currentTimeMillis() - 86400000 * 10, mastery = VocabularyMastery.MASTERED, timesReviewed = 15, timesSpoken = 8, timesHeard = 20),

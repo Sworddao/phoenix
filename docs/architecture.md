@@ -214,6 +214,8 @@ Hardware-adjacent capabilities are hidden behind interface abstractions so the o
 
 The pronunciation and listening features form a second offline-first practice loop alongside vocabulary/flashcards: each is a full exercise → attempt → reward workflow (`feature/pronunciation/` and `feature/listening/`) behind its own engine abstraction. Both features share the reduced-motion helper `rememberReducedMotion()` from `ui/components/Accessibility.kt` for pulsing animations.
 
+The review system (`feature/review/`) closes the learning loop: a pure `SpacedRepetitionEngine` computes per-word memory strength from every answer and practice mode, a repository schedules reviews from all 9 activity sources via snapshot deltas, and each completed session feeds 15 XP back into the progression engine. The same repository interface pattern means the in-memory mock can be swapped for Room without touching UI.
+
 ### Benefits
 - **No internet required** — Full functionality offline
 - **Fast performance** — Local data access

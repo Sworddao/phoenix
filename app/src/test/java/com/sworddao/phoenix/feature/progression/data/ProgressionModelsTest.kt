@@ -114,8 +114,8 @@ class ProgressionModelsTest {
     // ------------------------------------------------------------------
 
     @Test
-    fun `xp sources has ten entries`() {
-        assertEquals(10, XpSource.entries.size)
+    fun `xp sources has eleven entries`() {
+        assertEquals(11, XpSource.entries.size)
     }
 
     @Test

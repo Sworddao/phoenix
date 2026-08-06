@@ -58,6 +58,11 @@ sealed class Screen(val route: String) {
     }
     data object GameProgress : Screen("game_progress")
     data object Progression : Screen("progression")
+    data object Review : Screen("review")
+    data object ReviewSession : Screen("review_session/{type}") {
+        fun createRoute(type: com.sworddao.phoenix.feature.review.data.ReviewType) =
+            "review_session/${type.name}"
+    }
 }
 
 data class BottomNavigationItem(

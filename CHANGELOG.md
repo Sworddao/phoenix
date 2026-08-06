@@ -23,6 +23,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Unit tests for XP math, level-ups, feature unlocks, snapshot deltas, chapters, and daily goals (563 tests total)
   - Progression entry button in Qingyuan Village
 
+- Adaptive review & spaced repetition system
+  - Spaced repetition engine with calculated intervals (10 min, 1 day, 3 days, 7 days, 14 days, 30 days, 90 days) and adaptive stage transitions
+  - Per-word memory model (strength, confidence, correct/incorrect counts, average score, speaking/listening/reading accuracy, conversation success, streak, failures)
+  - Adaptive difficulty derived from memory strength (NEW → LEARNING → FAMILIAR → MASTERED)
+  - Review scheduling from all 9 source systems via snapshot deltas (vocabulary, dialogue, speaking, listening, reading, NPC, quest, friendship, exploration)
+  - Review sessions (conversation, listening, speaking, reading, mixed, NPC challenge, quest review, daily) with answer scoring and XP integration (15 XP per session via XpSource.REVIEW)
+  - Review dashboard with today's reviews, daily goal, Bao recommendations, statistics, upcoming reviews, and memory strengths
+  - ReviewViewModel handling dashboard, sessions, and completion flow
+  - Unit tests for engine, models, repository, and ViewModel (683 tests total, 120 for review)
+  - Review entry button in Qingyuan Village
+
 - Project specification (SPEC.md)
 - Repository structure
 - MIT License

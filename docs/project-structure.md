@@ -130,6 +130,15 @@ feature/
 - Daily goals, per-source activity counts, and goal streaks
 - Progression screen with level card, learning bars, chapters, objectives, recent unlocks, and feature unlock timeline
 
+### Adaptive Review & Spaced Repetition (`feature/review/`)
+- Pure spaced repetition engine with calculated intervals (10 min / 1 day / 3 days / 7 days / 14 days / 30 days / 90 days) and adaptive stage transitions
+- Per-word memory model (strength, confidence, correct/incorrect counts, average score, speaking/listening/reading accuracy, conversation success, streak, failures)
+- Adaptive difficulty derived from memory strength (NEW → LEARNING → FAMILIAR → MASTERED)
+- Central repository scheduling reviews from all 9 source systems via snapshot deltas
+- Sessions with per-type filtering and empty-state handling, rescheduling answered items to "upcoming"
+- Review screen with today's reviews, daily goal, Bao recommendations, statistics, upcoming reviews, and memory strengths
+- Integration with progression (15 XP per completed session via `XpSource.REVIEW`)
+
 ## Data Layer
 
 ```
@@ -185,7 +194,8 @@ di/
 ├── discovery/di/DiscoveryModule.kt
 ├── pronunciation/di/PronunciationModule.kt
 ├── listening/di/ListeningModule.kt
-└── progression/di/ProgressionModule.kt
+├── progression/di/ProgressionModule.kt
+└── review/di/ReviewModule.kt
 ```
 
 ## Testing Structure
@@ -214,6 +224,10 @@ test/
     │   ├── listening/data/ListeningRepositoryTest.kt
     │   ├── progression/data/ProgressionModelsTest.kt
     │   ├── progression/data/ProgressionRepositoryTest.kt
+    │   ├── review/data/SpacedRepetitionEngineTest.kt
+    │   ├── review/data/ReviewModelsTest.kt
+    │   ├── review/data/ReviewRepositoryTest.kt
+    │   ├── review/viewmodel/ReviewViewModelTest.kt
     │   ├── dialogue/data/DialogueModelsTest.kt
     │   ├── dialogue/data/DialogueViewModelActionTest.kt
     │   └── ui/viewmodel/ProfileViewModelTest.kt
@@ -233,6 +247,9 @@ docs/
 ├── discovery-system.md
 ├── pronunciation-system.md
 ├── listening-system.md
+├── reading-system.md
+├── progression-system.md
+├── review-system.md
 ├── project-structure.md          # This file
 ├── architecture.md               # Architecture details
 └── templates/

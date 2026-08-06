@@ -18,6 +18,7 @@ enum class XpSource(val displayName: String, val baseXp: Int, val icon: String) 
     EXPLORATION("探索", 25, "🧭"),
     PASSPORT_STAMP("护照盖章", 15, "📮"),
     ACHIEVEMENT("成就", 40, "🏅"),
+    REVIEW("复习", 15, "🔁"),
 }
 
 // ---------------------------------------------------------------------

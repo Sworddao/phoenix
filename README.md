@@ -31,6 +31,7 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 - **Listening & audio comprehension** — Offline listening practice foundation with audio engine abstraction
 - **Reading & hanzi foundation** — Offline pinyin-first reading practice with hanzi renderer abstraction
 - **Game progression & learning path** — Central XP/level engine aggregating all systems, feature unlocks, chapter gating, daily goals, and learning percentages
+- **Adaptive review & spaced repetition** — Smart review engine with per-word memory model, adaptive scheduling, daily goals, and review statistics
 - **Accessibility** — Dad Mode, reduced motion, large text, high contrast
 
 ---
@@ -151,6 +152,12 @@ Phoenix/
 │       │       ├── ui/              # Compose components
 │       │       ├── viewmodel/       # ViewModel
 │       │       └── di/              # Hilt module
+│       │   └── review/              # Adaptive review & spaced repetition
+│       │       ├── data/            # Memory model, engine & repository
+│       │       ├── domain/          # Repository interface
+│       │       ├── ui/              # Compose components
+│       │       ├── viewmodel/       # ViewModel
+│       │       └── di/              # Hilt module
 │       └── ui/                      # UI layer
 │           ├── components/          # Reusable composables
 │           ├── navigation/          # Navigation routes
@@ -210,8 +217,9 @@ Each feature follows a consistent structure:
 17. **Listening** — Listening practice with audio playback, choices, and rewards
 18. **Reading** — Reading practice with pinyin-first hanzi reveal, choices, and rewards
 19. **Progression** — Level, XP, learning percentages, chapter progress, objectives, and unlocks
-20. **Home** — Main dashboard
-21. **Settings** — App configuration
+20. **Review** — Adaptive review dashboard, daily goals, memory strengths, and review sessions
+21. **Home** — Main dashboard
+22. **Settings** — App configuration
 
 ---
 

@@ -79,6 +79,7 @@
     <string name="village_button_quests">任务列表</string>
     <string name="village_button_world">世界地图</string>
     <string name="village_button_progression">我的进度</string>
+    <string name="village_button_review">复习</string>
 
     <!-- Village Locations -->
     <string name="location_bakery_name">Grandma Mei\'s Bakery</string>
@@ -517,6 +518,44 @@
     <string name="progression_subtitle">你的成长之路</string>
     <string name="progression_refresh">刷新</string>
     <string name="progression_demo_xp">演示 XP</string>
+
+    <!-- Review -->
+    <string name="review_screen_accessibility">Adaptive review dashboard with spaced repetition</string>
+    <string name="review_back">返回</string>
+    <string name="review_title">复习中心</string>
+    <string name="review_subtitle">智能复习，让记忆更牢固</string>
+    <string name="review_refresh">刷新</string>
+    <string name="review_today_card">今日复习</string>
+    <string name="review_due_count">今日到期 %1$d 个</string>
+    <string name="review_daily_goal">每日目标</string>
+    <string name="review_goal_progress">已完成 %1$d / %2$d</string>
+    <string name="review_start_daily">开始今日复习</string>
+    <string name="review_upcoming">即将复习</string>
+    <string name="review_no_upcoming">暂无即将到来的复习</string>
+    <string name="review_no_due">今日暂无待复习内容</string>
+    <string name="review_strength_short">%1$d%%</string>
+    <string name="review_memory_strength">记忆强度</string>
+    <string name="review_no_memory">还没有记忆数据</string>
+    <string name="review_statistics">复习统计</string>
+    <string name="review_total_reviews">复习次数</string>
+    <string name="review_accuracy">正确率</string>
+    <string name="review_mastered">已掌握</string>
+    <string name="review_streak">连续天数</string>
+    <string name="review_sessions_completed">已完成复习 %1$d 次</string>
+    <string name="review_recommendation">Bao 的建议</string>
+    <string name="review_no_recommendation">保持节奏，每天复习一点点</string>
+    <string name="review_session_progress">第 %1$d 个 / 共 %2$d 个</string>
+    <string name="review_session_title">复习中</string>
+    <string name="review_answer_prompt">你记得这个词吗？</string>
+    <string name="review_remember">记得</string>
+    <string name="review_forgot">不记得</string>
+    <string name="review_done">完成复习</string>
+    <string name="review_complete_title">复习完成！</string>
+    <string name="review_completion_summary">本次复习 %1$d/%2$d</string>
+    <string name="review_accuracy_value">正确率 %1$d%%</string>
+    <string name="review_xp_earned">+%1$d XP</string>
+    <string name="review_complete_message">你完成了这次复习，记忆更牢固了！</string>
+    <string name="review_continue">继续冒险</string>
 
     <!-- Generic -->
     <string name="default_player_name">Friend</string>

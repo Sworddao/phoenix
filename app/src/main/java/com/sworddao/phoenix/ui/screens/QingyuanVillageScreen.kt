@@ -69,6 +69,7 @@ fun QingyuanVillageScreen(
     onNavigateToQuestList: () -> Unit = {},
     onNavigateToWorldMap: () -> Unit = {},
     onNavigateToProgression: () -> Unit = {},
+    onNavigateToReview: () -> Unit = {},
     modifier: Modifier = Modifier,
     npcViewModel: NpcViewModel = hiltViewModel(),
     friendshipViewModel: FriendshipViewModel = hiltViewModel(),
@@ -368,18 +369,29 @@ fun QingyuanVillageScreen(
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    OutlinedButton(onClick = onNavigateToQuestList) {
-                        Text(text = stringResource(R.string.village_button_quests))
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedButton(onClick = onNavigateToQuestList) {
+                            Text(text = stringResource(R.string.village_button_quests))
+                        }
+                        OutlinedButton(onClick = onNavigateToWorldMap) {
+                            Text(text = stringResource(R.string.village_button_world))
+                        }
                     }
-                    OutlinedButton(onClick = onNavigateToWorldMap) {
-                        Text(text = stringResource(R.string.village_button_world))
-                    }
-                    Button(onClick = onNavigateToProgression) {
-                        Text(text = stringResource(R.string.village_button_progression))
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedButton(onClick = onNavigateToProgression) {
+                            Text(text = stringResource(R.string.village_button_progression))
+                        }
+                        Button(onClick = onNavigateToReview) {
+                            Text(text = stringResource(R.string.village_button_review))
+                        }
                     }
                 }
             }
