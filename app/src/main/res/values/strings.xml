@@ -322,6 +322,37 @@
     <string name="passport_error_dismiss">确定</string>
     <string name="passport_navigation_label">护照</string>
 
+    <!-- Vocabulary System -->
+    <string name="vocabulary_title">词汇</string>
+    <string name="vocabulary_search_placeholder">搜索词汇 (拼音/英文/汉字)...</string>
+    <string name="vocabulary_clear_search">清除</string>
+    <string name="vocabulary_statistics_title">学习统计</string>
+    <string name="vocabulary_stat_total">总词汇</string>
+    <string name="vocabulary_stat_discovered">已学</string>
+    <string name="vocabulary_stat_mastered">已掌握</string>
+    <string name="vocabulary_stat_favorites">收藏</string>
+    <string name="vocabulary_completion_format">完成度 %1$d%%</string>
+    <string name="vocabulary_count_format">共 %1$d 个词汇</string>
+    <string name="vocabulary_filter_favorites">收藏</string>
+    <string name="vocabulary_filter_recent">最近学习</string>
+    <string name="vocabulary_filter_mastered">已掌握</string>
+    <string name="vocabulary_filter_all">全部</string>
+    <string name="vocabulary_mastery_unknown">未学</string>
+    <string name="vocabulary_mastery_seen">已见</string>
+    <string name="vocabulary_mastery_learning">学习中</string>
+    <string name="vocabulary_mastery_familiar">熟悉</string>
+    <string name="vocabulary_mastery_mastered">已掌握</string>
+    <string name="vocabulary_detail_example">例句</string>
+    <string name="vocabulary_detail_stats">学习统计</string>
+    <string name="vocabulary_detail_review">复习</string>
+    <string name="vocabulary_detail_spoken">口语</string>
+    <string name="vocabulary_detail_heard">听力</string>
+    <string name="vocabulary_detail_mastery">掌握程度</string>
+    <string name="vocabulary_detail_favorite">收藏</string>
+    <string name="vocabulary_loading">加载中...</string>
+    <string name="vocabulary_error">错误</string>
+    <string name="vocabulary_navigation_label">词汇</string>
+
     <!-- Region Names -->
     <string name="region_qingyuan_village">清远村</string>
     <string name="region_jade_forest">翡翠森林</string>

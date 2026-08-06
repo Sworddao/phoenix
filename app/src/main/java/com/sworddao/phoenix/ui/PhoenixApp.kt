@@ -43,6 +43,9 @@ import com.sworddao.phoenix.feature.quest.ui.QuestDetailScreen
 import com.sworddao.phoenix.feature.quest.ui.QuestListScreen
 import com.sworddao.phoenix.feature.world.ui.WorldMapScreen
 import com.sworddao.phoenix.feature.passport.ui.PassportScreen
+import com.sworddao.phoenix.feature.vocabulary.ui.VocabularyScreen
+import com.sworddao.phoenix.feature.vocabulary.ui.VocabularyDetailScreen
+import com.sworddao.phoenix.feature.vocabulary.viewmodel.VocabularyViewModel
 import com.sworddao.phoenix.ui.viewmodel.ProfileViewModel
 
 @Composable
@@ -265,6 +268,46 @@ fun PhoenixApp(
                         navController.popBackStack()
                     }
                 )
+            }
+
+            composable(Screen.Vocabulary.route) {
+                val vocabularyViewModel: VocabularyViewModel = hiltViewModel()
+                val vocabUiState by vocabularyViewModel.uiState.collectAsState()
+                VocabularyScreen(
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    onWordClick = { word ->
+                        navController.navigate(Screen.VocabularyDetail.createRoute(word.id))
+                    },
+                    uiState = vocabUiState,
+                    onSearch = { vocabularyViewModel.search(it) },
+                    onCategoryFilter = { vocabularyViewModel.filterByCategory(it) },
+                    onMasteryFilter = { vocabularyViewModel.filterByMastery(it) },
+                    onToggleFavorites = { vocabularyViewModel.toggleFavoritesOnly() },
+                    onToggleRecentlyLearned = { vocabularyViewModel.toggleRecentlyLearned() },
+                    onToggleMastered = { vocabularyViewModel.toggleMasteredOnly() },
+                )
+            }
+
+            composable(
+                route = Screen.VocabularyDetail.route,
+                arguments = listOf(
+                    navArgument("wordId") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+                val wordId = backStackEntry.arguments?.getString("wordId") ?: ""
+                val vocabularyViewModel: VocabularyViewModel = hiltViewModel()
+                val vocabUiState by vocabularyViewModel.uiState.collectAsState()
+                val word = vocabUiState.words.find { it.id == wordId }
+                if (word != null) {
+                    VocabularyDetailScreen(
+                        word = word,
+                        onBack = { navController.popBackStack() },
+                        onToggleFavorite = { vocabularyViewModel.toggleFavorite(it) },
+                        onUpdateMastery = { id, mastery -> vocabularyViewModel.updateMastery(id, mastery) },
+                    )
+                }
             }
 
             composable(Screen.Home.route) {

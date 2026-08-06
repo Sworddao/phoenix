@@ -218,6 +218,7 @@ Compose displays error message
 - **WorkManager** — Background tasks
 - **Room** — Advanced queries
 - **DataStore** — Complex preferences
+- **Vocabulary persistence** — Room database for vocabulary
 
 ### Scalability
 - **Feature modules** — Independent development

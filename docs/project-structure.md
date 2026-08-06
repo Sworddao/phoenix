@@ -88,6 +88,19 @@ feature/
 - Region card and map components
 - World map screen
 
+### Passport & Collectibles (`feature/passport/`)
+- Passport data models
+- Passport repository
+- Region stamp cards
+- Collectible grid
+- Achievement list
+
+### Vocabulary Learning (`feature/vocabulary/`)
+- Vocabulary data models (100+ entries, 12 categories)
+- Vocabulary repository with search/filter
+- Vocabulary list and detail screens
+- Mastery tracking and statistics
+
 ## Data Layer
 
 ```
@@ -137,7 +150,9 @@ di/
 ├── dialogue/di/DialogueModule.kt # Dialogue repository binding
 ├── friendship/di/FriendshipModule.kt
 ├── quest/di/QuestModule.kt
-└── world/di/WorldModule.kt
+├── world/di/WorldModule.kt
+├── passport/di/PassportModule.kt
+└── vocabulary/di/VocabularyModule.kt
 ```
 
 ## Testing Structure
@@ -153,7 +168,11 @@ test/
     │   ├── quest/data/QuestModelsTest.kt
     │   ├── quest/data/QuestRepositoryTest.kt
     │   ├── world/data/WorldModelsTest.kt
-    │   └── world/data/WorldRepositoryTest.kt
+    │   ├── world/data/WorldRepositoryTest.kt
+    │   ├── passport/data/PassportModelsTest.kt
+    │   ├── passport/data/PassportRepositoryTest.kt
+    │   ├── vocabulary/data/VocabularyModelsTest.kt
+    │   └── vocabulary/data/VocabularyRepositoryTest.kt
     └── ui/viewmodel/ProfileViewModelTest.kt
 ```
 
@@ -166,6 +185,8 @@ docs/
 ├── friendship-system.md
 ├── quest-system.md
 ├── world-system.md
+├── passport-system.md
+├── vocabulary-system.md
 ├── project-structure.md          # This file
 ├── architecture.md               # Architecture details
 └── templates/

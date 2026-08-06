@@ -59,9 +59,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Integration with QingyuanVillageScreen
   - Navigation routes for world map
   - Unit tests for models and repository
+- Passport & collectibles system
+  - Passport data models (Passport, PassportRegion, Collectible, etc.)
+  - 12 regions, 52 collectibles across 20 categories
+  - 9 achievements with progress tracking
+  - MockPassportRepository with pre-seeded data
+  - PassportViewModel with state management
+  - PassportScreen with stamps, collectibles, and timeline
+  - Region cards, collection grid, achievement list
+  - Navigation routes for passport
+  - Unit tests for models and repository
+- Vocabulary learning foundation
+  - Vocabulary data models (VocabularyWord, VocabularyCategory, etc.)
+  - 100+ vocabulary entries across 12 categories
+  - VocabularyRepository interface with MockVocabularyRepository
+  - VocabularyViewModel with search, filter, and mastery tracking
+  - VocabularyScreen, VocabularyDetailScreen with full UI
+  - MasteryIndicator, CategoryChip, FilterChipsRow components
+  - 5 mastery levels (Unknown → Mastered)
+  - Integration with regions, NPCs, and quests
+  - Navigation routes for vocabulary
+  - Unit tests for models and repository
 - Accessibility settings (Dad Mode, reduced motion, large text, high contrast)
 - Unit tests for data models and friendship system
-- Documentation for dialogue, NPC, quest, and world systems
+- Documentation for dialogue, NPC, quest, world, passport, and vocabulary systems
 - SPEC.md restructuring with fixed numbering, Non-Goals, Graduate Outcomes sections
 - Feature template moved to docs/templates/feature-template.md
 
@@ -77,7 +98,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Planned
 
 - Audio playback
-- Vocabulary tracking
 - Additional NPC dialogues
 - Game progression system
 
