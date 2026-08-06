@@ -414,6 +414,7 @@
     <string name="celebration_item_title">获得物品</string>
     <string name="celebration_item_description">你获得了一个新物品！</string>
     <string name="celebration_speaking_description">可以开始口语练习了！</string>
+    <string name="celebration_listening_description">可以开始聆听练习了！</string>
 
     <!-- Game Progress -->
     <string name="game_progress_screen_accessibility">Game progress screen</string>
@@ -449,6 +450,34 @@
     <string name="pronunciation_streak_continued">连续练习 %1$d 天！</string>
     <string name="pronunciation_from_dialogue">对话练习</string>
     <string name="pronunciation_from_vocabulary">词汇练习</string>
+
+    <!-- Listening -->
+    <string name="listening_screen_accessibility">Listening practice with audio playback</string>
+    <string name="listening_title">聆听练习</string>
+    <string name="listening_practice_button">练习听</string>
+    <string name="listening_from_dialogue">对话练习</string>
+    <string name="listening_from_vocabulary">词汇练习</string>
+    <string name="listening_play">播放</string>
+    <string name="listening_pause">暂停</string>
+    <string name="listening_replay">重听</string>
+    <string name="listening_slow">0.75x 慢速</string>
+    <string name="listening_normal">1x 常速</string>
+    <string name="listening_choose">选出正确的选项</string>
+    <string name="listening_correct">答对了！</string>
+    <string name="listening_incorrect">再听一遍，再试一次</string>
+    <string name="listening_next">下一题</string>
+    <string name="listening_session_progress">聆听进度</string>
+    <string name="listening_xp_earned">+%1$d XP</string>
+    <string name="listening_streak_label">连续聆听</string>
+    <string name="listening_streak_continued">连续聆听 %1$d 天！</string>
+    <string name="listening_bao_hint_1">先听完整，再选答案。</string>
+    <string name="listening_bao_hint_2">听不懂就点慢速按钮。</string>
+    <string name="listening_bao_hint_3">可以多听几遍，Bao 不着急。</string>
+    <string name="listening_bao_hint_4">注意听关键词！</string>
+    <string name="listening_bao_hint_5">你做得很好，继续！</string>
+    <string name="listening_complete_title">聆听练习完成！</string>
+    <string name="listening_complete_message">你完成了这组聆听练习，真棒！</string>
+    <string name="listening_complete_continue">继续冒险</string>
 
     <!-- Generic -->
     <string name="default_player_name">Friend</string>

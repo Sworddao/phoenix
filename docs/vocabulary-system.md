@@ -196,6 +196,7 @@ Detailed word view with:
 - Example sentence with translation
 - Action buttons (review, speak, hear)
 - Practice pronunciation button — navigates to `Screen.Pronunciation.createRoute(wordId)` to start a speaking session for the word
+- Listening practice button — navigates to `Screen.Listening.createRoute(wordId)` to start a listening session for the word
 - Favorite toggle
 - Notes section
 
@@ -265,8 +266,11 @@ Integration:
 - **World Map System** — Region-specific vocabulary
 - **Passport System** — Vocabulary tracking in passport
 - **Speaking System** — Successful pronunciation practice increments `timesSpoken`; vocabulary detail opens speaking sessions for a specific word; discovered words without a matching exercise get a dynamically generated speaking exercise
+- **Listening System** — Successful listening answers increment `timesHeard`; `VocabularyDetailScreen`'s listening button opens a listening session for that word; discovered words without a matching exercise get a dynamically generated listening exercise
 
 ## Testing
+
+### Phase 2
 
 ### Unit Tests
 

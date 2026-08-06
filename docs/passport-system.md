@@ -119,7 +119,7 @@ Individual passport entry:
 - `timestamp` — When entry was created
 
 #### EntryType
-10 types of passport entries:
+12 types of passport entries:
 - `STAMP_EARNED` — Stamp awarded
 - `COLLECTIBLE_FOUND` — Item discovered
 - `QUEST_COMPLETED` — Quest finished
@@ -129,6 +129,8 @@ Individual passport entry:
 - `REGION_DISCOVERED` — New region explored
 - `REGION_COMPLETED` — Region 100% complete
 - `VOCABULARY_LEARNED` — New words learned
+- `SPEAKING_PRACTICE` — Speaking practice completed
+- `LISTENING_PRACTICE` — Listening practice completed
 - `ACHIEVEMENT_UNLOCKED` — Achievement earned
 
 #### AchievementProgress
@@ -289,6 +291,7 @@ Integration:
 - **NPC System** — NPC interactions recorded in timeline
 - **Dialogue System** — Dialogue completion tracked
 - **Friendship System** — Friendship level-ups recorded
+- **Listening System** — First listening practice records a `LISTENING_PRACTICE` entry; earned listening badges record `ACHIEVEMENT_UNLOCKED` entries. `PassportScreen`'s `getEventIcon` maps `LISTENING_PRACTICE` to `Icons.Default.Headphones`
 
 ## Testing
 

@@ -139,6 +139,10 @@ Future-proof objective type for quest-integrated speaking targets (exercise type
 - `ConversationCompleteCard` shows a "练习说" button navigating to the pronunciation screen
 - Grandma Mei's conversation unlocks `pron_ex_dlg_hao_chi` and `pron_ex_dlg_meet`
 
+### Listening System Integration
+- Listening exercises with a `relatedSpeakingExerciseId` unlock the linked speaking exercise on a correct answer, so listening practice feeds directly into speaking practice
+- Both systems share the reduced-motion helper `rememberReducedMotion()` from `ui/components/Accessibility.kt` for pulsing/recording animations
+
 ## ViewModel
 
 `PronunciationViewModel` exposes `PronunciationUiState` with:

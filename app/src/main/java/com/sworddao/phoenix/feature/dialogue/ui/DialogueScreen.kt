@@ -36,6 +36,7 @@ import com.sworddao.phoenix.feature.dialogue.viewmodel.DialogueViewModel
 fun DialogueScreen(
     onConversationComplete: (npcId: String) -> Unit,
     onPractice: (() -> Unit)? = null,
+    onPracticeListening: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     viewModel: DialogueViewModel = hiltViewModel()
 ) {
@@ -113,6 +114,11 @@ fun DialogueScreen(
                     onContinue = { onConversationComplete(npcId) },
                     onPractice = if (uiState.isPracticeAvailable) {
                         { onPractice?.invoke() ?: onConversationComplete(npcId) }
+                    } else {
+                        null
+                    },
+                    onPracticeListening = if (uiState.isListeningPracticeAvailable) {
+                        { onPracticeListening?.invoke() ?: onConversationComplete(npcId) }
                     } else {
                         null
                     }

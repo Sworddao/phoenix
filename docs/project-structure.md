@@ -114,6 +114,13 @@ feature/
 - Pronunciation screen, speaking button, and feedback components
 - Integration with dialogue, vocabulary, quest, game progress, and passport systems
 
+### Listening & Audio Comprehension (`feature/listening/`)
+- Listening data models (ListeningExercise, ListeningMastery, ListeningBadge, etc.)
+- AudioEngine interface with offline MockAudioEngine (play/pause/resume/stop, 0.75x slow playback)
+- Listening repository with session lifecycle, streaks, badges, and rewards
+- Listening screen, audio player, exercise, and choice components
+- Integration with dialogue, vocabulary, quest, game progress, and passport systems
+
 ## Data Layer
 
 ```
@@ -167,7 +174,8 @@ di/
 ├── passport/di/PassportModule.kt
 ├── vocabulary/di/VocabularyModule.kt
 ├── discovery/di/DiscoveryModule.kt
-└── pronunciation/di/PronunciationModule.kt
+├── pronunciation/di/PronunciationModule.kt
+└── listening/di/ListeningModule.kt
 ```
 
 ## Testing Structure
@@ -192,6 +200,8 @@ test/
     │   ├── discovery/data/DiscoveryRepositoryTest.kt
     │   ├── pronunciation/data/PronunciationModelsTest.kt
     │   ├── pronunciation/data/PronunciationRepositoryTest.kt
+    │   ├── listening/data/ListeningModelsTest.kt
+    │   ├── listening/data/ListeningRepositoryTest.kt
     │   ├── dialogue/data/DialogueModelsTest.kt
     │   ├── dialogue/data/DialogueViewModelActionTest.kt
     │   └── ui/viewmodel/ProfileViewModelTest.kt
@@ -210,6 +220,7 @@ docs/
 ├── vocabulary-system.md
 ├── discovery-system.md
 ├── pronunciation-system.md
+├── listening-system.md
 ├── project-structure.md          # This file
 ├── architecture.md               # Architecture details
 └── templates/

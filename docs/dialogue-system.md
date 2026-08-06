@@ -131,6 +131,7 @@ Action types include:
 - `COMPLETE_QUEST` — Records quest completion
 - `GIVE_ITEM` — Records gift giving
 - `PRACTICE_SPEAKING` — Unlocks speaking exercises (comma-separated exercise ids in `value`) and surfaces the practice prompt on the completion card
+- `PRACTICE_LISTENING` (`@SerialName("practice_listening")`) — Unlocks listening exercises (comma-separated exercise ids in `value`) and surfaces the listening practice button on the completion card
 
 ### DialogueCondition
 
@@ -157,6 +158,7 @@ data class DialogueUiState(
     val availableChoices: List<DialogueChoice>,
     val isConversationComplete: Boolean,
     val isPracticeAvailable: Boolean,
+    val isListeningPracticeAvailable: Boolean,
     val completedActions: List<DialogueAction>,
     val isLoading: Boolean,
     val error: String?
@@ -169,7 +171,7 @@ data class DialogueUiState(
 - `advanceDialogue()` — Move to next node
 - `dismissError()` — Clear error state
 
-The ViewModel injects a `PronunciationRepository` to unlock exercises for `PRACTICE_SPEAKING` actions. When a completed conversation offered practice, the completion card shows a "练习说" button that navigates to the pronunciation screen via `onPractice`.
+The ViewModel injects a `PronunciationRepository` to unlock exercises for `PRACTICE_SPEAKING` actions and a `ListeningRepository` to unlock exercises for `PRACTICE_LISTENING` actions. When a completed conversation offered speaking practice, the completion card shows a "练习说" button that navigates to the pronunciation screen via `onPractice`; when it offered listening practice, `isListeningPracticeAvailable` is true and the completion card shows a "练习听" button navigating to the listening screen.
 
 ## Repository
 
@@ -237,6 +239,15 @@ Conversations can offer speaking practice after completion:
 - `ConversationCompleteCard` renders a practice button when `isPracticeAvailable` is true
 - `DialogueScreen` forwards the callback as `onPractice` to navigate to `Screen.Pronunciation.createRoute()`
 - Grandma Mei's conversation includes practice exercises that reinforce the newly learned dialogue phrases
+
+## Listening Integration
+
+Conversations can also offer listening practice after completion:
+
+- Dialogue end nodes may declare a `PRACTICE_LISTENING` action with a comma-separated list of exercise ids (e.g. `listen_ex_greet_hello,listen_ex_greet_thanks`)
+- `DialogueViewModel` unlocks those exercises via the injected `ListeningRepository.unlockExercise`
+- `ConversationCompleteCard` renders a "练习听" button when `isListeningPracticeAvailable` is true
+- Grandma Mei's conversation end node unlocks `listen_ex_greet_hello` and `listen_ex_greet_thanks`
 
 ## Future Extensibility
 

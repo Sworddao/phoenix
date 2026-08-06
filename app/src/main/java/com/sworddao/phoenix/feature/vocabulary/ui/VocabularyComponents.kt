@@ -309,6 +309,7 @@ fun VocabularyDetailScreen(
     onToggleFavorite: (String) -> Unit,
     onUpdateMastery: (String, VocabularyMastery) -> Unit,
     onPractice: ((String) -> Unit)? = null,
+    onPracticeListening: ((String) -> Unit)? = null,
 ) {
     Scaffold(
         topBar = {
@@ -409,6 +410,32 @@ fun VocabularyDetailScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = "练习发音",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+
+            if (word.isDiscovered && onPracticeListening != null) {
+                item {
+                    Button(
+                        onClick = { onPracticeListening(word.id) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp),
+                        shape = RoundedCornerShape(26.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.tertiary
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Headphones,
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "练习聆听",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )

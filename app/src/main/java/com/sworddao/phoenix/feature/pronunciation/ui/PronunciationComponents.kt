@@ -43,14 +43,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import android.provider.Settings
 import com.sworddao.phoenix.R
 import com.sworddao.phoenix.feature.pronunciation.data.PronunciationResult
 import com.sworddao.phoenix.feature.pronunciation.data.PronunciationSession
@@ -59,20 +57,7 @@ import com.sworddao.phoenix.feature.pronunciation.data.SpeakingExercise
 import com.sworddao.phoenix.feature.pronunciation.data.SpeakingExerciseType
 import com.sworddao.phoenix.ui.components.BaoCharacter
 import com.sworddao.phoenix.ui.components.BaoExpression
-
-@Composable
-fun rememberReducedMotion(): Boolean {
-    val context = LocalContext.current
-    return remember(context) {
-        runCatching {
-            Settings.Global.getFloat(
-                context.contentResolver,
-                Settings.Global.ANIMATOR_DURATION_SCALE,
-                1f,
-            ) == 0f
-        }.getOrDefault(false)
-    }
-}
+import com.sworddao.phoenix.ui.components.rememberReducedMotion
 
 @Composable
 fun PronunciationCard(

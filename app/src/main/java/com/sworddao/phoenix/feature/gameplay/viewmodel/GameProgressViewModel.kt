@@ -100,6 +100,13 @@ class GameProgressViewModel @Inject constructor(
         }
     }
 
+    fun recordListeningPractice() {
+        viewModelScope.launch {
+            gameProgressRepository.recordListeningPractice()
+            updateBaoMessage()
+        }
+    }
+
     fun unlockMilestone(milestone: GameMilestone) {
         viewModelScope.launch {
             gameProgressRepository.unlockMilestone(milestone)
@@ -124,6 +131,8 @@ class GameProgressViewModel @Inject constructor(
                 "恭喜你完成了第一次对话！你正在成为一个真正的村民！"
             GameMilestone.FIRST_VOCABULARY in summary.milestonesUnlocked ->
                 "太棒了！你学会了第一个词汇！继续努力！"
+            GameMilestone.FIRST_LISTENING in summary.milestonesUnlocked ->
+                "你的耳朵真厉害！学会了第一段聆听内容！"
             GameMilestone.FIRST_QUEST in summary.milestonesUnlocked ->
                 "了不起！你完成了第一个任务！村民们都很高兴！"
             GameMilestone.VILLAGE_EXPLORER in summary.milestonesUnlocked ->

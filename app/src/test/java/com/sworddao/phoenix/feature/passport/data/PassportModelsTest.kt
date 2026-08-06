@@ -170,11 +170,12 @@ class PassportModelsTest {
 
     @Test
     fun `EntryType has all expected entries`() {
-        assertEquals(11, EntryType.entries.size)
+        assertEquals(12, EntryType.entries.size)
         assertTrue(EntryType.entries.contains(EntryType.STAMP_EARNED))
         assertTrue(EntryType.entries.contains(EntryType.COLLECTIBLE_FOUND))
         assertTrue(EntryType.entries.contains(EntryType.ACHIEVEMENT_UNLOCKED))
         assertTrue(EntryType.entries.contains(EntryType.SPEAKING_PRACTICE))
+        assertTrue(EntryType.entries.contains(EntryType.LISTENING_PRACTICE))
     }
 
     @Test

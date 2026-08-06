@@ -210,6 +210,9 @@ Hardware-adjacent capabilities are hidden behind interface abstractions so the o
 
 - **PronunciationEngine** — Speaking analysis. `MockPronunciationEngine` simulates offline phonetic similarity evaluation and streamed partial results; a future Android `SpeechRecognizer`, Vosk, or Whisper.cpp backend implements the same interface.
 - The interface exposes `startListening()` (Flow of partial results), `stopListening()`, and `evaluatePronunciation()`.
+- **AudioEngine** — Audio playback for the listening system. `MockAudioEngine` simulates offline playback (play/pause/resume/stop, 0.75x slow rate, `AudioPlaybackState` flow); a future ExoPlayer / Media3 (or real TTS) backend implements the same interface. Capabilities are flagged via `AudioEngineFeature` (`OFFLINE_PLAYBACK`, `SLOW_PLAYBACK`, `LOOP_REPLAY`, `STREAMING`, `VOLUME_CONTROL`) and surfaced through `AudioEngineInfo`.
+
+The pronunciation and listening features form a second offline-first practice loop alongside vocabulary/flashcards: each is a full exercise → attempt → reward workflow (`feature/pronunciation/` and `feature/listening/`) behind its own engine abstraction. Both features share the reduced-motion helper `rememberReducedMotion()` from `ui/components/Accessibility.kt` for pulsing animations.
 
 ### Benefits
 - **No internet required** — Full functionality offline
@@ -227,6 +230,7 @@ Hardware-adjacent capabilities are hidden behind interface abstractions so the o
 - **DataStore** — Complex preferences
 - **Vocabulary persistence** — Room database for vocabulary
 - **Discovery persistence** — Room database for discovery history
+- **Listening progress persistence** — Room database for listening progress
 
 ### Scalability
 - **Feature modules** — Independent development

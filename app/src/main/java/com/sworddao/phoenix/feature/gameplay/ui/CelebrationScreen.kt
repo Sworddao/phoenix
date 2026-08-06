@@ -22,6 +22,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Headphones
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.TaskAlt
@@ -285,6 +286,11 @@ private fun CelebrationActionCard(
             Icons.Default.Star,
             stringResource(R.string.pronunciation_practice_button),
             stringResource(R.string.celebration_speaking_description)
+        )
+        ActionType.PRACTICE_LISTENING -> Triple(
+            Icons.Default.Headphones,
+            stringResource(R.string.listening_practice_button),
+            stringResource(R.string.celebration_listening_description)
         )
         ActionType.GIVE_ITEM -> Triple(
             Icons.Default.Star,

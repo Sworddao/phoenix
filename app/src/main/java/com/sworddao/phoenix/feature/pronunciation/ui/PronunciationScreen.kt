@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sworddao.phoenix.R
 import com.sworddao.phoenix.feature.pronunciation.viewmodel.PronunciationViewModel
+import com.sworddao.phoenix.ui.components.rememberReducedMotion
 
 @Composable
 fun PronunciationScreen(

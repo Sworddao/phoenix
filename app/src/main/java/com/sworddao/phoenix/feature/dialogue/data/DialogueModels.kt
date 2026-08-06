@@ -59,6 +59,8 @@ enum class ActionType {
     COMPLETE_QUEST,
     @SerialName("practice_speaking")
     PRACTICE_SPEAKING,
+    @SerialName("practice_listening")
+    PRACTICE_LISTENING,
     @SerialName("give_item")
     GIVE_ITEM
 }

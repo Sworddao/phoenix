@@ -18,6 +18,7 @@ import com.sworddao.phoenix.feature.friendship.data.FriendshipState
 import com.sworddao.phoenix.feature.friendship.data.MockFriendshipRepository
 import com.sworddao.phoenix.feature.gameplay.data.DialogueResultHolder
 import com.sworddao.phoenix.feature.gameplay.data.MockGameProgressRepository
+import com.sworddao.phoenix.feature.listening.data.MockListeningRepository
 import com.sworddao.phoenix.feature.passport.data.MockPassportRepository
 import com.sworddao.phoenix.feature.pronunciation.data.MockPronunciationRepository
 import com.sworddao.phoenix.feature.quest.domain.QuestRepository
@@ -56,6 +57,7 @@ class DialogueViewModelActionTest {
     private lateinit var mockQuestRepository: FakeQuestRepository
     private lateinit var mockVocabularyRepository: FakeVocabularyRepository
     private lateinit var mockPronunciationRepository: MockPronunciationRepository
+    private lateinit var mockListeningRepository: MockListeningRepository
     private lateinit var dialogueResultHolder: DialogueResultHolder
 
     @Before
@@ -71,6 +73,14 @@ class DialogueViewModelActionTest {
             friendshipRepository = MockFriendshipRepository(),
             gameProgressRepository = MockGameProgressRepository(),
             passportRepository = MockPassportRepository(),
+        )
+        mockListeningRepository = MockListeningRepository(
+            vocabularyRepository = MockVocabularyRepository(),
+            questRepository = MockQuestRepository(),
+            friendshipRepository = MockFriendshipRepository(),
+            gameProgressRepository = MockGameProgressRepository(),
+            passportRepository = MockPassportRepository(),
+            pronunciationRepository = mockPronunciationRepository,
         )
         dialogueResultHolder = DialogueResultHolder()
     }
@@ -98,6 +108,7 @@ class DialogueViewModelActionTest {
             vocabularyRepository = mockVocabularyRepository,
             dialogueResultHolder = dialogueResultHolder,
             pronunciationRepository = mockPronunciationRepository,
+            listeningRepository = mockListeningRepository,
         )
     }
 

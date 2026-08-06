@@ -110,6 +110,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Passport mock now persists recorded entries (recordEntry) for observable timeline history
   - Unit tests for models and repository
 - Unit tests for data models and friendship system
+- Listening & audio comprehension foundation (Feature 4.5)
+  - Listening data models (ListeningExercise, AudioClip, ListeningAttempt, ListeningSession, ListeningProgress, ListeningMastery, ListeningStatistics, ListeningBadge)
+  - 8 exercise types (hear & choose meaning, identify vocabulary, match image, NPC response, numbers, greetings, directions, food orders) across 4 difficulties
+  - 14 initial listening exercises plus dynamic per-word exercise generation
+  - AudioEngine interface with MockAudioEngine for offline-first playback simulation (play/pause/resume/stop, slow 0.75x, playback state flow)
+  - ListeningRepository interface with MockListeningRepository
+  - Session lifecycle with answer submission, replay counting, streak tracking, and completion
+  - 8 listening badges (first listen, 3/7/30-day streaks, quick ear, accurate, NPC-ready, word collector)
+  - XP, friendship bonus, and personal-best rewards
+  - Integration with Dialogue (PRACTICE_LISTENING action), Vocabulary (timesHeard), Quest (LISTEN_TO_AUDIO objectives), Game Progress (FIRST_LISTENING milestone), Passport (LISTENING_PRACTICE & ACHIEVEMENT_UNLOCKED entries), and Pronunciation (unlocks linked speaking exercises)
+  - ListeningViewModel with playback state machine (playCurrent, replay, toggleSlowPlayback, selectChoice)
+  - ListeningScreen with AudioPlayerCard, ListeningChoiceCard, ReplayButton, Bao hint, and completion dialog
+  - Reduced-motion support for playback and Bao animations
+  - Navigation route `listening/{wordId}` accessible from dialogue completion and vocabulary detail
+  - Quest `quest_order_tea` gains a LISTEN_TO_AUDIO objective
+  - Unit tests for models and repository
+- Documentation for listening system and related system updates
 - Documentation for dialogue, NPC, quest, world, passport, and vocabulary systems
 - SPEC.md restructuring with fixed numbering, Non-Goals, Graduate Outcomes sections
 - Feature template moved to docs/templates/feature-template.md
@@ -126,7 +143,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Planned
 
 - Real speech recognition (Android SpeechRecognizer / Vosk / Whisper.cpp) behind PronunciationEngine
-- Audio playback for words and phrases
+- Real audio playback backend (ExoPlayer / Media3 or packaged TTS samples) behind AudioEngine
 - Additional NPC dialogues
 - Game progression system (further milestones and rewards)
 

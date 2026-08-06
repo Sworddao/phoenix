@@ -45,6 +45,7 @@ import com.sworddao.phoenix.feature.quest.ui.QuestListScreen
 import com.sworddao.phoenix.feature.world.ui.WorldMapScreen
 import com.sworddao.phoenix.feature.passport.ui.PassportScreen
 import com.sworddao.phoenix.feature.pronunciation.ui.PronunciationScreen
+import com.sworddao.phoenix.feature.listening.ui.ListeningScreen
 import com.sworddao.phoenix.feature.vocabulary.ui.VocabularyScreen
 import com.sworddao.phoenix.feature.vocabulary.ui.VocabularyDetailScreen
 import com.sworddao.phoenix.feature.vocabulary.viewmodel.VocabularyViewModel
@@ -208,6 +209,9 @@ fun PhoenixApp(
                     },
                     onPractice = {
                         navController.navigate(Screen.Pronunciation.createRoute())
+                    },
+                    onPracticeListening = {
+                        navController.navigate(Screen.Listening.createRoute())
                     }
                 )
             }
@@ -220,6 +224,24 @@ fun PhoenixApp(
             ) { backStackEntry ->
                 val wordId = backStackEntry.arguments?.getString("wordId") ?: ""
                 PronunciationScreen(
+                    wordId = wordId,
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    onComplete = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+            composable(
+                route = Screen.Listening.route,
+                arguments = listOf(
+                    navArgument("wordId") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+                val wordId = backStackEntry.arguments?.getString("wordId") ?: ""
+                ListeningScreen(
                     wordId = wordId,
                     onBack = {
                         navController.popBackStack()
@@ -359,6 +381,9 @@ fun PhoenixApp(
                         onUpdateMastery = { id, mastery -> vocabularyViewModel.updateMastery(id, mastery) },
                         onPractice = { wordId ->
                             navController.navigate(Screen.Pronunciation.createRoute(wordId))
+                        },
+                        onPracticeListening = { wordId ->
+                            navController.navigate(Screen.Listening.createRoute(wordId))
                         },
                     )
                 }

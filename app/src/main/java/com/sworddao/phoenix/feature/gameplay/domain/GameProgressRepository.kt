@@ -14,6 +14,7 @@ interface GameProgressRepository {
     suspend fun recordFriendshipLevelUp(npcId: String)
     suspend fun recordPassportStampEarned(regionId: String)
     suspend fun recordSpeakingPractice()
+    suspend fun recordListeningPractice()
     suspend fun unlockMilestone(milestone: GameMilestone)
     suspend fun resetSession()
 }

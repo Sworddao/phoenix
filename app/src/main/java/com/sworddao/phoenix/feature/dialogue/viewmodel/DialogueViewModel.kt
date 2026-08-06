@@ -15,6 +15,7 @@ import com.sworddao.phoenix.feature.dialogue.data.DialogueResult
 import com.sworddao.phoenix.feature.dialogue.domain.DialogueRepository
 import com.sworddao.phoenix.feature.friendship.domain.FriendshipRepository
 import com.sworddao.phoenix.feature.gameplay.data.DialogueResultHolder
+import com.sworddao.phoenix.feature.listening.domain.ListeningRepository
 import com.sworddao.phoenix.feature.pronunciation.domain.PronunciationRepository
 import com.sworddao.phoenix.feature.quest.domain.QuestRepository
 import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
@@ -43,6 +44,7 @@ data class DialogueUiState(
     val completedActions: List<DialogueAction> = emptyList(),
     val processedActions: List<ProcessedAction> = emptyList(),
     val isPracticeAvailable: Boolean = false,
+    val isListeningPracticeAvailable: Boolean = false,
     val isLoading: Boolean = true,
     val isProcessingActions: Boolean = false,
     val error: String? = null
@@ -56,6 +58,7 @@ class DialogueViewModel @Inject constructor(
     private val questRepository: QuestRepository,
     private val vocabularyRepository: VocabularyRepository,
     private val pronunciationRepository: PronunciationRepository,
+    private val listeningRepository: ListeningRepository,
     private val dialogueResultHolder: DialogueResultHolder
 ) : ViewModel() {
 
@@ -206,7 +209,13 @@ class DialogueViewModel @Inject constructor(
         val hasPracticeAction = actions.any {
             it.type == ActionType.PRACTICE_SPEAKING
         }
-        _uiState.value = _uiState.value.copy(isPracticeAvailable = hasPracticeAction)
+        val hasListeningPracticeAction = actions.any {
+            it.type == ActionType.PRACTICE_LISTENING
+        }
+        _uiState.value = _uiState.value.copy(
+            isPracticeAvailable = hasPracticeAction,
+            isListeningPracticeAvailable = hasListeningPracticeAction
+        )
     }
 
     private suspend fun processActions(actions: List<DialogueAction>): List<ProcessedAction> {
@@ -240,6 +249,21 @@ class DialogueViewModel @Inject constructor(
                         exerciseIds.forEach { exerciseId ->
                             val result = pronunciationRepository.unlockExercise(exerciseId)
                             if (result is com.sworddao.phoenix.feature.pronunciation.data.PronunciationResultStatus.Error) {
+                                allSuccess = false
+                            }
+                        }
+                        allSuccess
+                    }
+                }
+                ActionType.PRACTICE_LISTENING -> {
+                    val exerciseIds = action.value.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+                    if (exerciseIds.isEmpty()) {
+                        false
+                    } else {
+                        var allSuccess = true
+                        exerciseIds.forEach { exerciseId ->
+                            val result = listeningRepository.unlockExercise(exerciseId)
+                            if (result is com.sworddao.phoenix.feature.listening.data.ListeningResultStatus.Error) {
                                 allSuccess = false
                             }
                         }

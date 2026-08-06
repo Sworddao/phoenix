@@ -612,5 +612,6 @@ private fun getEventIcon(eventType: com.sworddao.phoenix.feature.passport.data.E
         com.sworddao.phoenix.feature.passport.data.EntryType.DIALOGUE_COMPLETED -> Icons.Default.Chat
         com.sworddao.phoenix.feature.passport.data.EntryType.VOCABULARY_LEARNED -> Icons.Default.MenuBook
         com.sworddao.phoenix.feature.passport.data.EntryType.SPEAKING_PRACTICE -> Icons.Default.Mic
+        com.sworddao.phoenix.feature.passport.data.EntryType.LISTENING_PRACTICE -> Icons.Default.Headphones
         com.sworddao.phoenix.feature.passport.data.EntryType.ACHIEVEMENT_UNLOCKED -> Icons.Default.Star
     }

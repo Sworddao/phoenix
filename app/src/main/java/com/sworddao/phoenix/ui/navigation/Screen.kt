@@ -43,6 +43,9 @@ sealed class Screen(val route: String) {
     data object Pronunciation : Screen("pronunciation/{wordId}") {
         fun createRoute(wordId: String = "") = "pronunciation/$wordId"
     }
+    data object Listening : Screen("listening/{wordId}") {
+        fun createRoute(wordId: String = "") = "listening/$wordId"
+    }
     data object DiscoveryHistory : Screen("discovery_history")
     data object DiscoveryDetail : Screen("discovery_detail/{discoveryId}") {
         fun createRoute(discoveryId: String) = "discovery_detail/$discoveryId"

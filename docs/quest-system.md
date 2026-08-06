@@ -249,6 +249,11 @@ Quest details with:
 - Every successful pronunciation attempt contributes +1 to all active quests' speaking objectives via `updateObjectiveProgress`
 - The pronunciation feature also tracks game progress milestones and passport entries for first practice and earned badges
 
+### Listening & Audio Comprehension System
+- `quest_order_tea` gains objective `obj_3_4` of type `LISTEN_TO_AUDIO`
+- Every correct listening answer contributes +1 to all active quests' `LISTEN_TO_AUDIO` objectives via `updateObjectiveProgress`
+- `QuestObjectiveList` maps `LISTEN_TO_AUDIO` to an icon, so the objective renders in the quest detail screen
+
 ## Future Enhancements
 
 - Room persistence for offline storage

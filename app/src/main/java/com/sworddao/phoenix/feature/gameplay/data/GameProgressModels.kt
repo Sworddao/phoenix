@@ -10,6 +10,7 @@ enum class GameMilestone(val displayName: String, val description: String) {
     FIRST_FRIENDSHIP("初次友谊", "Reach friendship level 2 with an NPC"),
     FIRST_PASSPORT_STAMP("初次盖章", "Earn your first passport stamp"),
     FIRST_SPEAKING("初次开口", "Complete your first speaking practice"),
+    FIRST_LISTENING("初次聆听", "Complete your first listening practice"),
     VILLAGE_EXPLORER("村庄探索者", "Talk to all NPCs in Qingyuan Village"),
     WORD_COLLECTOR("词汇收藏家", "Discover 10 vocabulary words"),
     QUEST_MASTER("任务大师", "Complete 5 quests")
@@ -24,6 +25,7 @@ data class GameProgress(
     val totalFriendshipLevels: Int = 0,
     val totalPassportStamps: Int = 0,
     val totalSpeakingPractices: Int = 0,
+    val totalListeningPractices: Int = 0,
     val npcsInteractedWith: List<String> = emptyList(),
     val sessionStartTime: Long = System.currentTimeMillis(),
     val lastActivityTime: Long = System.currentTimeMillis()
@@ -45,6 +47,9 @@ data class GameProgress(
 
     val hasCompletedFirstSpeaking: Boolean
         get() = GameMilestone.FIRST_SPEAKING in milestonesCompleted
+
+    val hasCompletedFirstListening: Boolean
+        get() = GameMilestone.FIRST_LISTENING in milestonesCompleted
 
     val isVillageExplorer: Boolean
         get() = GameMilestone.VILLAGE_EXPLORER in milestonesCompleted
