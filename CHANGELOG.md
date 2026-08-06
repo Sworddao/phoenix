@@ -33,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Accessibility settings (Dad Mode, reduced motion, large text, high contrast)
 - Unit tests for data models and friendship system
 - Documentation for dialogue, NPC, and friendship systems
+- SPEC.md restructuring with fixed numbering, Non-Goals, Graduate Outcomes sections
+- Feature template moved to docs/templates/feature-template.md
 
 ### Changed
 
@@ -41,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated PhoenixApp navigation for NPC profile route
 - Updated README with current project status
 - Updated CHANGELOG with feature history
+- SPEC.md: Added placeholder headings for planned sections (18-29)
 
 ### Planned
 
