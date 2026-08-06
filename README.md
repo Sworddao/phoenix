@@ -23,6 +23,7 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 - **Dialogue system** — Branching conversations with player choices
 - **Friendship system** — NPC relationship progression with persistence
 - **Quest system** — Scalable architecture for story-driven quests
+- **World map** — Interactive world map with 12 regions across 5 chapters
 - **Accessibility** — Dad Mode, reduced motion, large text, high contrast
 
 ---
@@ -89,7 +90,13 @@ Phoenix/
 │       │   │   ├── ui/              # Compose components
 │       │   │   ├── viewmodel/       # ViewModel
 │       │   │   └── di/              # Hilt module
-│       │   └── quest/               # Quest system
+│       │   ├── quest/               # Quest system
+│       │   │   ├── data/            # Models & repository
+│       │   │   ├── domain/          # Repository interface
+│       │   │   ├── ui/              # Compose components
+│       │   │   ├── viewmodel/       # ViewModel
+│       │   │   └── di/              # Hilt module
+│       │   └── world/               # World map & exploration
 │       │       ├── data/            # Models & repository
 │       │       ├── domain/          # Repository interface
 │       │       ├── ui/              # Compose components
@@ -146,8 +153,9 @@ Each feature follows a consistent structure:
 9. **Dialogue** — NPC conversations with branching choices
 10. **Quest List** — Browse and filter available quests
 11. **Quest Detail** — View quest objectives, rewards, and progress
-12. **Home** — Main dashboard
-13. **Settings** — App configuration
+12. **World Map** — Interactive world map with 12 regions
+13. **Home** — Main dashboard
+14. **Settings** — App configuration
 
 ---
 

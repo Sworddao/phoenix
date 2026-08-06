@@ -47,9 +47,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Integration with QingyuanVillageScreen
   - 12 sample quests across 3 chapters
   - Unit tests for models and repository
+- World map and exploration foundation
+  - World data models (WorldRegion, WorldLocation, UnlockRequirement, TravelMethod, etc.)
+  - 12 regions across 5 chapters (Qingyuan Village to Phoenix Summit)
+  - WorldRepository interface with MockWorldRepository implementation
+  - WorldViewModel with state management and travel logic
+  - RegionCard, RegionStatusBadge, WorldMapCanvas UI components
+  - ExplorationProgressCard, CurrentLocationBanner components
+  - WorldMapScreen with region list and detail dialogs
+  - Travel confirmation dialog
+  - Integration with QingyuanVillageScreen
+  - Navigation routes for world map
+  - Unit tests for models and repository
 - Accessibility settings (Dad Mode, reduced motion, large text, high contrast)
 - Unit tests for data models and friendship system
-- Documentation for dialogue, NPC, and friendship systems
+- Documentation for dialogue, NPC, quest, and world systems
 - SPEC.md restructuring with fixed numbering, Non-Goals, Graduate Outcomes sections
 - Feature template moved to docs/templates/feature-template.md
 

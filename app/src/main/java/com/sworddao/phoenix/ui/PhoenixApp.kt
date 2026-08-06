@@ -41,6 +41,7 @@ import com.sworddao.phoenix.feature.friendship.ui.NPCProfileScreen
 import com.sworddao.phoenix.feature.npc.viewmodel.NpcViewModel
 import com.sworddao.phoenix.feature.quest.ui.QuestDetailScreen
 import com.sworddao.phoenix.feature.quest.ui.QuestListScreen
+import com.sworddao.phoenix.feature.world.ui.WorldMapScreen
 import com.sworddao.phoenix.ui.viewmodel.ProfileViewModel
 
 @Composable
@@ -176,6 +177,9 @@ fun PhoenixApp(
                     },
                     onNavigateToQuestList = {
                         navController.navigate(Screen.QuestList.route)
+                    },
+                    onNavigateToWorldMap = {
+                        navController.navigate(Screen.WorldMap.route)
                     }
                 )
             }
@@ -237,6 +241,17 @@ fun PhoenixApp(
                 val questId = backStackEntry.arguments?.getString("questId") ?: ""
                 QuestDetailScreen(
                     questId = questId,
+                    onBackClick = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+            composable(Screen.WorldMap.route) {
+                WorldMapScreen(
+                    onRegionClick = { regionId ->
+                        // Future: navigate to region detail
+                    },
                     onBackClick = {
                         navController.popBackStack()
                     }

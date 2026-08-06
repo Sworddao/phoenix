@@ -27,6 +27,10 @@ sealed class Screen(val route: String) {
     data object QuestDetail : Screen("quest_detail/{questId}") {
         fun createRoute(questId: String) = "quest_detail/$questId"
     }
+    data object WorldMap : Screen("world_map")
+    data object RegionDetail : Screen("region_detail/{regionId}") {
+        fun createRoute(regionId: String) = "region_detail/$regionId"
+    }
     data object Home : Screen("home")
     data object Settings : Screen("settings")
 }

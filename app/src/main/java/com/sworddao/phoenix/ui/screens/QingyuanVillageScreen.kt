@@ -61,6 +61,7 @@ fun QingyuanVillageScreen(
     onNavigateToDialogue: (String) -> Unit = {},
     onNavigateToNpcProfile: (String) -> Unit = {},
     onNavigateToQuestList: () -> Unit = {},
+    onNavigateToWorldMap: () -> Unit = {},
     modifier: Modifier = Modifier,
     npcViewModel: NpcViewModel = hiltViewModel(),
     friendshipViewModel: FriendshipViewModel = hiltViewModel()
@@ -352,7 +353,7 @@ fun QingyuanVillageScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "点击任务按钮查看可用任务",
+                    text = "点击任务按钮查看可用任务，点击世界地图探索更广阔的世界",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                     textAlign = TextAlign.Center,

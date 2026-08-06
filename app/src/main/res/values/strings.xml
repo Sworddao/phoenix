@@ -248,6 +248,61 @@
     <string name="quest_success_progress_updated">进度已更新</string>
     <string name="quest_npc_hint">点击任务按钮查看可用任务</string>
 
+    <!-- World Map System -->
+    <string name="world_map_title">世界地图</string>
+    <string name="world_map_explore_prompt">探索中国的大好河山</string>
+    <string name="world_map_current_location">当前位置</string>
+    <string name="world_map_region_locked">锁定</string>
+    <string name="world_map_region_available">可前往</string>
+    <string name="world_map_region_current">当前位置</string>
+    <string name="world_map_region_visited">已访问</string>
+    <string name="world_map_region_completed">已完成</string>
+    <string name="world_map_travel_confirm">确认旅行</string>
+    <string name="world_map_travel_to">确定要前往 %1$s (%2$s) 吗？</string>
+    <string name="world_map_travel_start">出发</string>
+    <string name="world_map_travel_cancel">取消</string>
+    <string name="world_map_travel_walking">步行</string>
+    <string name="world_map_travel_bus">公交车</string>
+    <string name="world_map_travel_train">火车</string>
+    <string name="world_map_travel_high_speed_rail">高铁</string>
+    <string name="world_map_travel_taxi">出租车</string>
+    <string name="world_map_exploration_progress">探索进度</string>
+    <string name="world_map_regions_completed">完成区域: %1$d/%2$d</string>
+    <string name="world_map_locations_discovered">已发现: %1$d/%2$d</string>
+    <string name="world_map_collectibles_found">已收集: %1$d/%2$d</string>
+    <string name="world_map_region_unlocked">新区域解锁！</string>
+    <string name="world_map_unlocked_regions">已解锁: %1$s</string>
+    <string name="world_map_unlock_celebrate">太好了！</string>
+    <string name="world_map_error_region_not_found">区域未找到</string>
+    <string name="world_map_error_region_locked">区域已锁定</string>
+    <string name="world_map_error_travel_failed">旅行失败</string>
+    <string name="world_map_success_travel_started">旅行开始</string>
+    <string name="world_map_success_location_discovered">发现新地点！</string>
+    <string name="world_map_success_collectible_found">找到收集品！</string>
+    <string name="world_map_region_npcs">NPC: %1$d位</string>
+    <string name="world_map_region_quests">任务: %1$d个</string>
+    <string name="world_map_region_chapter">第%1$d章</string>
+    <string name="world_map_region_completion">完成度: %1$d%%</string>
+    <string name="world_map_close">关闭</string>
+    <string name="world_map_travel_button">前往</string>
+    <string name="world_map_loading">加载中...</string>
+    <string name="world_map_error">错误</string>
+    <string name="world_map_error_dismiss">确定</string>
+
+    <!-- Region Names -->
+    <string name="region_qingyuan_village">清远村</string>
+    <string name="region_jade_forest">翡翠森林</string>
+    <string name="region_riverside_town">河畔镇</string>
+    <string name="region_night_market">夜市</string>
+    <string name="region_mountain_temple">山中寺庙</string>
+    <string name="region_high_speed_rail">高铁站</string>
+    <string name="region_historic_city">古城</string>
+    <string name="region_business_district">商业区</string>
+    <string name="region_shanghai">上海</string>
+    <string name="region_beijing">北京</string>
+    <string name="region_great_wall">长城</string>
+    <string name="region_phoenix_summit">凤凰山顶</string>
+
     <!-- Generic -->
     <string name="default_player_name">Friend</string>
 </resources>
