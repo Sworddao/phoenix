@@ -121,6 +121,15 @@ feature/
 - Listening screen, audio player, exercise, and choice components
 - Integration with dialogue, vocabulary, quest, game progress, and passport systems
 
+### Game Progression & Learning Path (`feature/progression/`)
+- XP rules and level system (max level 100) with per-level requirements
+- 7 level-gated feature unlocks (speaking, listening, reading, quest types, NPCs, conversations, regions)
+- Chapter system mapping the 12 world regions with unlock requirements
+- Central repository aggregating all source systems via snapshot-delta detection
+- Learning progress percentages across 9 dimensions plus overall completion
+- Daily goals, per-source activity counts, and goal streaks
+- Progression screen with level card, learning bars, chapters, objectives, recent unlocks, and feature unlock timeline
+
 ## Data Layer
 
 ```
@@ -175,7 +184,8 @@ di/
 ├── vocabulary/di/VocabularyModule.kt
 ├── discovery/di/DiscoveryModule.kt
 ├── pronunciation/di/PronunciationModule.kt
-└── listening/di/ListeningModule.kt
+├── listening/di/ListeningModule.kt
+└── progression/di/ProgressionModule.kt
 ```
 
 ## Testing Structure
@@ -202,6 +212,8 @@ test/
     │   ├── pronunciation/data/PronunciationRepositoryTest.kt
     │   ├── listening/data/ListeningModelsTest.kt
     │   ├── listening/data/ListeningRepositoryTest.kt
+    │   ├── progression/data/ProgressionModelsTest.kt
+    │   ├── progression/data/ProgressionRepositoryTest.kt
     │   ├── dialogue/data/DialogueModelsTest.kt
     │   ├── dialogue/data/DialogueViewModelActionTest.kt
     │   └── ui/viewmodel/ProfileViewModelTest.kt

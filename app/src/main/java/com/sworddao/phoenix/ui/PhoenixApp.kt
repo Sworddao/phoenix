@@ -53,6 +53,7 @@ import com.sworddao.phoenix.feature.vocabulary.viewmodel.VocabularyViewModel
 import com.sworddao.phoenix.feature.gameplay.ui.CelebrationScreen
 import com.sworddao.phoenix.feature.gameplay.viewmodel.CelebrationViewModel
 import com.sworddao.phoenix.feature.gameplay.viewmodel.GameProgressViewModel
+import com.sworddao.phoenix.feature.progression.ui.ProgressionScreen
 import com.sworddao.phoenix.ui.viewmodel.ProfileViewModel
 
 @Composable
@@ -191,6 +192,9 @@ fun PhoenixApp(
                     },
                     onNavigateToWorldMap = {
                         navController.navigate(Screen.WorldMap.route)
+                    },
+                    onNavigateToProgression = {
+                        navController.navigate(Screen.Progression.route)
                     }
                 )
             }
@@ -419,6 +423,14 @@ fun PhoenixApp(
                 HomeScreen(
                     onNavigateToSettings = {
                         navController.navigate(Screen.Settings.route)
+                    }
+                )
+            }
+
+            composable(Screen.Progression.route) {
+                ProgressionScreen(
+                    onBack = {
+                        navController.popBackStack()
                     }
                 )
             }

@@ -76,6 +76,9 @@
     <string name="village_welcome">Welcome to Qingyuan Village</string>
     <string name="village_instruction">Tap on buildings to explore</string>
     <string name="village_explore_prompt">Explore the village to meet new friends, %1$s!</string>
+    <string name="village_button_quests">任务列表</string>
+    <string name="village_button_world">世界地图</string>
+    <string name="village_button_progression">我的进度</string>
 
     <!-- Village Locations -->
     <string name="location_bakery_name">Grandma Mei\'s Bakery</string>
@@ -506,6 +509,14 @@
     <string name="reading_complete_message">你读懂了这组汉字，真棒！</string>
     <string name="reading_complete_continue">继续冒险</string>
     <string name="celebration_reading_description">可以开始阅读练习了！</string>
+
+    <!-- Progression -->
+    <string name="progression_screen_accessibility">Player progression and learning path</string>
+    <string name="progression_back">返回</string>
+    <string name="progression_title">学习进度</string>
+    <string name="progression_subtitle">你的成长之路</string>
+    <string name="progression_refresh">刷新</string>
+    <string name="progression_demo_xp">演示 XP</string>
 
     <!-- Generic -->
     <string name="default_player_name">Friend</string>

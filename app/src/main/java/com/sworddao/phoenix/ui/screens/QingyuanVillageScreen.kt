@@ -11,7 +11,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,7 +23,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -64,6 +68,7 @@ fun QingyuanVillageScreen(
     onNavigateToNpcProfile: (String) -> Unit = {},
     onNavigateToQuestList: () -> Unit = {},
     onNavigateToWorldMap: () -> Unit = {},
+    onNavigateToProgression: () -> Unit = {},
     modifier: Modifier = Modifier,
     npcViewModel: NpcViewModel = hiltViewModel(),
     friendshipViewModel: FriendshipViewModel = hiltViewModel(),
@@ -362,13 +367,21 @@ fun QingyuanVillageScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "点击任务按钮查看可用任务，点击世界地图探索更广阔的世界",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                    textAlign = TextAlign.Center,
-                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OutlinedButton(onClick = onNavigateToQuestList) {
+                        Text(text = stringResource(R.string.village_button_quests))
+                    }
+                    OutlinedButton(onClick = onNavigateToWorldMap) {
+                        Text(text = stringResource(R.string.village_button_world))
+                    }
+                    Button(onClick = onNavigateToProgression) {
+                        Text(text = stringResource(R.string.village_button_progression))
+                    }
+                }
             }
         }
     }

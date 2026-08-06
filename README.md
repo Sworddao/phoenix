@@ -30,6 +30,7 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 - **Speaking & pronunciation** — Offline speaking practice foundation with speech engine abstraction
 - **Listening & audio comprehension** — Offline listening practice foundation with audio engine abstraction
 - **Reading & hanzi foundation** — Offline pinyin-first reading practice with hanzi renderer abstraction
+- **Game progression & learning path** — Central XP/level engine aggregating all systems, feature unlocks, chapter gating, daily goals, and learning percentages
 - **Accessibility** — Dad Mode, reduced motion, large text, high contrast
 
 ---
@@ -144,6 +145,12 @@ Phoenix/
 │       │       ├── ui/              # Compose components
 │       │       ├── viewmodel/       # ViewModel
 │       │       └── di/              # Hilt module
+│       │   └── progression/         # Game progression & learning path
+│       │       ├── data/            # XP rules, levels, unlocks & repository
+│       │       ├── domain/          # Repository interface
+│       │       ├── ui/              # Compose components
+│       │       ├── viewmodel/       # ViewModel
+│       │       └── di/              # Hilt module
 │       └── ui/                      # UI layer
 │           ├── components/          # Reusable composables
 │           ├── navigation/          # Navigation routes
@@ -202,8 +209,9 @@ Each feature follows a consistent structure:
 16. **Pronunciation** — Speaking practice with exercises, feedback, and rewards
 17. **Listening** — Listening practice with audio playback, choices, and rewards
 18. **Reading** — Reading practice with pinyin-first hanzi reveal, choices, and rewards
-19. **Home** — Main dashboard
-20. **Settings** — App configuration
+19. **Progression** — Level, XP, learning percentages, chapter progress, objectives, and unlocks
+20. **Home** — Main dashboard
+21. **Settings** — App configuration
 
 ---
 

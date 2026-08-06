@@ -57,6 +57,7 @@ sealed class Screen(val route: String) {
         fun createRoute(dialogueId: String, npcId: String) = "celebration/$dialogueId/$npcId"
     }
     data object GameProgress : Screen("game_progress")
+    data object Progression : Screen("progression")
 }
 
 data class BottomNavigationItem(

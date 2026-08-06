@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Game progression & learning path system
+  - Central XP engine (`XpSource`, `XpCalculator`) aggregating dialogue, vocabulary, quests, friendship, speaking, listening, reading, exploration, passport, and achievements
+  - Level system (max level 100) with feature unlocks gated by level (speaking at 2, listening at 3, reading at 4, quest types at 5, NPCs at 7, conversations at 8, regions at 10)
+  - Chapter system mapping the 12 world regions with region-completion or level-based unlock requirements
+  - Learning progress percentages across 9 dimensions plus overall completion
+  - Daily goals, per-source activity tracking, and goal streaks
+  - Snapshot-delta aggregation that awards XP automatically from all source systems
+  - Progression screen with level card, daily card, learning bars, chapter progress, objectives, recent unlocks, and feature unlock timeline
+  - ProgressionViewModel observing all source systems for live refresh
+  - Unit tests for XP math, level-ups, feature unlocks, snapshot deltas, chapters, and daily goals (563 tests total)
+  - Progression entry button in Qingyuan Village
+
 - Project specification (SPEC.md)
 - Repository structure
 - MIT License
