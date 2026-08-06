@@ -219,6 +219,7 @@ Compose displays error message
 - **Room** — Advanced queries
 - **DataStore** — Complex preferences
 - **Vocabulary persistence** — Room database for vocabulary
+- **Discovery persistence** — Room database for discovery history
 
 ### Scalability
 - **Feature modules** — Independent development

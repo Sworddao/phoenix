@@ -26,6 +26,7 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 - **World map** — Interactive world map with 12 regions across 5 chapters
 - **Passport & collectibles** — Journey tracking with stamps and collectibles
 - **Vocabulary learning** — 100+ words across 12 categories with mastery tracking
+- **Vocabulary discovery** — Natural word unlocking through gameplay interactions
 - **Accessibility** — Dad Mode, reduced motion, large text, high contrast
 
 ---
@@ -110,7 +111,13 @@ Phoenix/
 │       │   │   ├── ui/              # Compose components
 │       │   │   ├── viewmodel/       # ViewModel
 │       │   │   └── di/              # Hilt module
-│       │   └── vocabulary/          # Vocabulary learning
+│       │   ├── vocabulary/          # Vocabulary learning
+│       │   │   ├── data/            # Models & repository
+│       │   │   ├── domain/          # Repository interface
+│       │   │   ├── ui/              # Compose components
+│       │   │   ├── viewmodel/       # ViewModel
+│       │   │   └── di/              # Hilt module
+│       │   └── discovery/           # Vocabulary discovery system
 │       │       ├── data/            # Models & repository
 │       │       ├── domain/          # Repository interface
 │       │       ├── ui/              # Compose components
@@ -170,8 +177,9 @@ Each feature follows a consistent structure:
 12. **World Map** — Interactive world map with 12 regions
 13. **Passport** — Journey tracking with stamps, collectibles, and timeline
 14. **Vocabulary** — Vocabulary learning with search, filter, and mastery tracking
-15. **Home** — Main dashboard
-16. **Settings** — App configuration
+15. **Discovery** — Vocabulary discovery tracking and history
+16. **Home** — Main dashboard
+17. **Settings** — App configuration
 
 ---
 

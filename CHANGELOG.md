@@ -80,6 +80,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Integration with regions, NPCs, and quests
   - Navigation routes for vocabulary
   - Unit tests for models and repository
+- Vocabulary discovery and conversation rewards
+  - Discovery data models (VocabularyDiscovery, DiscoverySource, DiscoveryReward, etc.)
+  - 13 discovery sources (NPC, Dialogue, Quest, Friendship, Region, etc.)
+  - DiscoveryRepository interface with MockDiscoveryRepository
+  - DiscoveryViewModel with filtering and animation state
+  - VocabularyDiscoveryDialog, NewWordCard, DiscoveryTimeline components
+  - First discovery detection and duplicate handling
+  - Bonus XP and friendship rewards based on source
+  - Discovery streak tracking
+  - Integration with Dialogue, Quest, NPC, World, Passport, and Friendship systems
+  - Navigation routes for discovery history
+  - Unit tests for models and repository
 - Accessibility settings (Dad Mode, reduced motion, large text, high contrast)
 - Unit tests for data models and friendship system
 - Documentation for dialogue, NPC, quest, world, passport, and vocabulary systems
@@ -100,6 +112,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Audio playback
 - Additional NPC dialogues
 - Game progression system
+- Discovery animations and celebration effects
 
 ---
 

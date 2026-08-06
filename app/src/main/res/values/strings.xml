@@ -367,6 +367,38 @@
     <string name="region_great_wall">长城</string>
     <string name="region_phoenix_summit">凤凰山顶</string>
 
+    <!-- Discovery System -->
+    <string name="discovery_title">词汇发现</string>
+    <string name="discovery_new_word">新词发现！</string>
+    <string name="discovery_word_reviewed">词语复习！</string>
+    <string name="discovery_via_source">通过 %1$s</string>
+    <string name="discovery_rewards">奖励</string>
+    <string name="discovery_continue">继续</string>
+    <string name="discovery_summary">发现摘要</string>
+    <string name="discovery_total">总计</string>
+    <string name="discovery_today">今日</string>
+    <string name="discovery_streak">连续</string>
+    <string name="discovery_history">发现历史</string>
+    <string name="discovery_timeline">发现时间线</string>
+    <string name="discovery_source_npc">NPC</string>
+    <string name="discovery_source_dialogue">对话</string>
+    <string name="discovery_source_quest">任务</string>
+    <string name="discovery_source_friendship">友谊</string>
+    <string name="discovery_source_region">区域</string>
+    <string name="discovery_source_passport">护照</string>
+    <string name="discovery_source_story">故事</string>
+    <string name="discovery_source_listening">听力</string>
+    <string name="discovery_source_speaking">口语</string>
+    <string name="discovery_source_mini_game">小游戏</string>
+    <string name="discovery_source_festival">节日</string>
+    <string name="discovery_source_hidden">隐藏</string>
+    <string name="discovery_no_words">暂无发现</string>
+    <string name="discovery_filter_source">按来源筛选</string>
+    <string name="discovery_filter_category">按类别筛选</string>
+    <string name="discovery_search_hint">搜索发现...</string>
+    <string name="discovery_words_discovered">%1$d 个词语已发现</string>
+    <string name="discovery_navigation_label">发现</string>
+
     <!-- Generic -->
     <string name="default_player_name">Friend</string>
 </resources>

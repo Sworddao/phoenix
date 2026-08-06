@@ -101,6 +101,12 @@ feature/
 - Vocabulary list and detail screens
 - Mastery tracking and statistics
 
+### Vocabulary Discovery (`feature/discovery/`)
+- Discovery data models (VocabularyDiscovery, DiscoverySource, etc.)
+- Discovery repository with streak tracking
+- Discovery dialog and timeline components
+- Integration with all game systems
+
 ## Data Layer
 
 ```
@@ -152,7 +158,8 @@ di/
 ├── quest/di/QuestModule.kt
 ├── world/di/WorldModule.kt
 ├── passport/di/PassportModule.kt
-└── vocabulary/di/VocabularyModule.kt
+├── vocabulary/di/VocabularyModule.kt
+└── discovery/di/DiscoveryModule.kt
 ```
 
 ## Testing Structure
@@ -172,7 +179,9 @@ test/
     │   ├── passport/data/PassportModelsTest.kt
     │   ├── passport/data/PassportRepositoryTest.kt
     │   ├── vocabulary/data/VocabularyModelsTest.kt
-    │   └── vocabulary/data/VocabularyRepositoryTest.kt
+    │   ├── vocabulary/data/VocabularyRepositoryTest.kt
+    │   ├── discovery/data/DiscoveryModelsTest.kt
+    │   └── discovery/data/DiscoveryRepositoryTest.kt
     └── ui/viewmodel/ProfileViewModelTest.kt
 ```
 
@@ -187,6 +196,7 @@ docs/
 ├── world-system.md
 ├── passport-system.md
 ├── vocabulary-system.md
+├── discovery-system.md
 ├── project-structure.md          # This file
 ├── architecture.md               # Architecture details
 └── templates/
