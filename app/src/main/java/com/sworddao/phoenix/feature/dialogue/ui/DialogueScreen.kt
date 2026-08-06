@@ -34,7 +34,7 @@ import com.sworddao.phoenix.feature.dialogue.viewmodel.DialogueViewModel
 
 @Composable
 fun DialogueScreen(
-    onConversationComplete: () -> Unit,
+    onConversationComplete: (npcId: String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DialogueViewModel = hiltViewModel()
 ) {
@@ -106,9 +106,10 @@ fun DialogueScreen(
             }
 
             if (uiState.isConversationComplete) {
+                val npcId = uiState.dialogue?.npcId ?: ""
                 ConversationCompleteCard(
                     history = uiState.history,
-                    onContinue = onConversationComplete
+                    onContinue = { onConversationComplete(npcId) }
                 )
             } else if (uiState.availableChoices.isNotEmpty()) {
                 Column(

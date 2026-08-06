@@ -24,6 +24,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sworddao.phoenix.R
 import com.sworddao.phoenix.feature.friendship.viewmodel.FriendshipViewModel
+import com.sworddao.phoenix.feature.gameplay.viewmodel.GameProgressViewModel
 import com.sworddao.phoenix.feature.npc.data.Npc
 import com.sworddao.phoenix.feature.npc.ui.NpcMarker
 import com.sworddao.phoenix.feature.npc.viewmodel.NpcViewModel
@@ -64,7 +66,8 @@ fun QingyuanVillageScreen(
     onNavigateToWorldMap: () -> Unit = {},
     modifier: Modifier = Modifier,
     npcViewModel: NpcViewModel = hiltViewModel(),
-    friendshipViewModel: FriendshipViewModel = hiltViewModel()
+    friendshipViewModel: FriendshipViewModel = hiltViewModel(),
+    gameProgressViewModel: GameProgressViewModel = hiltViewModel()
 ) {
     var selectedLocation by remember { mutableStateOf<VillageLocation?>(null) }
     var showBaoMessage by remember { mutableStateOf(false) }
@@ -72,6 +75,14 @@ fun QingyuanVillageScreen(
 
     val context = LocalContext.current
     val npcUiState by npcViewModel.uiState.collectAsState()
+    val gameProgressUiState by gameProgressViewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        if (!gameProgressUiState.gameProgress.hasCompletedFirstDialogue) {
+            baoMessage = "欢迎来到清远村！我是宝，你的学习伙伴。让我们先去和梅奶奶打个招呼吧！点击她的头像开始对话。"
+            showBaoMessage = true
+        }
+    }
 
     val baoMessages = remember {
         listOf(

@@ -3,6 +3,7 @@ package com.sworddao.phoenix.feature.dialogue.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sworddao.phoenix.feature.dialogue.data.ActionType
 import com.sworddao.phoenix.feature.dialogue.data.ConversationPhase
 import com.sworddao.phoenix.feature.dialogue.data.ConversationState
 import com.sworddao.phoenix.feature.dialogue.data.Dialogue
@@ -12,6 +13,10 @@ import com.sworddao.phoenix.feature.dialogue.data.DialogueHistoryEntry
 import com.sworddao.phoenix.feature.dialogue.data.DialogueNode
 import com.sworddao.phoenix.feature.dialogue.data.DialogueResult
 import com.sworddao.phoenix.feature.dialogue.domain.DialogueRepository
+import com.sworddao.phoenix.feature.friendship.domain.FriendshipRepository
+import com.sworddao.phoenix.feature.gameplay.data.DialogueResultHolder
+import com.sworddao.phoenix.feature.quest.domain.QuestRepository
+import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +24,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+data class ProcessedAction(
+    val type: ActionType,
+    val targetId: String,
+    val value: String,
+    val success: Boolean
+)
 
 data class DialogueUiState(
     val dialogue: Dialogue? = null,
@@ -28,14 +40,20 @@ data class DialogueUiState(
     val availableChoices: List<DialogueChoice> = emptyList(),
     val isConversationComplete: Boolean = false,
     val completedActions: List<DialogueAction> = emptyList(),
+    val processedActions: List<ProcessedAction> = emptyList(),
     val isLoading: Boolean = true,
+    val isProcessingActions: Boolean = false,
     val error: String? = null
 )
 
 @HiltViewModel
 class DialogueViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val dialogueRepository: DialogueRepository
+    private val dialogueRepository: DialogueRepository,
+    private val friendshipRepository: FriendshipRepository,
+    private val questRepository: QuestRepository,
+    private val vocabularyRepository: VocabularyRepository,
+    private val dialogueResultHolder: DialogueResultHolder
 ) : ViewModel() {
 
     private val dialogueId: String = savedStateHandle["dialogueId"] ?: ""
@@ -119,13 +137,7 @@ class DialogueViewModel @Inject constructor(
                     )
                 }
                 is DialogueResult.ConversationEnded -> {
-                    _uiState.value = _uiState.value.copy(
-                        isConversationComplete = true,
-                        history = result.history,
-                        completedActions = result.actions,
-                        availableChoices = emptyList(),
-                        error = null
-                    )
+                    onConversationEnded(result.actions, result.history)
                 }
                 is DialogueResult.Error -> {
                     _uiState.value = _uiState.value.copy(
@@ -151,13 +163,7 @@ class DialogueViewModel @Inject constructor(
                     )
                 }
                 is DialogueResult.ConversationEnded -> {
-                    _uiState.value = _uiState.value.copy(
-                        isConversationComplete = true,
-                        history = result.history,
-                        completedActions = result.actions,
-                        availableChoices = emptyList(),
-                        error = null
-                    )
+                    onConversationEnded(result.actions, result.history)
                 }
                 is DialogueResult.Error -> {
                     _uiState.value = _uiState.value.copy(
@@ -166,6 +172,78 @@ class DialogueViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private suspend fun onConversationEnded(
+        actions: List<DialogueAction>,
+        history: List<DialogueHistoryEntry>
+    ) {
+        _uiState.value = _uiState.value.copy(
+            isConversationComplete = true,
+            history = history,
+            completedActions = actions,
+            availableChoices = emptyList(),
+            isProcessingActions = actions.isNotEmpty(),
+            error = null
+        )
+
+        if (actions.isNotEmpty()) {
+            val processed = processActions(actions)
+            _uiState.value = _uiState.value.copy(
+                processedActions = processed,
+                isProcessingActions = false
+            )
+            dialogueResultHolder.storeResults(
+                dialogueId = dialogueId,
+                npcId = _uiState.value.dialogue?.npcId ?: "",
+                processedActions = processed
+            )
+        }
+    }
+
+    private suspend fun processActions(actions: List<DialogueAction>): List<ProcessedAction> {
+        val results = mutableListOf<ProcessedAction>()
+
+        for (action in actions) {
+            val success = when (action.type) {
+                ActionType.ADD_FRIENDSHIP_XP -> {
+                    val xp = action.value.toIntOrNull() ?: 0
+                    if (xp > 0) {
+                        friendshipRepository.addFriendshipXp(action.targetId, xp) != null
+                    } else false
+                }
+                ActionType.UNLOCK_VOCABULARY -> {
+                    val wordIds = action.value.split(",").map { it.trim() }
+                    var allSuccess = true
+                    wordIds.forEach { wordId ->
+                        val result = vocabularyRepository.discoverWord(wordId)
+                        if (result is com.sworddao.phoenix.feature.vocabulary.data.VocabularyResult.Error) {
+                            allSuccess = false
+                        }
+                    }
+                    allSuccess
+                }
+                ActionType.COMPLETE_QUEST -> {
+                    val result = questRepository.completeQuest(action.targetId)
+                    result is com.sworddao.phoenix.feature.quest.data.QuestResult.QuestCompleted ||
+                            result is com.sworddao.phoenix.feature.quest.data.QuestResult.Success
+                }
+                ActionType.GIVE_ITEM -> {
+                    true
+                }
+            }
+
+            results.add(
+                ProcessedAction(
+                    type = action.type,
+                    targetId = action.targetId,
+                    value = action.value,
+                    success = success
+                )
+            )
+        }
+
+        return results
     }
 
     fun dismissError() {

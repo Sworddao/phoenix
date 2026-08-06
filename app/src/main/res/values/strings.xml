@@ -399,6 +399,33 @@
     <string name="discovery_words_discovered">%1$d 个词语已发现</string>
     <string name="discovery_navigation_label">发现</string>
 
+    <!-- Celebration Screen -->
+    <string name="celebration_screen_accessibility">Celebration screen showing dialogue results</string>
+    <string name="celebration_title">对话完成！</string>
+    <string name="celebration_xp_earned">+%1$d XP</string>
+    <string name="celebration_milestones_unlocked">里程碑解锁</string>
+    <string name="celebration_continue">继续</string>
+    <string name="celebration_friendship_title">友谊提升</string>
+    <string name="celebration_friendship_description">+%1$s 友谊值</string>
+    <string name="celebration_vocabulary_title">新词汇解锁</string>
+    <string name="celebration_vocabulary_description">%1$d 个新词汇</string>
+    <string name="celebration_quest_title">任务完成</string>
+    <string name="celebration_quest_description">任务已完成！</string>
+    <string name="celebration_item_title">获得物品</string>
+    <string name="celebration_item_description">你获得了一个新物品！</string>
+
+    <!-- Game Progress -->
+    <string name="game_progress_screen_accessibility">Game progress screen</string>
+    <string name="game_progress_title">游戏进度</string>
+    <string name="game_progress_milestones">里程碑</string>
+    <string name="game_progress_stats">统计数据</string>
+    <string name="game_progress_dialogues">对话完成</string>
+    <string name="game_progress_words">词汇学习</string>
+    <string name="game_progress_quests">任务完成</string>
+    <string name="game_progress_friendship">友谊提升</string>
+    <string name="game_progress_stamps">护照盖章</string>
+    <string name="game_progress_reset">重置进度</string>
+
     <!-- Generic -->
     <string name="default_player_name">Friend</string>
 </resources>

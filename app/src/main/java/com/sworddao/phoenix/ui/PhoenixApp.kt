@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +47,9 @@ import com.sworddao.phoenix.feature.passport.ui.PassportScreen
 import com.sworddao.phoenix.feature.vocabulary.ui.VocabularyScreen
 import com.sworddao.phoenix.feature.vocabulary.ui.VocabularyDetailScreen
 import com.sworddao.phoenix.feature.vocabulary.viewmodel.VocabularyViewModel
+import com.sworddao.phoenix.feature.gameplay.ui.CelebrationScreen
+import com.sworddao.phoenix.feature.gameplay.viewmodel.CelebrationViewModel
+import com.sworddao.phoenix.feature.gameplay.viewmodel.GameProgressViewModel
 import com.sworddao.phoenix.ui.viewmodel.ProfileViewModel
 
 @Composable
@@ -193,10 +197,35 @@ fun PhoenixApp(
                 arguments = listOf(
                     navArgument("dialogueId") { type = NavType.StringType }
                 )
-            ) {
+            ) { backStackEntry ->
+                val dialogueId = backStackEntry.arguments?.getString("dialogueId") ?: ""
                 DialogueScreen(
-                    onConversationComplete = {
-                        navController.popBackStack()
+                    onConversationComplete = { npcId ->
+                        navController.navigate(Screen.Celebration.createRoute(dialogueId, npcId)) {
+                            popUpTo(Screen.Dialogue.route) { inclusive = true }
+                        }
+                    }
+                )
+            }
+
+            composable(
+                route = Screen.Celebration.route,
+                arguments = listOf(
+                    navArgument("dialogueId") { type = NavType.StringType },
+                    navArgument("npcId") { type = NavType.StringType }
+                )
+            ) {
+                val celebrationViewModel: CelebrationViewModel = hiltViewModel()
+                val celebrationUiState by celebrationViewModel.uiState.collectAsState()
+
+                LaunchedEffect(Unit) {
+                    celebrationViewModel.loadResults()
+                }
+
+                CelebrationScreen(
+                    uiState = celebrationUiState,
+                    onContinue = {
+                        navController.popBackStack(Screen.QingyuanVillage.route, false)
                     }
                 )
             }

@@ -44,6 +44,10 @@ sealed class Screen(val route: String) {
     data object DiscoveryDetail : Screen("discovery_detail/{discoveryId}") {
         fun createRoute(discoveryId: String) = "discovery_detail/$discoveryId"
     }
+    data object Celebration : Screen("celebration/{dialogueId}/{npcId}") {
+        fun createRoute(dialogueId: String, npcId: String) = "celebration/$dialogueId/$npcId"
+    }
+    data object GameProgress : Screen("game_progress")
 }
 
 data class BottomNavigationItem(
