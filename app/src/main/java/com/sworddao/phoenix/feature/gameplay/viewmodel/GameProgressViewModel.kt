@@ -107,6 +107,13 @@ class GameProgressViewModel @Inject constructor(
         }
     }
 
+    fun recordReadingPractice() {
+        viewModelScope.launch {
+            gameProgressRepository.recordReadingPractice()
+            updateBaoMessage()
+        }
+    }
+
     fun unlockMilestone(milestone: GameMilestone) {
         viewModelScope.launch {
             gameProgressRepository.unlockMilestone(milestone)
@@ -133,6 +140,8 @@ class GameProgressViewModel @Inject constructor(
                 "太棒了！你学会了第一个词汇！继续努力！"
             GameMilestone.FIRST_LISTENING in summary.milestonesUnlocked ->
                 "你的耳朵真厉害！学会了第一段聆听内容！"
+            GameMilestone.FIRST_READING in summary.milestonesUnlocked ->
+                "你的眼睛真厉害！读懂了第一段汉字！"
             GameMilestone.FIRST_QUEST in summary.milestonesUnlocked ->
                 "了不起！你完成了第一个任务！村民们都很高兴！"
             GameMilestone.VILLAGE_EXPLORER in summary.milestonesUnlocked ->

@@ -373,6 +373,12 @@ class MockQuestRepository @Inject constructor() : QuestRepository {
                     description = "聆听茶馆里的对话",
                     targetCount = 3,
                 ),
+                QuestObjective(
+                    id = "obj_3_5",
+                    type = ObjectiveType.READ_CHARACTERS,
+                    description = "阅读茶馆菜单上的汉字",
+                    targetCount = 4,
+                ),
             ),
             rewards = QuestReward(
                 experience = 20,

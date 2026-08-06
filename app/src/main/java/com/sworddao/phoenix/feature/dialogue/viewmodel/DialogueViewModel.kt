@@ -18,6 +18,7 @@ import com.sworddao.phoenix.feature.gameplay.data.DialogueResultHolder
 import com.sworddao.phoenix.feature.listening.domain.ListeningRepository
 import com.sworddao.phoenix.feature.pronunciation.domain.PronunciationRepository
 import com.sworddao.phoenix.feature.quest.domain.QuestRepository
+import com.sworddao.phoenix.feature.reading.domain.ReadingRepository
 import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,6 +46,7 @@ data class DialogueUiState(
     val processedActions: List<ProcessedAction> = emptyList(),
     val isPracticeAvailable: Boolean = false,
     val isListeningPracticeAvailable: Boolean = false,
+    val isReadingPracticeAvailable: Boolean = false,
     val isLoading: Boolean = true,
     val isProcessingActions: Boolean = false,
     val error: String? = null
@@ -59,6 +61,7 @@ class DialogueViewModel @Inject constructor(
     private val vocabularyRepository: VocabularyRepository,
     private val pronunciationRepository: PronunciationRepository,
     private val listeningRepository: ListeningRepository,
+    private val readingRepository: ReadingRepository,
     private val dialogueResultHolder: DialogueResultHolder
 ) : ViewModel() {
 
@@ -212,9 +215,13 @@ class DialogueViewModel @Inject constructor(
         val hasListeningPracticeAction = actions.any {
             it.type == ActionType.PRACTICE_LISTENING
         }
+        val hasReadingPracticeAction = actions.any {
+            it.type == ActionType.PRACTICE_READING
+        }
         _uiState.value = _uiState.value.copy(
             isPracticeAvailable = hasPracticeAction,
-            isListeningPracticeAvailable = hasListeningPracticeAction
+            isListeningPracticeAvailable = hasListeningPracticeAction,
+            isReadingPracticeAvailable = hasReadingPracticeAction
         )
     }
 
@@ -264,6 +271,21 @@ class DialogueViewModel @Inject constructor(
                         exerciseIds.forEach { exerciseId ->
                             val result = listeningRepository.unlockExercise(exerciseId)
                             if (result is com.sworddao.phoenix.feature.listening.data.ListeningResultStatus.Error) {
+                                allSuccess = false
+                            }
+                        }
+                        allSuccess
+                    }
+                }
+                ActionType.PRACTICE_READING -> {
+                    val exerciseIds = action.value.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+                    if (exerciseIds.isEmpty()) {
+                        false
+                    } else {
+                        var allSuccess = true
+                        exerciseIds.forEach { exerciseId ->
+                            val result = readingRepository.unlockExercise(exerciseId)
+                            if (result is com.sworddao.phoenix.feature.reading.data.ReadingResultStatus.Error) {
                                 allSuccess = false
                             }
                         }

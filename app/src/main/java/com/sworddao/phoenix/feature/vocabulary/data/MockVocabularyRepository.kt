@@ -177,6 +177,15 @@ class MockVocabularyRepository @Inject constructor() : VocabularyRepository {
         return VocabularyResult.Success("Heard recorded")
     }
 
+    override suspend fun incrementRead(wordId: String): VocabularyResult {
+        _words.update { wordList: List<VocabularyWord> ->
+            wordList.map { w: VocabularyWord ->
+                if (w.id == wordId) w.copy(timesRead = w.timesRead + 1) else w
+            }
+        }
+        return VocabularyResult.Success("Read recorded")
+    }
+
     override suspend fun recordDiscovery(wordId: String, source: VocabularySource): VocabularyResult {
         return discoverWord(wordId)
     }

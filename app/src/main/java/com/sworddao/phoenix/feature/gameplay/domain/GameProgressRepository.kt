@@ -15,6 +15,7 @@ interface GameProgressRepository {
     suspend fun recordPassportStampEarned(regionId: String)
     suspend fun recordSpeakingPractice()
     suspend fun recordListeningPractice()
+    suspend fun recordReadingPractice()
     suspend fun unlockMilestone(milestone: GameMilestone)
     suspend fun resetSession()
 }

@@ -37,6 +37,7 @@ fun DialogueScreen(
     onConversationComplete: (npcId: String) -> Unit,
     onPractice: (() -> Unit)? = null,
     onPracticeListening: (() -> Unit)? = null,
+    onPracticeReading: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     viewModel: DialogueViewModel = hiltViewModel()
 ) {
@@ -103,7 +104,14 @@ fun DialogueScreen(
                 state = listState
             ) {
                 items(uiState.history) { entry ->
-                    DialogueBubble(entry = entry)
+                    DialogueBubble(
+                        entry = entry,
+                        onReadingPractice = if (onPracticeReading != null) {
+                            { _ -> onPracticeReading() }
+                        } else {
+                            null
+                        }
+                    )
                 }
             }
 
@@ -119,6 +127,11 @@ fun DialogueScreen(
                     },
                     onPracticeListening = if (uiState.isListeningPracticeAvailable) {
                         { onPracticeListening?.invoke() ?: onConversationComplete(npcId) }
+                    } else {
+                        null
+                    },
+                    onPracticeReading = if (uiState.isReadingPracticeAvailable) {
+                        { onPracticeReading?.invoke() ?: onConversationComplete(npcId) }
                     } else {
                         null
                     }

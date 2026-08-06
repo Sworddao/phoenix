@@ -479,6 +479,34 @@
     <string name="listening_complete_message">你完成了这组聆听练习，真棒！</string>
     <string name="listening_complete_continue">继续冒险</string>
 
+    <!-- Reading -->
+    <string name="reading_screen_accessibility">Reading practice with hanzi and pinyin</string>
+    <string name="reading_title">阅读练习</string>
+    <string name="reading_practice_button">练习读</string>
+    <string name="reading_from_dialogue">对话练习</string>
+    <string name="reading_from_vocabulary">词汇练习</string>
+    <string name="reading_choose">选出正确的选项</string>
+    <string name="reading_correct">读对了！</string>
+    <string name="reading_incorrect">再看一遍，再试一次</string>
+    <string name="reading_next">下一题</string>
+    <string name="reading_session_progress">阅读进度</string>
+    <string name="reading_xp_earned">+%1$d XP</string>
+    <string name="reading_streak_label">连续阅读</string>
+    <string name="reading_streak_continued">连续阅读 %1$d 天！</string>
+    <string name="reading_total_reveals">次揭开</string>
+    <string name="reading_tap_to_reveal">点击方块揭开汉字</string>
+    <string name="reading_reveal">揭开汉字</string>
+    <string name="reading_revealed">已揭开</string>
+    <string name="reading_bao_hint_1">先看拼音，猜一猜汉字。</string>
+    <string name="reading_bao_hint_2">不认识就点击方块揭开。</string>
+    <string name="reading_bao_hint_3">多读几遍，Bao 陪你一起。</string>
+    <string name="reading_bao_hint_4">注意声调的颜色！</string>
+    <string name="reading_bao_hint_5">你做得很好，继续！</string>
+    <string name="reading_complete_title">阅读练习完成！</string>
+    <string name="reading_complete_message">你读懂了这组汉字，真棒！</string>
+    <string name="reading_complete_continue">继续冒险</string>
+    <string name="celebration_reading_description">可以开始阅读练习了！</string>
+
     <!-- Generic -->
     <string name="default_player_name">Friend</string>
 </resources>

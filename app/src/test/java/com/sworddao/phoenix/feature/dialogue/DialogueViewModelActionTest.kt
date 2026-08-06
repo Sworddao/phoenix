@@ -24,6 +24,8 @@ import com.sworddao.phoenix.feature.pronunciation.data.MockPronunciationReposito
 import com.sworddao.phoenix.feature.quest.domain.QuestRepository
 import com.sworddao.phoenix.feature.quest.data.MockQuestRepository
 import com.sworddao.phoenix.feature.quest.data.QuestResult
+import com.sworddao.phoenix.feature.reading.data.MockHanziRenderer
+import com.sworddao.phoenix.feature.reading.data.MockReadingRepository
 import com.sworddao.phoenix.feature.vocabulary.data.MockVocabularyRepository
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyResult
 import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
@@ -58,6 +60,7 @@ class DialogueViewModelActionTest {
     private lateinit var mockVocabularyRepository: FakeVocabularyRepository
     private lateinit var mockPronunciationRepository: MockPronunciationRepository
     private lateinit var mockListeningRepository: MockListeningRepository
+    private lateinit var mockReadingRepository: MockReadingRepository
     private lateinit var dialogueResultHolder: DialogueResultHolder
 
     @Before
@@ -81,6 +84,16 @@ class DialogueViewModelActionTest {
             gameProgressRepository = MockGameProgressRepository(),
             passportRepository = MockPassportRepository(),
             pronunciationRepository = mockPronunciationRepository,
+        )
+        mockReadingRepository = MockReadingRepository(
+            vocabularyRepository = MockVocabularyRepository(),
+            questRepository = MockQuestRepository(),
+            friendshipRepository = MockFriendshipRepository(),
+            gameProgressRepository = MockGameProgressRepository(),
+            passportRepository = MockPassportRepository(),
+            pronunciationRepository = mockPronunciationRepository,
+            listeningRepository = mockListeningRepository,
+            hanziRenderer = MockHanziRenderer(),
         )
         dialogueResultHolder = DialogueResultHolder()
     }
@@ -109,6 +122,7 @@ class DialogueViewModelActionTest {
             dialogueResultHolder = dialogueResultHolder,
             pronunciationRepository = mockPronunciationRepository,
             listeningRepository = mockListeningRepository,
+            readingRepository = mockReadingRepository,
         )
     }
 
@@ -586,6 +600,7 @@ private class FakeVocabularyRepository : VocabularyRepository {
     override suspend fun incrementReview(wordId: String) = VocabularyResult.Success("Incremented")
     override suspend fun incrementSpoken(wordId: String) = VocabularyResult.Success("Incremented")
     override suspend fun incrementHeard(wordId: String) = VocabularyResult.Success("Incremented")
+    override suspend fun incrementRead(wordId: String) = VocabularyResult.Success("Incremented")
     override suspend fun recordDiscovery(wordId: String, source: com.sworddao.phoenix.feature.vocabulary.data.VocabularySource) = VocabularyResult.Success("Recorded")
     override suspend fun addWords(words: List<com.sworddao.phoenix.feature.vocabulary.data.VocabularyWord>) = VocabularyResult.Success("Added")
 }

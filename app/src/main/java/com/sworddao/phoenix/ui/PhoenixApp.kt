@@ -46,6 +46,7 @@ import com.sworddao.phoenix.feature.world.ui.WorldMapScreen
 import com.sworddao.phoenix.feature.passport.ui.PassportScreen
 import com.sworddao.phoenix.feature.pronunciation.ui.PronunciationScreen
 import com.sworddao.phoenix.feature.listening.ui.ListeningScreen
+import com.sworddao.phoenix.feature.reading.ui.ReadingScreen
 import com.sworddao.phoenix.feature.vocabulary.ui.VocabularyScreen
 import com.sworddao.phoenix.feature.vocabulary.ui.VocabularyDetailScreen
 import com.sworddao.phoenix.feature.vocabulary.viewmodel.VocabularyViewModel
@@ -212,6 +213,9 @@ fun PhoenixApp(
                     },
                     onPracticeListening = {
                         navController.navigate(Screen.Listening.createRoute())
+                    },
+                    onPracticeReading = {
+                        navController.navigate(Screen.Reading.createRoute())
                     }
                 )
             }
@@ -243,6 +247,25 @@ fun PhoenixApp(
                 val wordId = backStackEntry.arguments?.getString("wordId") ?: ""
                 ListeningScreen(
                     wordId = wordId,
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    onComplete = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+            composable(
+                route = Screen.Reading.route,
+                arguments = listOf(
+                    navArgument("wordId") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+                val wordId = backStackEntry.arguments?.getString("wordId") ?: ""
+                ReadingScreen(
+                    wordId = wordId,
+                    showHanzi = accessibilityPrefs.showHanzi,
                     onBack = {
                         navController.popBackStack()
                     },
@@ -384,6 +407,9 @@ fun PhoenixApp(
                         },
                         onPracticeListening = { wordId ->
                             navController.navigate(Screen.Listening.createRoute(wordId))
+                        },
+                        onPracticeReading = { wordId ->
+                            navController.navigate(Screen.Reading.createRoute(wordId))
                         },
                     )
                 }

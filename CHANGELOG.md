@@ -126,6 +126,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Navigation route `listening/{wordId}` accessible from dialogue completion and vocabulary detail
   - Quest `quest_order_tea` gains a LISTEN_TO_AUDIO objective
   - Unit tests for models and repository
+- Reading & hanzi foundation (Feature 4.6)
+  - Reading data models (ReadingExercise, HanziCard, ReadingAttempt, ReadingSession, ReadingProgress, ReadingMastery, ReadingStatistics, ReadingBadge, ReadingSessionConfig)
+  - 8 exercise types (match spoken to written, match pinyin to hanzi, match hanzi to meaning, sentence reading, phrase recognition, character recognition, context reading, NPC dialogue reading) across 4 difficulties
+  - 14 initial reading exercises plus dynamic per-word exercise generation
+  - HanziRenderer interface with MockHanziRenderer for offline-first pinyin-first rendering (7 reveal states: hidden, pinyin-only, hanzi-only, hanzi+pinyin, tone-colored pinyin, tap-to-reveal, auto-reveal; masked `▢` hanzi and tone diacritic analysis)
+  - ReadingRepository interface with MockReadingRepository
+  - Session lifecycle with answer submission, reveal recording, streak tracking, and completion
+  - 8 reading badges (first read, 3/7/30-day streaks, quick eye, accurate, dialogue-ready, character collector)
+  - XP, friendship bonus, and personal-best rewards
+  - Integration with Dialogue (PRACTICE_READING action + bubble "阅读这句话" action), Vocabulary (timesRead), Quest (READ_CHARACTERS objectives), Game Progress (FIRST_READING milestone), Passport (READING_PRACTICE & ACHIEVEMENT_UNLOCKED entries), Pronunciation (unlocks linked speaking exercises), and Listening (unlocks linked listening exercises)
+  - ReadingViewModel with reveal state machine (startPractice, revealHanzi, setAutoRevealDelay, selectChoice, nextExercise)
+  - ReadingScreen with HanziDisplayCard, ToneColoredPinyin, ReadingChoiceCard, BaoReadingHint, RevealButton, and completion dialog
+  - Reduced-motion support for Bao animations
+  - Navigation route `reading/{wordId}` accessible from dialogue completion, NPC dialogue bubbles, and vocabulary detail
+  - Quest `quest_order_tea` gains a READ_CHARACTERS objective
+  - Unit tests for models and repository
+- Documentation for reading system and related system updates
 - Documentation for listening system and related system updates
 - Documentation for dialogue, NPC, quest, world, passport, and vocabulary systems
 - SPEC.md restructuring with fixed numbering, Non-Goals, Graduate Outcomes sections

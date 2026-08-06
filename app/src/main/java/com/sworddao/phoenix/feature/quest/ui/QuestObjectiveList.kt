@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
@@ -141,6 +142,7 @@ private fun getObjectiveIcon(type: ObjectiveType): ImageVector = when (type) {
     ObjectiveType.LEARN_VOCABULARY -> Icons.Filled.Star
     ObjectiveType.PRACTICE_SPEAKING -> Icons.Filled.Person
     ObjectiveType.LISTEN_TO_AUDIO -> Icons.Filled.Person
+    ObjectiveType.READ_CHARACTERS -> Icons.Filled.MenuBook
     ObjectiveType.PHOTOGRAPH -> Icons.Filled.Star
     ObjectiveType.DEFEAT_BOSS -> Icons.Filled.Star
     ObjectiveType.FIND_SECRET -> Icons.Filled.Star

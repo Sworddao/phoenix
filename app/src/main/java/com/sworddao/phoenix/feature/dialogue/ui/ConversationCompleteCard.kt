@@ -34,6 +34,7 @@ fun ConversationCompleteCard(
     modifier: Modifier = Modifier,
     onPractice: (() -> Unit)? = null,
     onPracticeListening: (() -> Unit)? = null,
+    onPracticeReading: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val contentDescription = context.getString(R.string.conversation_complete_accessibility)
@@ -97,6 +98,24 @@ fun ConversationCompleteCard(
             ) {
                 Text(
                     text = stringResource(R.string.listening_practice_button),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        if (onPracticeReading != null) {
+            Button(
+                onClick = onPracticeReading,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(28.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Text(
+                    text = stringResource(R.string.reading_practice_button),
                     fontWeight = FontWeight.Bold
                 )
             }

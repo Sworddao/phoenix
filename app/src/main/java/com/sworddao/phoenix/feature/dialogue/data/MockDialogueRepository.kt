@@ -350,6 +350,11 @@ class MockDialogueRepository @Inject constructor() : DialogueRepository {
                             value = "listen_ex_greet_hello,listen_ex_greet_thanks"
                         ),
                         DialogueAction(
+                            type = ActionType.PRACTICE_READING,
+                            targetId = "reading",
+                            value = "read_ex_greet_hello,read_ex_greet_thanks"
+                        ),
+                        DialogueAction(
                             type = ActionType.ADD_FRIENDSHIP_XP,
                             targetId = "grandma_mei",
                             value = "10"
