@@ -129,6 +129,19 @@
     <string name="navigation_home">Home</string>
     <string name="navigation_settings">Settings</string>
 
+    <!-- NPC Framework -->
+    <string name="npc_card_accessibility">%1$s, %2$s. Friendship level: %3$s. Tap to view details.</string>
+    <string name="npc_marker_accessibility">%1$s, %2$s. Tap to learn more.</string>
+    <string name="npc_info_accessibility">%1$s, %2$s. Personality: %3$s. Friendship: %4$s.</string>
+    <string name="npc_info_personality_label">Personality</string>
+    <string name="npc_info_description_label">About</string>
+    <string name="npc_info_friendship_label">Friendship</string>
+    <string name="npc_info_xp_format">%1$d / %2$d XP</string>
+    <string name="npc_info_next_level">Next level: %1$s</string>
+    <string name="npc_info_vocabulary_label">Teaches</string>
+    <string name="npc_list_title">Village Residents</string>
+    <string name="npc_empty_state">No NPCs found in this location.</string>
+
     <!-- Generic -->
     <string name="default_player_name">Friend</string>
 </resources>
