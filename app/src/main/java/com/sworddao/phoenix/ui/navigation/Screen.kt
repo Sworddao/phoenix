@@ -1,6 +1,7 @@
 package com.sworddao.phoenix.ui.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Flight
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -33,6 +34,7 @@ sealed class Screen(val route: String) {
     }
     data object Home : Screen("home")
     data object Settings : Screen("settings")
+    data object Passport : Screen("passport")
 }
 
 data class BottomNavigationItem(
@@ -44,12 +46,17 @@ data class BottomNavigationItem(
 val bottomNavigationItems = listOf(
     BottomNavigationItem(
         screen = Screen.Home,
-        label = "Home",
+        label = "首页",
         icon = Icons.Default.Home
     ),
     BottomNavigationItem(
+        screen = Screen.Passport,
+        label = "护照",
+        icon = Icons.Default.Flight
+    ),
+    BottomNavigationItem(
         screen = Screen.Settings,
-        label = "Settings",
+        label = "设置",
         icon = Icons.Default.Settings
     )
 )

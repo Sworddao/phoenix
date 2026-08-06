@@ -289,6 +289,39 @@
     <string name="world_map_error">错误</string>
     <string name="world_map_error_dismiss">确定</string>
 
+    <!-- Passport System -->
+    <string name="passport_title">护照</string>
+    <string name="passport_stats_title">旅行统计</string>
+    <string name="passport_stamps">印章</string>
+    <string name="passport_collectibles">收藏品</string>
+    <string name="passport_discoveries">发现</string>
+    <string name="passport_completion_format">完成度 %1$d%%</string>
+    <string name="passport_collection_progress">收藏品进度</string>
+    <string name="passport_collection_format">%1$d / %2$d 已收集</string>
+    <string name="passport_regions_title">区域护照</string>
+    <string name="passport_timeline_title">旅行日志</string>
+    <string name="passport_achievements_title">成就</string>
+    <string name="passport_region_detail">区域详情</string>
+    <string name="passport_exploration_progress">探索进度</string>
+    <string name="passport_stats_section">统计</string>
+    <string name="passport_stat_vocabulary">词汇: %1$d</string>
+    <string name="passport_stat_friendships">友谊: %1$d</string>
+    <string name="passport_stat_quests">任务: %1$d</string>
+    <string name="passport_stat_collectibles">收藏品: %1$d/%2$d</string>
+    <string name="passport_earn_stamp">获取印章</string>
+    <string name="passport_complete_region">完成区域</string>
+    <string name="passport_close">关闭</string>
+    <string name="passport_collectible_detail">收藏品详情</string>
+    <string name="passport_collectible_category">类别: %1$s</string>
+    <string name="passport_collectible_rarity">稀有度: %1$s</string>
+    <string name="passport_collectible_source">来源: %1$s</string>
+    <string name="passport_collection_grid_title">收藏品图鉴</string>
+    <string name="passport_collection_filter_all">全部</string>
+    <string name="passport_loading">加载中...</string>
+    <string name="passport_error">错误</string>
+    <string name="passport_error_dismiss">确定</string>
+    <string name="passport_navigation_label">护照</string>
+
     <!-- Region Names -->
     <string name="region_qingyuan_village">清远村</string>
     <string name="region_jade_forest">翡翠森林</string>

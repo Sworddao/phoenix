@@ -42,6 +42,7 @@ import com.sworddao.phoenix.feature.npc.viewmodel.NpcViewModel
 import com.sworddao.phoenix.feature.quest.ui.QuestDetailScreen
 import com.sworddao.phoenix.feature.quest.ui.QuestListScreen
 import com.sworddao.phoenix.feature.world.ui.WorldMapScreen
+import com.sworddao.phoenix.feature.passport.ui.PassportScreen
 import com.sworddao.phoenix.ui.viewmodel.ProfileViewModel
 
 @Composable
@@ -253,6 +254,14 @@ fun PhoenixApp(
                         // Future: navigate to region detail
                     },
                     onBackClick = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+            composable(Screen.Passport.route) {
+                PassportScreen(
+                    onBack = {
                         navController.popBackStack()
                     }
                 )
