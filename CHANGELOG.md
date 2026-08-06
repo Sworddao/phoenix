@@ -30,6 +30,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - FriendshipCard, FriendshipProgressBar, RelationshipBadge UI components
   - LevelUpDialog for celebration moments
   - Integration with dialogue engine for automatic XP gains
+- Quest system foundation with scalable architecture
+  - Quest data models (QuestType, QuestDifficulty, QuestStatus, QuestCategory)
+  - QuestObjective with progress tracking
+  - QuestReward with vocabulary, items, and unlockables
+  - QuestPrerequisite for progression gates
+  - QuestRepository interface with MockQuestRepository implementation
+  - QuestViewModel with filtering and state management
+  - QuestCard, QuestStatusBadge, QuestDifficultyChip UI components
+  - QuestObjectiveList with progress indicators
+  - QuestRewardCard displaying all reward types
+  - QuestCompletionDialog for celebration moments
+  - QuestListScreen with search and filtering
+  - QuestDetailScreen with objectives, rewards, and actions
+  - Navigation routes for quest screens
+  - Integration with QingyuanVillageScreen
+  - 12 sample quests across 3 chapters
+  - Unit tests for models and repository
 - Accessibility settings (Dad Mode, reduced motion, large text, high contrast)
 - Unit tests for data models and friendship system
 - Documentation for dialogue, NPC, and friendship systems
@@ -47,7 +64,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- Quest system
 - Audio playback
 - Vocabulary tracking
 - Additional NPC dialogues

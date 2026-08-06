@@ -60,6 +60,7 @@ fun QingyuanVillageScreen(
     playerName: String,
     onNavigateToDialogue: (String) -> Unit = {},
     onNavigateToNpcProfile: (String) -> Unit = {},
+    onNavigateToQuestList: () -> Unit = {},
     modifier: Modifier = Modifier,
     npcViewModel: NpcViewModel = hiltViewModel(),
     friendshipViewModel: FriendshipViewModel = hiltViewModel()
@@ -340,12 +341,23 @@ fun QingyuanVillageScreen(
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = stringResource(R.string.village_explore_prompt, playerName),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = stringResource(R.string.village_explore_prompt, playerName),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "点击任务按钮查看可用任务",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
     }
 

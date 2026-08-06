@@ -22,6 +22,7 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 - **NPC framework** — Reusable NPC system with friendship levels
 - **Dialogue system** — Branching conversations with player choices
 - **Friendship system** — NPC relationship progression with persistence
+- **Quest system** — Scalable architecture for story-driven quests
 - **Accessibility** — Dad Mode, reduced motion, large text, high contrast
 
 ---
@@ -82,8 +83,14 @@ Phoenix/
 │       │   │   ├── ui/              # Compose components
 │       │   │   ├── viewmodel/       # ViewModel
 │       │   │   └── di/              # Hilt module
-│       │   └── friendship/          # Friendship system
-│       │       ├── data/            # Models, entities, repository
+│       │   ├── friendship/          # Friendship system
+│       │   │   ├── data/            # Models, entities, repository
+│       │   │   ├── domain/          # Repository interface
+│       │   │   ├── ui/              # Compose components
+│       │   │   ├── viewmodel/       # ViewModel
+│       │   │   └── di/              # Hilt module
+│       │   └── quest/               # Quest system
+│       │       ├── data/            # Models & repository
 │       │       ├── domain/          # Repository interface
 │       │       ├── ui/              # Compose components
 │       │       ├── viewmodel/       # ViewModel
@@ -137,8 +144,10 @@ Each feature follows a consistent structure:
 7. **Qingyuan Village** — Interactive village exploration
 8. **NPC Profile** — NPC details, friendship progress, conversation history
 9. **Dialogue** — NPC conversations with branching choices
-10. **Home** — Main dashboard
-11. **Settings** — App configuration
+10. **Quest List** — Browse and filter available quests
+11. **Quest Detail** — View quest objectives, rewards, and progress
+12. **Home** — Main dashboard
+13. **Settings** — App configuration
 
 ---
 

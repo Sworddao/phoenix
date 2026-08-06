@@ -39,6 +39,8 @@ import com.sworddao.phoenix.R
 import com.sworddao.phoenix.feature.dialogue.ui.DialogueScreen
 import com.sworddao.phoenix.feature.friendship.ui.NPCProfileScreen
 import com.sworddao.phoenix.feature.npc.viewmodel.NpcViewModel
+import com.sworddao.phoenix.feature.quest.ui.QuestDetailScreen
+import com.sworddao.phoenix.feature.quest.ui.QuestListScreen
 import com.sworddao.phoenix.ui.viewmodel.ProfileViewModel
 
 @Composable
@@ -171,6 +173,9 @@ fun PhoenixApp(
                     },
                     onNavigateToNpcProfile = { npcId ->
                         navController.navigate(Screen.NpcProfile.createRoute(npcId))
+                    },
+                    onNavigateToQuestList = {
+                        navController.navigate(Screen.QuestList.route)
                     }
                 )
             }
@@ -210,6 +215,32 @@ fun PhoenixApp(
                         }
                     )
                 }
+            }
+
+            composable(Screen.QuestList.route) {
+                QuestListScreen(
+                    onQuestClick = { questId ->
+                        navController.navigate(Screen.QuestDetail.createRoute(questId))
+                    },
+                    onBackClick = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+            composable(
+                route = Screen.QuestDetail.route,
+                arguments = listOf(
+                    navArgument("questId") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+                val questId = backStackEntry.arguments?.getString("questId") ?: ""
+                QuestDetailScreen(
+                    questId = questId,
+                    onBackClick = {
+                        navController.popBackStack()
+                    }
+                )
             }
 
             composable(Screen.Home.route) {

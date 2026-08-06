@@ -23,6 +23,10 @@ sealed class Screen(val route: String) {
     data object NpcProfile : Screen("npc_profile/{npcId}") {
         fun createRoute(npcId: String) = "npc_profile/$npcId"
     }
+    data object QuestList : Screen("quest_list")
+    data object QuestDetail : Screen("quest_detail/{questId}") {
+        fun createRoute(questId: String) = "quest_detail/$questId"
+    }
     data object Home : Screen("home")
     data object Settings : Screen("settings")
 }
