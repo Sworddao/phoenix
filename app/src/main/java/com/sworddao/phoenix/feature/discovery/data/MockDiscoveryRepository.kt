@@ -6,6 +6,7 @@ import com.sworddao.phoenix.feature.vocabulary.data.VocabularyWord
 import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import java.util.UUID
@@ -171,24 +172,14 @@ class MockDiscoveryRepository @Inject constructor(
     ): DiscoveryResult {
         val existing = _discoveries.value.find { it.wordId == wordId }
         if (existing != null) {
-            val word = vocabularyRepository.getWordById(wordId)
-                .map { it }.let { flow ->
-                    var result: VocabularyWord? = null
-                    flow.collect { result = it }
-                    result
-                }
+            val word = vocabularyRepository.getWordById(wordId).first()
             return DiscoveryResult.WordAlreadyDiscovered(
                 word = word ?: createPlaceholderWord(wordId),
                 discovery = existing,
             )
         }
 
-        val word = vocabularyRepository.getWordById(wordId)
-            .map { it }.let { flow ->
-                var result: VocabularyWord? = null
-                flow.collect { result = it }
-                result
-            } ?: createPlaceholderWord(wordId)
+        val word = vocabularyRepository.getWordById(wordId).first() ?: createPlaceholderWord(wordId)
 
         val isFirst = !_discoveries.value.any { it.wordId == wordId }
         val reward = calculateReward(word, source, isFirst)
