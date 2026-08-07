@@ -90,7 +90,7 @@ jobs:
         target: google_apis
         profile: pixel_6
         emulator-options: -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect
-        emulator-boot-timeout: 600
+        emulator-boot-timeout: 3600
         disable-animations: true
         script: ./gradlew connectedDebugAndroidTest
 
