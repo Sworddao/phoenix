@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixes surfaced by persistence tests: `GiftRecord` marked `@Serializable`, `VocabularyDao.searchWords` now matches `hanzi`, seeded `vocabulary_progress` rows, `PlayerProgress` lambda marked `@Transient`
   - Full unit suite passes (898 tests, 0 failures)
 
+- Device smoke tests and CI emulator job
+  - `DeviceSmokeTest` instrumented tests validating the app boots to RESUMED, the real `phoenix_database` opens at v3 with all tables, v2→v3 migration preserves data on-device, and Room DAO round-trips persist
+  - GitHub Actions `device-smoke` job running `connectedDebugAndroidTest` on an API 35 emulator
+
 - Game progression & learning path system
   - Central XP engine (`XpSource`, `XpCalculator`) aggregating dialogue, vocabulary, quests, friendship, speaking, listening, reading, exploration, passport, and achievements
   - Level system (max level 100) with feature unlocks gated by level (speaking at 2, listening at 3, reading at 4, quest types at 5, NPCs at 7, conversations at 8, regions at 10)
