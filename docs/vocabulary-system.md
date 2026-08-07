@@ -147,7 +147,7 @@ Write operations (suspend):
 - `addWords(words)` — Add new vocabulary
 
 #### MockVocabularyRepository
-Singleton mock implementation with:
+Production binds the Room-backed `RoomVocabularyRepository`; the singleton mock below remains for tests and development. In-memory implementation with:
 - 100+ vocabulary entries across 12 categories
 - 3 undiscovered words for testing
 - Region-specific vocabulary (qingyuan_village, jade_forest, etc.)

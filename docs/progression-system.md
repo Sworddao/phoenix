@@ -12,7 +12,9 @@ It is the glue that makes the whole game feel like one journey: every action you
 feature/progression/
 ├── data/
 │   ├── ProgressionModels.kt          # XP rules, levels, unlocks, chapters, progress models
-│   └── MockProgressionRepository.kt  # Mock implementation aggregating all source systems
+│   ├── ProgressionEntities.kt        # Room persistence
+│   ├── RoomProgressionRepository.kt  # Production Room-backed implementation
+│   └── MockProgressionRepository.kt  # In-memory implementation for tests/dev
 ├── domain/
 │   └── ProgressionRepository.kt      # Repository interface
 ├── viewmodel/
@@ -69,7 +71,7 @@ The 12 world regions (chapter 1–5, Qingyuan Village → Phoenix Summit) map 1:
 
 ## Aggregation & Snapshot Deltas
 
-`MockProgressionRepository` is `@Singleton` and injects the 10 source repositories (game progress, world, quest, passport, vocabulary, friendship, discovery, pronunciation, listening, reading). On `refresh()` it:
+Production binds the Room-backed `RoomProgressionRepository`. `MockProgressionRepository` is `@Singleton` and injects the 10 source repositories (game progress, world, quest, passport, vocabulary, friendship, discovery, pronunciation, listening, reading). On `refresh()` it:
 
 1. **Snapshots** the current counters (dialogues, words discovered, quests completed, friendship levels, passport stamps, practices, regions, achievements).
 2. **Applies deltas** versus the previous snapshot, awarding XP per source and recording daily activities.

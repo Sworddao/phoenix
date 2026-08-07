@@ -11,7 +11,9 @@ feature/pronunciation/
 ├── data/
 │   ├── PronunciationModels.kt       # Data classes and enums
 │   ├── PronunciationEngine.kt       # Engine interface + MockPronunciationEngine
-│   └── MockPronunciationRepository.kt # Mock implementation with system integrations
+│   ├── SpeakingEntities.kt, SpeakingMappers.kt   # Room persistence
+│   ├── RoomPronunciationRepository.kt # Production Room-backed implementation
+│   └── MockPronunciationRepository.kt # In-memory implementation for tests/dev
 ├── domain/
 │   └── PronunciationRepository.kt   # Repository interface
 ├── viewmodel/
@@ -102,6 +104,7 @@ Future-proof objective type for quest-integrated speaking targets (exercise type
 - **Evaluation** — `evaluatePronunciation` (audio path) and `evaluatePronunciationOffline` (text) returning evaluated `PronunciationAttempt`s
 
 ### MockPronunciationRepository Behavior
+Production binds the Room-backed `RoomPronunciationRepository`; the mock below documents the in-memory behavior retained for tests and development.
 
 - **Selection** — filters unlocked exercises by config (wordIds, phraseIds, type/difficulty); words without a matching exercise are **dynamically generated** (`dynamic_<wordId>`) from the vocabulary repository and added to the catalog
 - **Success threshold** — `SUCCESS_THRESHOLD = 0.7`; `wasSuccessful` below it

@@ -13,7 +13,8 @@ feature/friendship/
 │   ├── FriendshipEntities.kt        # Room persistence entities
 │   ├── FriendshipDao.kt             # Room DAO for database operations
 │   ├── FriendshipMappers.kt         # Entity <-> Domain mappers
-│   └── MockFriendshipRepository.kt  # Mock implementation
+│   ├── RoomFriendshipRepository.kt  # Production Room-backed implementation
+│   └── MockFriendshipRepository.kt  # In-memory implementation for tests/dev
 ├── domain/
 │   └── FriendshipRepository.kt      # Repository interface
 ├── ui/

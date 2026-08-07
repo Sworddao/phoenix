@@ -137,7 +137,7 @@ Defines data access methods:
 - `unlockFastTravel(id)` — Enable fast travel
 
 #### MockWorldRepository
-In-memory implementation with:
+Production binds the Room-backed `RoomWorldRepository`; the in-memory mock below remains for tests and development. In-memory implementation with:
 - 12 regions across 5 chapters
 - 26 locations across all regions
 - 3 collectible items

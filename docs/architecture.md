@@ -18,10 +18,10 @@ Phoenix follows **MVVM + Clean Architecture** with a feature-first modular appro
 - **Domain models** (future)
 
 ### 3. Data Layer
-- **Repository implementations** for data access
-- **Room** for local database
+- **Repository implementations** for data access — production features bind `Room{Feature}Repository` implementations backed by `PhoenixDatabase`; `Mock{Feature}Repository` in-memory implementations are retained for development and unit tests
+- **Room** for local database (v3, 59 entities, 13 DAOs, `MIGRATION_2_3`)
 - **DataStore** for preferences
-- **Mock repositories** for development
+- **Seed data** under `data/seed/` for Room repository seeding
 
 ## MVVM Pattern
 
@@ -32,7 +32,7 @@ ViewModel (StateFlow)
     ↓ calls
 Repository (Interface)
     ↓ implements
-MockRepository / Room / DataStore
+Room{Feature}Repository / Mock{Feature}Repository / DataStore
 ```
 
 ### View
@@ -81,9 +81,11 @@ feature/
 abstract class FeatureModule {
     @Binds
     @Singleton
-    abstract fun bindRepository(impl: MockRepository): Repository
+    abstract fun bindRepository(impl: RoomFeatureRepository): Repository
 }
 ```
+
+Room-backed features bind their `Room{Feature}Repository`; features without persistence yet (`npc`, `dialogue`) bind `Mock{Feature}Repository`. `DatabaseModule` provides `PhoenixDatabase`, all 13 DAOs, and `MIGRATION_2_3`.
 
 ### Benefits
 - **Loose coupling** — Dependencies are injected
@@ -145,11 +147,12 @@ NavHost(navController, startDestination = Screen.Home.route) {
 
 ### Unit Tests
 - **Models** — Data class logic
-- **Repository** — Data operations
+- **Repository** — Data operations (mock and Room-backed via `RoomTestDb`)
 - **ViewModel** — State management
+- **Migration** — Room schema migration integrity (`PhoenixDatabaseMigrationTest`)
 
 ### Integration Tests
-- **Repository + Database** — Room operations
+- **Repository + Database** — Room operations against an in-memory `Room.inMemoryDatabaseBuilder` instance (Robolectric)
 - **ViewModel + Repository** — Full flow
 
 ### UI Tests
@@ -214,7 +217,7 @@ Hardware-adjacent capabilities are hidden behind interface abstractions so the o
 
 The pronunciation and listening features form a second offline-first practice loop alongside vocabulary/flashcards: each is a full exercise → attempt → reward workflow (`feature/pronunciation/` and `feature/listening/`) behind its own engine abstraction. Both features share the reduced-motion helper `rememberReducedMotion()` from `ui/components/Accessibility.kt` for pulsing animations.
 
-The review system (`feature/review/`) closes the learning loop: a pure `SpacedRepetitionEngine` computes per-word memory strength from every answer and practice mode, a repository schedules reviews from all 9 activity sources via snapshot deltas, and each completed session feeds 15 XP back into the progression engine. The same repository interface pattern means the in-memory mock can be swapped for Room without touching UI.
+The review system (`feature/review/`) closes the learning loop: a pure `SpacedRepetitionEngine` computes per-word memory strength from every answer and practice mode, a repository schedules reviews from all 9 activity sources via snapshot deltas, and each completed session feeds 15 XP back into the progression engine. All game systems are persisted in Room; the in-memory mock repositories remain available for tests and development.
 
 ### Benefits
 - **No internet required** — Full functionality offline
@@ -230,9 +233,8 @@ The review system (`feature/review/`) closes the learning loop: a pure `SpacedRe
 - **WorkManager** — Background tasks
 - **Room** — Advanced queries
 - **DataStore** — Complex preferences
-- **Vocabulary persistence** — Room database for vocabulary
-- **Discovery persistence** — Room database for discovery history
-- **Listening progress persistence** — Room database for listening progress
+- **Dialogue & NPC persistence** — Room persistence for dialogue history and NPC relationships (currently in-memory mocks)
+- **Data sync/export** — Cloud or file-based backup of the Room database
 
 ### Scalability
 - **Feature modules** — Independent development

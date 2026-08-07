@@ -32,6 +32,7 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 - **Reading & hanzi foundation** — Offline pinyin-first reading practice with hanzi renderer abstraction
 - **Game progression & learning path** — Central XP/level engine aggregating all systems, feature unlocks, chapter gating, daily goals, and learning percentages
 - **Adaptive review & spaced repetition** — Smart review engine with per-word memory model, adaptive scheduling, daily goals, and review statistics
+- **Room persistence** — All game systems persisted locally in a Room database (v3, 59 entities, 13 DAOs); dialogue and NPC remain in-memory mocks pending persistence
 - **Accessibility** — Dad Mode, reduced motion, large text, high contrast
 
 ---
@@ -75,9 +76,10 @@ Phoenix/
 ├── app/
 │   └── src/main/java/com/sworddao/phoenix/
 │       ├── data/                    # Data layer
-│       │   ├── local/               # Room database
+│       │   ├── local/               # Room database, DAOs, migrations
 │       │   ├── model/               # Data models
-│       │   └── preferences/         # DataStore preferences
+│       │   ├── preferences/         # DataStore preferences
+│       │   └── seed/                # Seed data for Room repositories
 │       ├── di/                      # Dependency injection
 │       ├── feature/
 │       │   ├── npc/                 # NPC framework
@@ -124,6 +126,12 @@ Phoenix/
 │       │   │   └── di/              # Hilt module
 │       │   └── discovery/           # Vocabulary discovery system
 │       │       ├── data/            # Models & repository
+│       │       ├── domain/          # Repository interface
+│       │       ├── ui/              # Compose components
+│       │       ├── viewmodel/       # ViewModel
+│       │       └── di/              # Hilt module
+│       │   └── gameplay/            # Game progress & milestones
+│       │       ├── data/            # Models, entities & repository
 │       │       ├── domain/          # Repository interface
 │       │       ├── ui/              # Compose components
 │       │       ├── viewmodel/       # ViewModel
@@ -183,6 +191,7 @@ Phoenix follows **MVVM + Clean Architecture** with:
 - **Jetpack Compose** for declarative UI
 - **Material 3** for design system
 - **Kotlin Coroutines** for async operations
+- **Room** for offline-first local persistence of all game systems
 - **Offline-first** philosophy throughout
 
 ### Feature Organization
@@ -220,6 +229,18 @@ Each feature follows a consistent structure:
 20. **Review** — Adaptive review dashboard, daily goals, memory strengths, and review sessions
 21. **Home** — Main dashboard
 22. **Settings** — App configuration
+
+---
+
+## Testing
+
+Unit tests live in `app/src/test` and run with:
+
+```
+./gradlew testDebugUnitTest
+```
+
+The suite covers data models, repository logic (both mock and Room-backed via an in-memory `RoomTestDb` harness using Robolectric), ViewModels, the spaced repetition engine, and database migration integrity. Current status: **898 tests, 0 failures**.
 
 ---
 

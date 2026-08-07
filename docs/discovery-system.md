@@ -167,7 +167,7 @@ Write operations (suspend):
 - `clearDiscoveryHistory()` — Clear all history
 
 #### MockDiscoveryRepository
-Singleton mock implementation with:
+Production binds the Room-backed `RoomDiscoveryRepository`; the singleton mock below remains for tests and development. In-memory implementation with:
 - 8 pre-seeded discoveries across multiple sources
 - VocabularyRepository dependency for word validation
 - MutableStateFlow-based state management

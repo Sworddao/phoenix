@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Room persistence layer for all game systems
+  - `PhoenixDatabase` v3 with 59 entities and 13 DAOs covering vocabulary, discovery, quests, game progress, passport, world, friendship, reading, listening, speaking, review, progression, and app metadata
+  - `MIGRATION_2_3` for automatic database upgrades from v2 with schema integrity tests
+  - Room-backed repository implementations for 12 features (vocabulary, discovery, friendship, gameplay, listening, passport, progression, pronunciation, quest, reading, review, world) — dialogue and NPC remain in-memory mocks pending persistence
+  - Seed data extracted to `data/seed/` (vocabulary, discovery, quest, world, passport, pronunciation, listening, reading, dialogue, NPC)
+  - `RoomJson` JSON document storage via kotlinx.serialization for snapshot/history documents (game progress, progression, review memory)
+  - `AppMetadata` entity with app-metadata DAO for per-word practice fields
+  - Hilt `DatabaseModule` providing the Room database, all 13 DAOs, and the v2→v3 migration; feature DI modules updated to bind Room-backed implementations
+  - Robolectric-based Room repository tests via `RoomTestDb` in-memory database harness plus `PhoenixDatabaseMigrationTest`
+  - Fixes surfaced by persistence tests: `GiftRecord` marked `@Serializable`, `VocabularyDao.searchWords` now matches `hanzi`, seeded `vocabulary_progress` rows, `PlayerProgress` lambda marked `@Transient`
+  - Full unit suite passes (898 tests, 0 failures)
+
 - Game progression & learning path system
   - Central XP engine (`XpSource`, `XpCalculator`) aggregating dialogue, vocabulary, quests, friendship, speaking, listening, reading, exploration, passport, and achievements
   - Level system (max level 100) with feature unlocks gated by level (speaking at 2, listening at 3, reading at 4, quest types at 5, NPCs at 7, conversations at 8, regions at 10)
@@ -20,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Snapshot-delta aggregation that awards XP automatically from all source systems
   - Progression screen with level card, daily card, learning bars, chapter progress, objectives, recent unlocks, and feature unlock timeline
   - ProgressionViewModel observing all source systems for live refresh
-  - Unit tests for XP math, level-ups, feature unlocks, snapshot deltas, chapters, and daily goals (563 tests total)
+  - Unit tests for XP math, level-ups, feature unlocks, snapshot deltas, chapters, and daily goals (898 tests total)
   - Progression entry button in Qingyuan Village
 
 - Adaptive review & spaced repetition system
@@ -31,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Review sessions (conversation, listening, speaking, reading, mixed, NPC challenge, quest review, daily) with answer scoring and XP integration (15 XP per session via XpSource.REVIEW)
   - Review dashboard with today's reviews, daily goal, Bao recommendations, statistics, upcoming reviews, and memory strengths
   - ReviewViewModel handling dashboard, sessions, and completion flow
-  - Unit tests for engine, models, repository, and ViewModel (683 tests total, 120 for review)
+  - Unit tests for engine, models, repository, and ViewModel (898 tests total, 120 for review)
   - Review entry button in Qingyuan Village
 
 - Project specification (SPEC.md)
@@ -173,6 +185,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Migrated repository implementations from in-memory mocks to Room-backed storage (dialogue and NPC remain in-memory mocks pending persistence)
+- `app/build.gradle.kts`: added KSP Room schema configuration, Robolectric test options, and Room/AndroidX-test dependencies
 - Updated NPC markers to navigate to NPCProfileScreen instead of info dialog
 - Updated QingyuanVillageScreen with friendship context
 - Updated PhoenixApp navigation for NPC profile route

@@ -11,7 +11,9 @@ feature/listening/
 ├── data/
 │   ├── ListeningModels.kt            # Data classes, enums, badges, result statuses
 │   ├── AudioEngine.kt                # Audio engine interface + MockAudioEngine
-│   └── MockListeningRepository.kt    # Mock implementation with system integrations
+│   ├── ListeningEntities.kt, ListeningDao.kt, ListeningMappers.kt   # Room persistence
+│   ├── RoomListeningRepository.kt    # Production Room-backed implementation
+│   └── MockListeningRepository.kt    # In-memory implementation for tests/dev
 ├── domain/
 │   └── ListeningRepository.kt        # Repository interface
 ├── viewmodel/
@@ -97,6 +99,7 @@ Rolled-up analytics: session/attempt/correct counts, total replay count, total a
 - **Administration** — `updateProgress`, `unlockExercise`, `recordStreak`, `awardBadge`, `addExercises`, `recordReplay`
 
 ### MockListeningRepository Behavior
+Production binds the Room-backed `RoomListeningRepository`; the mock below documents the in-memory behavior retained for tests and development.
 
 - **Selection** — filters unlocked exercises by config (wordIds first, then npcId/questId, then type+difficulty); words without a matching exercise are **dynamically generated** (`listen_dynamic_<wordId>`) from the vocabulary repository
 - **Streaks** — daily-boundary semantics; consecutive days increment, missed days reset; longest streak tracked and mirrored into statistics

@@ -12,9 +12,11 @@ Every completed review session feeds back into the Progression System (15 XP per
 feature/review/
 ├── data/
 │   ├── ReviewModels.kt              # Memory model, schedules, sessions, results, engine
-│   └── MockReviewRepository.kt      # Mock implementation scheduling from all source systems
+│   ├── ReviewEntities.kt, ReviewDao.kt, ReviewMappers.kt   # Room persistence
+│   ├── RoomReviewRepository.kt      # Production Room-backed implementation
+│   └── MockReviewRepository.kt      # In-memory implementation for tests/dev
 ├── domain/
-│   └── ReviewRepository.kt          # Repository interface (Room-replaceable)
+│   └── ReviewRepository.kt          # Repository interface
 ├── viewmodel/
 │   └── ReviewViewModel.kt           # Dashboard + session ViewModel
 ├── di/
@@ -66,7 +68,7 @@ Existing vocabulary state is honored on first seed: mastery maps to starting str
 `ReviewSource` (9): VOCABULARY, DIALOGUE, SPEAKING, LISTENING, READING, NPC_CONVERSATION, QUEST, FRIENDSHIP, EXPLORATION.
 `ReviewType` (8): CONVERSATION, LISTENING, SPEAKING, READING, MIXED, NPC_CHALLENGE, QUEST_REVIEW, DAILY_REVIEW.
 
-`MockReviewRepository` is `@Singleton` and injects the 10 source repositories (vocabulary, game progress, quest, friendship, world, passport, pronunciation, listening, reading, progression). On `refresh()` it:
+Production binds the Room-backed `RoomReviewRepository`. `MockReviewRepository` is `@Singleton` and injects the 10 source repositories (vocabulary, game progress, quest, friendship, world, passport, pronunciation, listening, reading, progression). On `refresh()` it:
 
 1. **Seeds** memory entries + review items for discovered words needing review (once).
 2. **Snapshots** source counters (words discovered, dialogues, quests completed, friendship levels, passport stamps, speaking/listening/reading practices, regions unlocked).

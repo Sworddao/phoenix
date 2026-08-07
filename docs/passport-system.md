@@ -204,7 +204,7 @@ Write operations (suspend):
 - `getPassportStats()` — Get aggregated stats
 
 #### MockPassportRepository
-Singleton mock implementation with:
+Production binds the Room-backed `RoomPassportRepository`; the singleton mock below remains for tests and development. In-memory implementation with:
 - 12 regions across 5 chapters
 - ~48 collectibles across 20 categories
 - 9 achievements

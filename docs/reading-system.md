@@ -11,7 +11,9 @@ feature/reading/
 ├── data/
 │   ├── ReadingModels.kt             # Data classes, enums, badges, result statuses
 │   ├── HanziRenderer.kt             # Hanzi renderer interface + MockHanziRenderer
-│   └── MockReadingRepository.kt     # Mock implementation with system integrations
+│   ├── ReadingEntities.kt, ReadingDao.kt, ReadingMappers.kt   # Room persistence
+│   ├── RoomReadingRepository.kt     # Production Room-backed implementation
+│   └── MockReadingRepository.kt     # In-memory implementation for tests/dev
 ├── domain/
 │   └── ReadingRepository.kt         # Repository interface
 ├── viewmodel/
@@ -91,6 +93,7 @@ Rolled-up analytics: session/attempt/correct counts, total reveals, streaks, wor
 - **Administration** — `updateProgress`, `unlockExercise`, `recordStreak`, `awardBadge`, `addExercises`, `recordReveal`
 
 ### MockReadingRepository Behavior
+Production binds the Room-backed `RoomReadingRepository`; the mock below documents the in-memory behavior retained for tests and development.
 
 - **Selection** — filters unlocked exercises by config (wordIds first, then npcId/questId, then type+difficulty); words without a matching exercise are **dynamically generated** (`read_dynamic_<wordId>`) from the vocabulary repository with safe hanzi fallback
 - **Streaks** — daily-boundary semantics; consecutive days increment, missed days reset; longest streak tracked and mirrored into statistics

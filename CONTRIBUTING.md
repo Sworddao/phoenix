@@ -33,9 +33,10 @@ Thank you for your interest in contributing to Phoenix! This document provides g
 ### Testing
 
 ```bash
-./gradlew test
-./gradlew connectedAndroidTest
+./gradlew testDebugUnitTest
 ```
+
+The unit suite covers data models, repositories (mock and Room-backed via an in-memory `RoomTestDb` harness), ViewModels, the spaced repetition engine, and Room migration integrity (currently 898 tests).
 
 ---
 

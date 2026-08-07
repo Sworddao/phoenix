@@ -93,7 +93,7 @@ Defines data access methods:
 - `checkPrerequisites(id)` — Verify requirements
 
 #### MockQuestRepository
-In-memory implementation with:
+Production binds the Room-backed `RoomQuestRepository`; the in-memory mock below remains for tests and development. In-memory implementation with:
 - 12 sample quests across 3 chapters
 - Progress persistence
 - Automatic prerequisite unlocking
