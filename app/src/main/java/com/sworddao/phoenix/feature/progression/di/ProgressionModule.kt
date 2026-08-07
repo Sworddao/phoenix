@@ -1,6 +1,6 @@
 package com.sworddao.phoenix.feature.progression.di
 
-import com.sworddao.phoenix.feature.progression.data.MockProgressionRepository
+import com.sworddao.phoenix.feature.progression.data.RoomProgressionRepository
 import com.sworddao.phoenix.feature.progression.domain.ProgressionRepository
 import dagger.Binds
 import dagger.Module
@@ -15,6 +15,6 @@ abstract class ProgressionModule {
     @Binds
     @Singleton
     abstract fun bindProgressionRepository(
-        impl: MockProgressionRepository
+        impl: RoomProgressionRepository
     ): ProgressionRepository
 }

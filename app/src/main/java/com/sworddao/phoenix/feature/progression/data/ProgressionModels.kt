@@ -1,6 +1,7 @@
 package com.sworddao.phoenix.feature.progression.data
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 // ---------------------------------------------------------------------
 // XP Rules
@@ -157,6 +158,7 @@ data class PlayerProgress(
     val xpProgressInLevel: Float
         get() = if (xpToNextLevel > 0) (xpIntoLevel.toFloat() / xpToNextLevel).coerceIn(0f, 1f) else 1f
 
+    @Transient
     val isFeatureUnlocked: (FeatureUnlock) -> Boolean = { it in unlockedFeatures }
 
     fun hasFeature(feature: FeatureUnlock): Boolean = feature in unlockedFeatures

@@ -1,6 +1,6 @@
 package com.sworddao.phoenix.feature.world.di
 
-import com.sworddao.phoenix.feature.world.data.MockWorldRepository
+import com.sworddao.phoenix.feature.world.data.RoomWorldRepository
 import com.sworddao.phoenix.feature.world.domain.WorldRepository
 import dagger.Binds
 import dagger.Module
@@ -13,5 +13,5 @@ import javax.inject.Singleton
 abstract class WorldModule {
     @Binds
     @Singleton
-    abstract fun bindWorldRepository(impl: MockWorldRepository): WorldRepository
+    abstract fun bindWorldRepository(impl: RoomWorldRepository): WorldRepository
 }

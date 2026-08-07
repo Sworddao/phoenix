@@ -2,7 +2,7 @@ package com.sworddao.phoenix.feature.listening.di
 
 import com.sworddao.phoenix.feature.listening.data.AudioEngine
 import com.sworddao.phoenix.feature.listening.data.MockAudioEngine
-import com.sworddao.phoenix.feature.listening.data.MockListeningRepository
+import com.sworddao.phoenix.feature.listening.data.RoomListeningRepository
 import com.sworddao.phoenix.feature.listening.domain.ListeningRepository
 import dagger.Binds
 import dagger.Module
@@ -17,7 +17,7 @@ abstract class ListeningModule {
     @Binds
     @Singleton
     abstract fun bindListeningRepository(
-        impl: MockListeningRepository
+        impl: RoomListeningRepository
     ): ListeningRepository
 
     @Binds

@@ -1,0 +1,441 @@
+package com.sworddao.phoenix.data.seed
+
+
+import com.sworddao.phoenix.feature.quest.data.ObjectiveType
+import com.sworddao.phoenix.feature.quest.data.Quest
+import com.sworddao.phoenix.feature.quest.data.QuestCategory
+import com.sworddao.phoenix.feature.quest.data.QuestDifficulty
+import com.sworddao.phoenix.feature.quest.data.QuestObjective
+import com.sworddao.phoenix.feature.quest.data.QuestPrerequisite
+import com.sworddao.phoenix.feature.quest.data.QuestReward
+import com.sworddao.phoenix.feature.quest.data.QuestStatus
+import com.sworddao.phoenix.feature.quest.data.QuestType
+
+object QuestSeedData {
+
+fun createMockQuests(): List<Quest> = listOf(
+        // Chapter 1: First Steps in Qingyuan
+        Quest(
+            id = "quest_help_grandma_mei",
+            title = "帮助梅奶奶",
+            description = "梅奶奶需要你帮她买一些包饺子的食材。这是你学习中文的好机会！",
+            type = QuestType.CONVERSATION,
+            difficulty = QuestDifficulty.EASY,
+            status = QuestStatus.AVAILABLE,
+            category = QuestCategory.STORY,
+            objectives = listOf(
+                QuestObjective(
+                    id = "obj_1_1",
+                    type = ObjectiveType.TALK_TO_NPC,
+                    description = "和梅奶奶对话",
+                    targetId = "npc_mei",
+                    targetCount = 1,
+                ),
+                QuestObjective(
+                    id = "obj_1_2",
+                    type = ObjectiveType.LEARN_VOCABULARY,
+                    description = "学习食材词汇",
+                    targetCount = 5,
+                ),
+                QuestObjective(
+                    id = "obj_1_3",
+                    type = ObjectiveType.COLLECT_ITEM,
+                    description = "收集饺子食材",
+                    targetId = "item_dumpling_ingredients",
+                    targetCount = 3,
+                ),
+            ),
+            rewards = QuestReward(
+                experience = 15,
+                vocabulary = listOf("饺子", "面粉", "白菜", "猪肉", "葱"),
+                friendshipPoints = 10,
+            ),
+            npcId = "npc_mei",
+            locationId = "location_mei_house",
+            dialogueId = "dialogue_mei_ingredients",
+            chapter = 1,
+            order = 1,
+        ),
+        Quest(
+            id = "quest_buy_dumplings",
+            title = "买饺子",
+            description = "帮梅奶奶去李叔叔的饺子店买一些饺子。学习如何在餐馆点餐。",
+            type = QuestType.CONVERSATION,
+            difficulty = QuestDifficulty.EASY,
+            status = QuestStatus.LOCKED,
+            category = QuestCategory.STORY,
+            objectives = listOf(
+                QuestObjective(
+                    id = "obj_2_1",
+                    type = ObjectiveType.TALK_TO_NPC,
+                    description = "和李叔叔对话",
+                    targetId = "npc_li",
+                    targetCount = 1,
+                ),
+                QuestObjective(
+                    id = "obj_2_2",
+                    type = ObjectiveType.LEARN_VOCABULARY,
+                    description = "学习点餐词汇",
+                    targetCount = 5,
+                ),
+                QuestObjective(
+                    id = "obj_2_3",
+                    type = ObjectiveType.PRACTICE_SPEAKING,
+                    description = "练习点餐对话",
+                    targetCount = 3,
+                ),
+            ),
+            rewards = QuestReward(
+                experience = 15,
+                vocabulary = listOf("饺子", "买单", "谢谢", "好吃", "便宜"),
+                friendshipPoints = 10,
+            ),
+            prerequisites = QuestPrerequisite(questIds = listOf("quest_help_grandma_mei")),
+            npcId = "npc_li",
+            locationId = "location_dumpling_shop",
+            dialogueId = "dialogue_li_dumplings",
+            chapter = 1,
+            order = 2,
+        ),
+        Quest(
+            id = "quest_order_tea",
+            title = "买茶",
+            description = "去茶馆帮梅奶奶买一壶龙井茶。学习茶文化相关词汇。",
+            type = QuestType.CONVERSATION,
+            difficulty = QuestDifficulty.MEDIUM,
+            status = QuestStatus.LOCKED,
+            category = QuestCategory.STORY,
+            objectives = listOf(
+                QuestObjective(
+                    id = "obj_3_1",
+                    type = ObjectiveType.TALK_TO_NPC,
+                    description = "和茶馆老板对话",
+                    targetId = "npc_cha_guan",
+                    targetCount = 1,
+                ),
+                QuestObjective(
+                    id = "obj_3_2",
+                    type = ObjectiveType.LEARN_VOCABULARY,
+                    description = "学习茶文化词汇",
+                    targetCount = 6,
+                ),
+                QuestObjective(
+                    id = "obj_3_3",
+                    type = ObjectiveType.PRACTICE_SPEAKING,
+                    description = "练习买茶对话",
+                    targetCount = 3,
+                ),
+                QuestObjective(
+                    id = "obj_3_4",
+                    type = ObjectiveType.LISTEN_TO_AUDIO,
+                    description = "聆听茶馆里的对话",
+                    targetCount = 3,
+                ),
+                QuestObjective(
+                    id = "obj_3_5",
+                    type = ObjectiveType.READ_CHARACTERS,
+                    description = "阅读茶馆菜单上的汉字",
+                    targetCount = 4,
+                ),
+            ),
+            rewards = QuestReward(
+                experience = 20,
+                vocabulary = listOf("茶", "龙井", "一壶", "好喝", "茶馆", "杯子"),
+                friendshipPoints = 15,
+            ),
+            prerequisites = QuestPrerequisite(questIds = listOf("quest_buy_dumplings")),
+            npcId = "npc_cha_guan",
+            locationId = "location_tea_house",
+            dialogueId = "dialogue_tea_order",
+            chapter = 1,
+            order = 3,
+        ),
+        Quest(
+            id = "quest_visit_temple",
+            title = "参观寺庙",
+            description = "去清源山的古寺参观，了解中国传统文化和佛教词汇。",
+            type = QuestType.EXPLORATION,
+            difficulty = QuestDifficulty.MEDIUM,
+            status = QuestStatus.LOCKED,
+            category = QuestCategory.EXPLORATION,
+            objectives = listOf(
+                QuestObjective(
+                    id = "obj_4_1",
+                    type = ObjectiveType.VISIT_LOCATION,
+                    description = "到达古寺",
+                    targetId = "location_temple",
+                    targetCount = 1,
+                ),
+                QuestObjective(
+                    id = "obj_4_2",
+                    type = ObjectiveType.PHOTOGRAPH,
+                    description = "拍摄寺庙照片",
+                    targetCount = 3,
+                ),
+                QuestObjective(
+                    id = "obj_4_3",
+                    type = ObjectiveType.LEARN_VOCABULARY,
+                    description = "学习寺庙词汇",
+                    targetCount = 5,
+                ),
+            ),
+            rewards = QuestReward(
+                experience = 25,
+                vocabulary = listOf("寺庙", "和尚", "佛", "香", "祈祷", "文化"),
+                friendshipPoints = 10,
+            ),
+            prerequisites = QuestPrerequisite(questIds = listOf("quest_order_tea")),
+            locationId = "location_temple",
+            chapter = 1,
+            order = 4,
+        ),
+        Quest(
+            id = "quest_meet_wei",
+            title = "认识大学学生伟",
+            description = "在村口遇到一位大学生伟，和他聊天了解现代中国年轻人的生活。",
+            type = QuestType.CONVERSATION,
+            difficulty = QuestDifficulty.MEDIUM,
+            status = QuestStatus.LOCKED,
+            category = QuestCategory.STORY,
+            objectives = listOf(
+                QuestObjective(
+                    id = "obj_5_1",
+                    type = ObjectiveType.TALK_TO_NPC,
+                    description = "和伟对话",
+                    targetId = "npc_wei",
+                    targetCount = 1,
+                ),
+                QuestObjective(
+                    id = "obj_5_2",
+                    type = ObjectiveType.COMPLETE_DIALOGUE,
+                    description = "完成自我介绍对话",
+                    targetId = "dialogue_wei_intro",
+                    targetCount = 1,
+                ),
+                QuestObjective(
+                    id = "obj_5_3",
+                    type = ObjectiveType.EARN_FRIENDSHIP_POINTS,
+                    description = "获得伟的友谊",
+                    targetCount = 20,
+                ),
+            ),
+            rewards = QuestReward(
+                experience = 20,
+                vocabulary = listOf("大学", "学生", "专业", "学习", "朋友"),
+                friendshipPoints = 20,
+                unlockQuests = listOf("quest_wei_study_group"),
+            ),
+            prerequisites = QuestPrerequisite(questIds = listOf("quest_visit_temple")),
+            npcId = "npc_wei",
+            locationId = "location_village_entrance",
+            dialogueId = "dialogue_wei_intro",
+            chapter = 1,
+            order = 5,
+        ),
+
+        // Chapter 2: Daily Life
+        Quest(
+            id = "quest_daily_market",
+            title = "日常买菜",
+            description = "每天去市场买菜，学习日常购物用语。",
+            type = QuestType.DAILY,
+            difficulty = QuestDifficulty.EASY,
+            status = QuestStatus.LOCKED,
+            category = QuestCategory.DAILY,
+            objectives = listOf(
+                QuestObjective(
+                    id = "obj_6_1",
+                    type = ObjectiveType.TALK_TO_NPC,
+                    description = "和菜贩对话",
+                    targetId = "npc_vendor",
+                    targetCount = 1,
+                ),
+                QuestObjective(
+                    id = "obj_6_2",
+                    type = ObjectiveType.LEARN_VOCABULARY,
+                    description = "学习蔬菜词汇",
+                    targetCount = 5,
+                ),
+            ),
+            rewards = QuestReward(
+                experience = 10,
+                vocabulary = listOf("蔬菜", "水果", "肉", "鱼", "豆腐"),
+                friendshipPoints = 5,
+            ),
+            prerequisites = QuestPrerequisite(questIds = listOf("quest_meet_wei")),
+            npcId = "npc_vendor",
+            locationId = "location_market",
+            daily = true,
+            repeatable = true,
+            chapter = 2,
+            order = 1,
+        ),
+        Quest(
+            id = "quest_wei_study_group",
+            title = "伟的学习小组",
+            description = "加入伟的学习小组，和其他学生一起练习中文。",
+            type = QuestType.MINI_GAME,
+            difficulty = QuestDifficulty.MEDIUM,
+            status = QuestStatus.LOCKED,
+            category = QuestCategory.SKILL,
+            objectives = listOf(
+                QuestObjective(
+                    id = "obj_7_1",
+                    type = ObjectiveType.COMPLETE_MINI_GAME,
+                    description = "完成词汇游戏",
+                    targetCount = 3,
+                ),
+                QuestObjective(
+                    id = "obj_7_2",
+                    type = ObjectiveType.PRACTICE_SPEAKING,
+                    description = "练习口语",
+                    targetCount = 5,
+                ),
+            ),
+            rewards = QuestReward(
+                experience = 25,
+                vocabulary = listOf("游戏", "学习", "小组", "练习", "进步"),
+                friendshipPoints = 15,
+            ),
+            prerequisites = QuestPrerequisite(questIds = listOf("quest_meet_wei"), friendshipLevel = 1),
+            npcId = "npc_wei",
+            locationId = "location_study_room",
+            chapter = 2,
+            order = 2,
+        ),
+        Quest(
+            id = "quest_village_festival",
+            title = "村庄节日",
+            description = "参加清源村的传统节日活动，学习节日文化词汇。",
+            type = QuestType.STORY,
+            difficulty = QuestDifficulty.HARD,
+            status = QuestStatus.LOCKED,
+            category = QuestCategory.EVENT,
+            objectives = listOf(
+                QuestObjective(
+                    id = "obj_8_1",
+                    type = ObjectiveType.VISIT_LOCATION,
+                    description = "到达节日广场",
+                    targetId = "location_festival_square",
+                    targetCount = 1,
+                ),
+                QuestObjective(
+                    id = "obj_8_2",
+                    type = ObjectiveType.TALK_TO_NPC,
+                    description = "和3位村民对话",
+                    targetCount = 3,
+                ),
+                QuestObjective(
+                    id = "obj_8_3",
+                    type = ObjectiveType.PHOTOGRAPH,
+                    description = "拍摄节日照片",
+                    targetCount = 5,
+                ),
+                QuestObjective(
+                    id = "obj_8_4",
+                    type = ObjectiveType.LEARN_VOCABULARY,
+                    description = "学习节日词汇",
+                    targetCount = 8,
+                ),
+            ),
+            rewards = QuestReward(
+                experience = 40,
+                vocabulary = listOf("节日", "传统", "庆祝", "烟花", "红包", "舞龙", "灯笼", "团圆"),
+                friendshipPoints = 25,
+                unlockAreas = listOf("area_festival_market"),
+            ),
+            prerequisites = QuestPrerequisite(
+                questIds = listOf("quest_daily_market", "quest_wei_study_group"),
+            ),
+            locationId = "location_festival_square",
+            chapter = 2,
+            order = 3,
+        ),
+
+        // Chapter 3: Advanced Challenges
+        Quest(
+            id = "quest_mystery_solver",
+            title = "解开谜题",
+            description = "帮助村里老人解开一个古老的谜题。需要运用你学到的所有中文知识。",
+            type = QuestType.STORY,
+            difficulty = QuestDifficulty.HARD,
+            status = QuestStatus.LOCKED,
+            category = QuestCategory.CHALLENGE,
+            objectives = listOf(
+                QuestObjective(
+                    id = "obj_9_1",
+                    type = ObjectiveType.FIND_SECRET,
+                    description = "找到隐藏的线索",
+                    targetCount = 3,
+                ),
+                QuestObjective(
+                    id = "obj_9_2",
+                    type = ObjectiveType.COMPLETE_DIALOGUE,
+                    description = "完成推理对话",
+                    targetId = "dialogue_mystery",
+                    targetCount = 1,
+                ),
+                QuestObjective(
+                    id = "obj_9_3",
+                    type = ObjectiveType.LEARN_VOCABULARY,
+                    description = "学习高级词汇",
+                    targetCount = 10,
+                ),
+            ),
+            rewards = QuestReward(
+                experience = 50,
+                vocabulary = listOf("秘密", "线索", "谜题", "推理", "发现", "古老", "传说", "宝藏"),
+                friendshipPoints = 30,
+                unlockQuests = listOf("quest_treasure_hunt"),
+            ),
+            prerequisites = QuestPrerequisite(
+                questIds = listOf("quest_village_festival"),
+                friendshipLevel = 3,
+            ),
+            npcId = "npc_elder",
+            locationId = "location_elder_house",
+            chapter = 3,
+            order = 1,
+        ),
+        Quest(
+            id = "quest_treasure_hunt",
+            title = "寻宝之旅",
+            description = "根据谜题线索，在清源村寻找传说中的宝藏。",
+            type = QuestType.EXPLORATION,
+            difficulty = QuestDifficulty.EXPERT,
+            status = QuestStatus.LOCKED,
+            category = QuestCategory.CHALLENGE,
+            objectives = listOf(
+                QuestObjective(
+                    id = "obj_10_1",
+                    type = ObjectiveType.VISIT_LOCATION,
+                    description = "访问所有藏宝地点",
+                    targetCount = 5,
+                ),
+                QuestObjective(
+                    id = "obj_10_2",
+                    type = ObjectiveType.COLLECT_ITEM,
+                    description = "收集宝藏碎片",
+                    targetCount = 5,
+                ),
+                QuestObjective(
+                    id = "obj_10_3",
+                    type = ObjectiveType.ESCORT_NPC,
+                    description = "护送向导安全返回",
+                    targetCount = 1,
+                ),
+            ),
+            rewards = QuestReward(
+                experience = 75,
+                vocabulary = listOf("宝藏", "地图", "方向", "冒险", "勇敢"),
+                friendshipPoints = 40,
+                unlockAreas = listOf("area_hidden_cave"),
+            ),
+            prerequisites = QuestPrerequisite(questIds = listOf("quest_mystery_solver")),
+            locationId = "location_village",
+            chapter = 3,
+            order = 2,
+        ),
+    )
+
+}

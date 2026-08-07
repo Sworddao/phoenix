@@ -1,7 +1,7 @@
 package com.sworddao.phoenix.feature.discovery.di
 
 import com.sworddao.phoenix.feature.discovery.data.DiscoveryRepository
-import com.sworddao.phoenix.feature.discovery.data.MockDiscoveryRepository
+import com.sworddao.phoenix.feature.discovery.data.RoomDiscoveryRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,6 +15,6 @@ abstract class DiscoveryModule {
     @Binds
     @Singleton
     abstract fun bindDiscoveryRepository(
-        impl: MockDiscoveryRepository,
+        impl: RoomDiscoveryRepository,
     ): DiscoveryRepository
 }

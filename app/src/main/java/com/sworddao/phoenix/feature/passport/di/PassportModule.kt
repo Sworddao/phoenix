@@ -1,6 +1,6 @@
 package com.sworddao.phoenix.feature.passport.di
 
-import com.sworddao.phoenix.feature.passport.data.MockPassportRepository
+import com.sworddao.phoenix.feature.passport.data.RoomPassportRepository
 import com.sworddao.phoenix.feature.passport.domain.PassportRepository
 import dagger.Binds
 import dagger.Module
@@ -13,5 +13,5 @@ import javax.inject.Singleton
 abstract class PassportModule {
     @Binds
     @Singleton
-    abstract fun bindPassportRepository(impl: MockPassportRepository): PassportRepository
+    abstract fun bindPassportRepository(impl: RoomPassportRepository): PassportRepository
 }

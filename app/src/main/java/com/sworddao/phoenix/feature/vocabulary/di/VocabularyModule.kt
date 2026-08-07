@@ -1,6 +1,6 @@
 package com.sworddao.phoenix.feature.vocabulary.di
 
-import com.sworddao.phoenix.feature.vocabulary.data.MockVocabularyRepository
+import com.sworddao.phoenix.feature.vocabulary.data.RoomVocabularyRepository
 import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
 import dagger.Binds
 import dagger.Module
@@ -13,5 +13,5 @@ import javax.inject.Singleton
 abstract class VocabularyModule {
     @Binds
     @Singleton
-    abstract fun bindVocabularyRepository(impl: MockVocabularyRepository): VocabularyRepository
+    abstract fun bindVocabularyRepository(impl: RoomVocabularyRepository): VocabularyRepository
 }

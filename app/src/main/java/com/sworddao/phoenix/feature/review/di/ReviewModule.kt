@@ -1,6 +1,6 @@
 package com.sworddao.phoenix.feature.review.di
 
-import com.sworddao.phoenix.feature.review.data.MockReviewRepository
+import com.sworddao.phoenix.feature.review.data.RoomReviewRepository
 import com.sworddao.phoenix.feature.review.domain.ReviewRepository
 import dagger.Binds
 import dagger.Module
@@ -14,5 +14,5 @@ abstract class ReviewModule {
 
     @Binds
     @Singleton
-    abstract fun bindReviewRepository(implementation: MockReviewRepository): ReviewRepository
+    abstract fun bindReviewRepository(implementation: RoomReviewRepository): ReviewRepository
 }

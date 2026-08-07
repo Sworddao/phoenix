@@ -1,8 +1,8 @@
 package com.sworddao.phoenix.feature.pronunciation.di
 
 import com.sworddao.phoenix.feature.pronunciation.data.MockPronunciationEngine
-import com.sworddao.phoenix.feature.pronunciation.data.MockPronunciationRepository
 import com.sworddao.phoenix.feature.pronunciation.data.PronunciationEngine
+import com.sworddao.phoenix.feature.pronunciation.data.RoomPronunciationRepository
 import com.sworddao.phoenix.feature.pronunciation.domain.PronunciationRepository
 import dagger.Binds
 import dagger.Module
@@ -17,7 +17,7 @@ abstract class PronunciationModule {
     @Binds
     @Singleton
     abstract fun bindPronunciationRepository(
-        impl: MockPronunciationRepository
+        impl: RoomPronunciationRepository
     ): PronunciationRepository
 
     @Binds

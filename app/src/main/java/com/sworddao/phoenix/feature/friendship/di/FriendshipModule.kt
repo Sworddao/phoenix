@@ -1,6 +1,6 @@
 package com.sworddao.phoenix.feature.friendship.di
 
-import com.sworddao.phoenix.feature.friendship.data.MockFriendshipRepository
+import com.sworddao.phoenix.feature.friendship.data.RoomFriendshipRepository
 import com.sworddao.phoenix.feature.friendship.domain.FriendshipRepository
 import dagger.Binds
 import dagger.Module
@@ -15,6 +15,6 @@ abstract class FriendshipModule {
     @Binds
     @Singleton
     abstract fun bindFriendshipRepository(
-        mockFriendshipRepository: MockFriendshipRepository
+        roomFriendshipRepository: RoomFriendshipRepository
     ): FriendshipRepository
 }

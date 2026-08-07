@@ -1,6 +1,7 @@
 package com.sworddao.phoenix.feature.friendship.data
 
 import com.sworddao.phoenix.feature.npc.data.FriendshipLevel
+import kotlinx.serialization.Serializable
 
 data class FriendshipState(
     val npcId: String,
@@ -14,6 +15,7 @@ data class FriendshipState(
     val completedQuests: List<String> = emptyList()
 )
 
+@Serializable
 data class GiftRecord(
     val giftId: String,
     val giftName: String,

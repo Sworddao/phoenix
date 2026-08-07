@@ -1,5 +1,6 @@
 package com.sworddao.phoenix.feature.friendship.data
 
+import com.sworddao.phoenix.data.local.RoomJson
 import com.sworddao.phoenix.feature.npc.data.FriendshipLevel
 
 fun FriendshipEntity.toDomainModel(): FriendshipState {
@@ -11,6 +12,7 @@ fun FriendshipEntity.toDomainModel(): FriendshipState {
         firstMeetingTimestamp = firstMeetingTimestamp,
         lastInteractionTimestamp = lastInteractionTimestamp,
         unlockedTopics = if (unlockedTopics.isBlank()) emptyList() else unlockedTopics.split(","),
+        recentGifts = RoomJson.fromJsonList(recentGifts),
         completedQuests = if (completedQuests.isBlank()) emptyList() else completedQuests.split(",")
     )
 }
@@ -24,6 +26,7 @@ fun FriendshipState.toEntity(): FriendshipEntity {
         firstMeetingTimestamp = firstMeetingTimestamp,
         lastInteractionTimestamp = lastInteractionTimestamp,
         unlockedTopics = unlockedTopics.joinToString(","),
+        recentGifts = RoomJson.toJsonList(recentGifts),
         completedQuests = completedQuests.joinToString(",")
     )
 }
@@ -63,7 +66,8 @@ fun FriendshipEventEntity.toDomainModel(): FriendshipEvent {
         npcId = npcId,
         description = description,
         xpChange = xpChange,
-        timestamp = timestamp
+        timestamp = timestamp,
+        metadata = RoomJson.fromJsonMap(metadata)
     )
 }
 
@@ -74,6 +78,7 @@ fun FriendshipEvent.toEntity(): FriendshipEventEntity {
         npcId = npcId,
         description = description,
         xpChange = xpChange,
-        timestamp = timestamp
+        timestamp = timestamp,
+        metadata = RoomJson.toJson(metadata)
     )
 }

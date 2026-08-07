@@ -1,6 +1,6 @@
 package com.sworddao.phoenix.feature.gameplay.di
 
-import com.sworddao.phoenix.feature.gameplay.data.MockGameProgressRepository
+import com.sworddao.phoenix.feature.gameplay.data.RoomGameProgressRepository
 import com.sworddao.phoenix.feature.gameplay.domain.GameProgressRepository
 import dagger.Binds
 import dagger.Module
@@ -15,6 +15,6 @@ abstract class GameplayModule {
     @Binds
     @Singleton
     abstract fun bindGameProgressRepository(
-        impl: MockGameProgressRepository
+        impl: RoomGameProgressRepository
     ): GameProgressRepository
 }
