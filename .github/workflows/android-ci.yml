@@ -85,15 +85,19 @@ jobs:
       run: ./gradlew assembleDebug assembleDebugAndroidTest
 
     - name: Run device smoke tests on emulator
-      uses: reactivecircus/android-emulator-runner@v2
+      uses: wandalen/wretry.action@v3
       with:
-        api-level: 33
-        arch: x86_64
-        target: google_apis
-        profile: pixel_6
-        emulator-boot-timeout: 14400
-        disable-animations: true
-        script: ./gradlew connectedDebugAndroidTest
+        attempt_limit: 3
+        attempt_delay: 30000
+        action: reactivecircus/android-emulator-runner@v2
+        with: |
+          api-level: 33
+          arch: x86_64
+          target: google_apis
+          profile: pixel_6
+          emulator-boot-timeout: 14400
+          disable-animations: true
+          script: ./gradlew connectedDebugAndroidTest
 
     - name: Upload Device Test Results
       uses: actions/upload-artifact@v4
