@@ -62,7 +62,7 @@ jobs:
   device-smoke:
     runs-on: macos-15-intel
     needs: build
-    timeout-minutes: 45
+    timeout-minutes: 240
     continue-on-error: true
 
     steps:
@@ -91,7 +91,7 @@ jobs:
         arch: x86_64
         target: google_apis
         profile: pixel_6
-        emulator-boot-timeout: 3600
+        emulator-boot-timeout: 14400
         disable-animations: true
         script: ./gradlew connectedDebugAndroidTest
 
