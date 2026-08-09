@@ -29,6 +29,7 @@ import com.sworddao.phoenix.feature.reading.data.MockReadingRepository
 import com.sworddao.phoenix.feature.vocabulary.data.MockVocabularyRepository
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyResult
 import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
+import com.sworddao.phoenix.feature.writing.data.MockWritingRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -61,6 +62,7 @@ class DialogueViewModelActionTest {
     private lateinit var mockPronunciationRepository: MockPronunciationRepository
     private lateinit var mockListeningRepository: MockListeningRepository
     private lateinit var mockReadingRepository: MockReadingRepository
+    private lateinit var mockWritingRepository: MockWritingRepository
     private lateinit var dialogueResultHolder: DialogueResultHolder
 
     @Before
@@ -95,6 +97,13 @@ class DialogueViewModelActionTest {
             listeningRepository = mockListeningRepository,
             hanziRenderer = MockHanziRenderer(),
         )
+        mockWritingRepository = MockWritingRepository(
+            vocabularyRepository = MockVocabularyRepository(),
+            questRepository = MockQuestRepository(),
+            friendshipRepository = MockFriendshipRepository(),
+            gameProgressRepository = MockGameProgressRepository(),
+            passportRepository = MockPassportRepository(),
+        )
         dialogueResultHolder = DialogueResultHolder()
     }
 
@@ -123,6 +132,7 @@ class DialogueViewModelActionTest {
             pronunciationRepository = mockPronunciationRepository,
             listeningRepository = mockListeningRepository,
             readingRepository = mockReadingRepository,
+            writingRepository = mockWritingRepository,
         )
     }
 
@@ -601,6 +611,7 @@ private class FakeVocabularyRepository : VocabularyRepository {
     override suspend fun incrementSpoken(wordId: String) = VocabularyResult.Success("Incremented")
     override suspend fun incrementHeard(wordId: String) = VocabularyResult.Success("Incremented")
     override suspend fun incrementRead(wordId: String) = VocabularyResult.Success("Incremented")
+    override suspend fun incrementWritten(wordId: String) = VocabularyResult.Success("Incremented")
     override suspend fun recordDiscovery(wordId: String, source: com.sworddao.phoenix.feature.vocabulary.data.VocabularySource) = VocabularyResult.Success("Recorded")
     override suspend fun addWords(words: List<com.sworddao.phoenix.feature.vocabulary.data.VocabularyWord>) = VocabularyResult.Success("Added")
 }

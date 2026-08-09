@@ -19,6 +19,7 @@ data class ReviewSourceSnapshot(
     val speakingPractices: Int = 0,
     val listeningPractices: Int = 0,
     val readingPractices: Int = 0,
+    val writingPractices: Int = 0,
     val regionsUnlocked: Int = 0,
 )
 

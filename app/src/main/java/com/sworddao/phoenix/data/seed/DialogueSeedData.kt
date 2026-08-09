@@ -173,6 +173,11 @@ fun createGrandmaMeiDialogue(): Dialogue {
                             value = "read_ex_greet_hello,read_ex_greet_thanks"
                         ),
                         DialogueAction(
+                            type = ActionType.PRACTICE_WRITING,
+                            targetId = "writing",
+                            value = "write_ex_trace_ni,write_ex_trace_hao"
+                        ),
+                        DialogueAction(
                             type = ActionType.ADD_FRIENDSHIP_XP,
                             targetId = "grandma_mei",
                             value = "10"

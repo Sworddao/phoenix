@@ -74,6 +74,13 @@ import com.sworddao.phoenix.feature.world.data.WorldLandmarkEntity
 import com.sworddao.phoenix.feature.world.data.WorldLocationEntity
 import com.sworddao.phoenix.feature.world.data.WorldRegionEntity
 import com.sworddao.phoenix.feature.world.data.WorldRegionProgressEntity
+import com.sworddao.phoenix.feature.writing.data.WritingBadgesEntity
+import com.sworddao.phoenix.feature.writing.data.WritingDao
+import com.sworddao.phoenix.feature.writing.data.WritingExerciseEntity
+import com.sworddao.phoenix.feature.writing.data.WritingProgressDocEntity
+import com.sworddao.phoenix.feature.writing.data.WritingSessionsEntity
+import com.sworddao.phoenix.feature.writing.data.WritingStateEntity
+import com.sworddao.phoenix.feature.writing.data.WritingStatisticsEntity
 
 @Database(
     entities = [
@@ -136,9 +143,15 @@ import com.sworddao.phoenix.feature.world.data.WorldRegionProgressEntity
         ProgressionFeaturesEntity::class,
         ProgressionPlayerEntity::class,
         ProgressionLearningEntity::class,
-        ProgressionObjectivesEntity::class
+        ProgressionObjectivesEntity::class,
+        WritingExerciseEntity::class,
+        WritingProgressDocEntity::class,
+        WritingStatisticsEntity::class,
+        WritingBadgesEntity::class,
+        WritingSessionsEntity::class,
+        WritingStateEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class PhoenixDatabase : RoomDatabase() {
@@ -155,6 +168,7 @@ abstract class PhoenixDatabase : RoomDatabase() {
     abstract fun speakingDao(): SpeakingDao
     abstract fun reviewDao(): ReviewDao
     abstract fun progressionDao(): ProgressionDao
+    abstract fun writingDao(): WritingDao
 }
 
 /**
@@ -336,6 +350,36 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
         )
         db.execSQL(
             "CREATE TABLE IF NOT EXISTS `progression_objectives` (`id` TEXT NOT NULL, `objectivesJson` TEXT NOT NULL, PRIMARY KEY(`id`))"
+        )
+    }
+}
+
+/**
+ * Migration from version 3 to version 4:
+ *  - adds `timesWritten` counters to vocabulary storage
+ *  - adds the writing practice feature storage tables
+ */
+val MIGRATION_3_4 = object : Migration(3, 4) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE `vocabulary_word` ADD COLUMN `timesWritten` INTEGER NOT NULL DEFAULT 0")
+        db.execSQL("ALTER TABLE `vocabulary_progress` ADD COLUMN `timesWritten` INTEGER NOT NULL DEFAULT 0")
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `writing_exercise` (`id` TEXT NOT NULL, `type` TEXT NOT NULL, `difficulty` TEXT NOT NULL, `wordId` TEXT, `isUnlocked` INTEGER NOT NULL, `order` INTEGER NOT NULL, `xpReward` INTEGER NOT NULL, `characterJson` TEXT NOT NULL, `exerciseJson` TEXT NOT NULL, PRIMARY KEY(`id`))"
+        )
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `writing_progress_doc` (`id` TEXT NOT NULL, `progressJson` TEXT NOT NULL, PRIMARY KEY(`id`))"
+        )
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `writing_statistics` (`id` TEXT NOT NULL, `statisticsJson` TEXT NOT NULL, PRIMARY KEY(`id`))"
+        )
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `writing_badges` (`id` TEXT NOT NULL, `badgesJson` TEXT NOT NULL, PRIMARY KEY(`id`))"
+        )
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `writing_sessions` (`id` TEXT NOT NULL, `activeSessionJson` TEXT, `completedSessionsJson` TEXT NOT NULL, PRIMARY KEY(`id`))"
+        )
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `writing_state` (`id` TEXT NOT NULL, `currentStreak` INTEGER NOT NULL, `longestStreak` INTEGER NOT NULL, `lastWritingDate` INTEGER, `correctCount` INTEGER NOT NULL, `writtenCharactersJson` TEXT NOT NULL, `recordedBadgeIdsJson` TEXT NOT NULL, `firstWritingRecorded` INTEGER NOT NULL, PRIMARY KEY(`id`))"
         )
     }
 }

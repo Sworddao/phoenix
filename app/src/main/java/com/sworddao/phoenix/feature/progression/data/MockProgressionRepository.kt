@@ -232,6 +232,7 @@ class MockProgressionRepository @Inject constructor(
         val speakingPractices: Int = 0,
         val listeningPractices: Int = 0,
         val readingPractices: Int = 0,
+        val writingPractices: Int = 0,
         val regionsUnlocked: Int = 0,
         val regionsCompleted: Int = 0,
         val achievements: Int = 0,
@@ -263,6 +264,7 @@ class MockProgressionRepository @Inject constructor(
             speakingPractices = gameProgress.totalSpeakingPractices,
             listeningPractices = gameProgress.totalListeningPractices,
             readingPractices = gameProgress.totalReadingPractices,
+            writingPractices = gameProgress.totalWritingPractices,
             regionsUnlocked = regions.count { it.isUnlocked },
             regionsCompleted = regions.count { it.isCompleted },
             achievements = achievements,
@@ -330,6 +332,7 @@ class MockProgressionRepository @Inject constructor(
         add(Pair(XpSource.SPEAKING_PRACTICE, snapshot.speakingPractices - previous.speakingPractices))
         add(Pair(XpSource.LISTENING_PRACTICE, snapshot.listeningPractices - previous.listeningPractices))
         add(Pair(XpSource.READING_PRACTICE, snapshot.readingPractices - previous.readingPractices))
+        add(Pair(XpSource.WRITING_PRACTICE, snapshot.writingPractices - previous.writingPractices))
         add(Pair(XpSource.EXPLORATION, (snapshot.regionsUnlocked - previous.regionsUnlocked) +
             (snapshot.regionsCompleted - previous.regionsCompleted)))
         add(Pair(XpSource.ACHIEVEMENT, snapshot.achievements - previous.achievements))
@@ -599,6 +602,15 @@ class MockProgressionRepository @Inject constructor(
                 currentCount = gameProgress.totalReadingPractices,
                 targetCount = 10,
                 icon = "📖",
+            ),
+            CurrentObjective(
+                id = "obj_writing",
+                title = "练习书写",
+                description = "完成书写练习提升书写能力",
+                category = ObjectiveCategory.LEARNING,
+                currentCount = gameProgress.totalWritingPractices,
+                targetCount = 10,
+                icon = "✍️",
             ),
             CurrentObjective(
                 id = "obj_friendship",

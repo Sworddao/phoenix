@@ -15,6 +15,7 @@ enum class ReviewSource(val displayName: String, val icon: String) {
     SPEAKING("口语", "🗣️"),
     LISTENING("聆听", "👂"),
     READING("阅读", "📖"),
+    WRITING("书写", "✍️"),
     NPC_CONVERSATION("NPC 对话", "🧑‍🌾"),
     QUEST("任务", "📜"),
     FRIENDSHIP("友谊", "🤝"),
@@ -27,6 +28,7 @@ enum class ReviewType(val displayName: String, val icon: String) {
     LISTENING("聆听复习", "👂"),
     SPEAKING("口语复习", "🗣️"),
     READING("阅读复习", "📖"),
+    WRITING("书写复习", "✍️"),
     MIXED("混合复习", "🔀"),
     NPC_CHALLENGE("NPC 挑战", "🧑‍🌾"),
     QUEST_REVIEW("任务复习", "📜"),
@@ -68,6 +70,7 @@ data class MemoryStrength(
     val speakingAccuracy: Float = 0f,
     val listeningAccuracy: Float = 0f,
     val readingAccuracy: Float = 0f,
+    val writingAccuracy: Float = 0f,
     val conversationSuccess: Float = 0f,
     val lastReviewAt: Long? = null,
     val nextReviewAt: Long = 0L,
@@ -76,7 +79,7 @@ data class MemoryStrength(
     val reviewCount: Int = 0,
 ) {
     val accuracy: Float
-        get() = (speakingAccuracy + listeningAccuracy + readingAccuracy) / 3f
+        get() = (speakingAccuracy + listeningAccuracy + readingAccuracy + writingAccuracy) / 4f
 
     val masteryLevel: ReviewDifficulty
         get() = ReviewDifficulty.fromStrength(strength)
@@ -357,6 +360,7 @@ object SpacedRepetitionEngine {
             ReviewType.SPEAKING -> current.copy(speakingAccuracy = clamped)
             ReviewType.LISTENING -> current.copy(listeningAccuracy = clamped)
             ReviewType.READING -> current.copy(readingAccuracy = clamped)
+            ReviewType.WRITING -> current.copy(writingAccuracy = clamped)
             ReviewType.CONVERSATION, ReviewType.NPC_CHALLENGE ->
                 current.copy(conversationSuccess = clamped)
             else -> current

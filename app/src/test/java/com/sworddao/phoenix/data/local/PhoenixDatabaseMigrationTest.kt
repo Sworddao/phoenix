@@ -160,6 +160,47 @@ class PhoenixDatabaseMigrationTest {
     }
 
     @Test
+    fun `MIGRATION_3_4 creates writing tables and adds timesWritten columns`() {
+        MIGRATION_2_3.migrate(db)
+        db.execSQL(
+            "INSERT INTO `vocabulary_word` (`id`, `mandarin`, `pinyin`, `english`, `category`, `difficulty`, `exampleSentence`, `exampleTranslation`, `examplePinyin`, `mastery`, `timesReviewed`, `timesSpoken`, `timesHeard`, `timesRead`, `isFavorite`, `tagsJson`) VALUES ('v3_word', 'hǎo', 'hǎo', 'good', 'GREETINGS', 'BEGINNER', 'e', 't', 'p', 'FAMILIAR', 0, 0, 0, 0, 0, '[]')"
+        )
+        MIGRATION_3_4.migrate(db)
+
+        val expectedWritingTables = setOf(
+            "writing_exercise",
+            "writing_progress_doc",
+            "writing_statistics",
+            "writing_badges",
+            "writing_sessions",
+            "writing_state",
+        )
+        assertTrue(
+            "Missing writing tables: ${expectedWritingTables - tableNames()}",
+            tableNames().containsAll(expectedWritingTables)
+        )
+
+        val cursor = db.query("SELECT timesWritten FROM vocabulary_word WHERE id = 'v3_word'")
+        assertTrue(cursor.moveToFirst())
+        assertTrue(cursor.getInt(0) == 0)
+        cursor.close()
+    }
+
+    @Test
+    fun `MIGRATION_3_4 preserves existing v3 data`() {
+        MIGRATION_2_3.migrate(db)
+        MIGRATION_3_4.migrate(db)
+        val cursor = db.query(
+            "SELECT friendshipXp, friendshipLevel, totalConversations FROM friendship_state WHERE npcId = 'v2_npc'"
+        )
+        assertTrue(cursor.moveToFirst())
+        assertTrue(cursor.getInt(0) == 42)
+        assertTrue(cursor.getString(1) == "FRIEND")
+        assertTrue(cursor.getInt(2) == 3)
+        cursor.close()
+    }
+
+    @Test
     fun `v3 database can persist and read app metadata`() {
         val database = RoomTestDb.create()
         val dao = database.appMetadataDao()

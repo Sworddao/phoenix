@@ -63,6 +63,8 @@ enum class ActionType {
     PRACTICE_LISTENING,
     @SerialName("practice_reading")
     PRACTICE_READING,
+    @SerialName("practice_writing")
+    PRACTICE_WRITING,
     @SerialName("give_item")
     GIVE_ITEM
 }

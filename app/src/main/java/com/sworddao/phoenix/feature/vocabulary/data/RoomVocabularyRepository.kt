@@ -38,6 +38,7 @@ class RoomVocabularyRepository @Inject constructor(
                             timesSpoken = word.timesSpoken,
                             timesHeard = word.timesHeard,
                             timesRead = word.timesRead,
+                            timesWritten = word.timesWritten,
                             discoveredAt = word.discoveredAt,
                             isFavorite = word.isFavorite,
                         ).toEntity()
@@ -182,6 +183,12 @@ class RoomVocabularyRepository @Inject constructor(
         ensureSeeded()
         dao.incrementRead(wordId)
         return VocabularyResult.Success("Read recorded")
+    }
+
+    override suspend fun incrementWritten(wordId: String): VocabularyResult {
+        ensureSeeded()
+        dao.incrementWritten(wordId)
+        return VocabularyResult.Success("Written recorded")
     }
 
     override suspend fun recordDiscovery(wordId: String, source: VocabularySource): VocabularyResult {

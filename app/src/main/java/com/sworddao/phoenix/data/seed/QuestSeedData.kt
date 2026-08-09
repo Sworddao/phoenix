@@ -137,6 +137,12 @@ fun createMockQuests(): List<Quest> = listOf(
                     description = "阅读茶馆菜单上的汉字",
                     targetCount = 4,
                 ),
+                QuestObjective(
+                    id = "obj_3_6",
+                    type = ObjectiveType.WRITE_CHARACTERS,
+                    description = "练习书写茶馆相关的汉字",
+                    targetCount = 3,
+                ),
             ),
             rewards = QuestReward(
                 experience = 20,

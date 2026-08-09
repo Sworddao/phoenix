@@ -38,6 +38,7 @@ fun DialogueScreen(
     onPractice: (() -> Unit)? = null,
     onPracticeListening: (() -> Unit)? = null,
     onPracticeReading: (() -> Unit)? = null,
+    onPracticeWriting: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     viewModel: DialogueViewModel = hiltViewModel()
 ) {
@@ -132,6 +133,11 @@ fun DialogueScreen(
                     },
                     onPracticeReading = if (uiState.isReadingPracticeAvailable) {
                         { onPracticeReading?.invoke() ?: onConversationComplete(npcId) }
+                    } else {
+                        null
+                    },
+                    onPracticeWriting = if (uiState.isWritingPracticeAvailable) {
+                        { onPracticeWriting?.invoke() ?: onConversationComplete(npcId) }
                     } else {
                         null
                     }

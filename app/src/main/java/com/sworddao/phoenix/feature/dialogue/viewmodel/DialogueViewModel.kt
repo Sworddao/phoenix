@@ -19,6 +19,7 @@ import com.sworddao.phoenix.feature.listening.domain.ListeningRepository
 import com.sworddao.phoenix.feature.pronunciation.domain.PronunciationRepository
 import com.sworddao.phoenix.feature.quest.domain.QuestRepository
 import com.sworddao.phoenix.feature.reading.domain.ReadingRepository
+import com.sworddao.phoenix.feature.writing.domain.WritingRepository
 import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,6 +48,7 @@ data class DialogueUiState(
     val isPracticeAvailable: Boolean = false,
     val isListeningPracticeAvailable: Boolean = false,
     val isReadingPracticeAvailable: Boolean = false,
+    val isWritingPracticeAvailable: Boolean = false,
     val isLoading: Boolean = true,
     val isProcessingActions: Boolean = false,
     val error: String? = null
@@ -62,6 +64,7 @@ class DialogueViewModel @Inject constructor(
     private val pronunciationRepository: PronunciationRepository,
     private val listeningRepository: ListeningRepository,
     private val readingRepository: ReadingRepository,
+    private val writingRepository: WritingRepository,
     private val dialogueResultHolder: DialogueResultHolder
 ) : ViewModel() {
 
@@ -218,10 +221,14 @@ class DialogueViewModel @Inject constructor(
         val hasReadingPracticeAction = actions.any {
             it.type == ActionType.PRACTICE_READING
         }
+        val hasWritingPracticeAction = actions.any {
+            it.type == ActionType.PRACTICE_WRITING
+        }
         _uiState.value = _uiState.value.copy(
             isPracticeAvailable = hasPracticeAction,
             isListeningPracticeAvailable = hasListeningPracticeAction,
-            isReadingPracticeAvailable = hasReadingPracticeAction
+            isReadingPracticeAvailable = hasReadingPracticeAction,
+            isWritingPracticeAvailable = hasWritingPracticeAction
         )
     }
 
@@ -286,6 +293,21 @@ class DialogueViewModel @Inject constructor(
                         exerciseIds.forEach { exerciseId ->
                             val result = readingRepository.unlockExercise(exerciseId)
                             if (result is com.sworddao.phoenix.feature.reading.data.ReadingResultStatus.Error) {
+                                allSuccess = false
+                            }
+                        }
+                        allSuccess
+                    }
+                }
+                ActionType.PRACTICE_WRITING -> {
+                    val exerciseIds = action.value.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+                    if (exerciseIds.isEmpty()) {
+                        false
+                    } else {
+                        var allSuccess = true
+                        exerciseIds.forEach { exerciseId ->
+                            val result = writingRepository.unlockExercise(exerciseId)
+                            if (result is com.sworddao.phoenix.feature.writing.data.WritingResultStatus.Error) {
                                 allSuccess = false
                             }
                         }

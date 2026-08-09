@@ -459,6 +459,12 @@ private class FakeVocabularyRepository : VocabularyRepository {
         }
         return com.sworddao.phoenix.feature.vocabulary.data.VocabularyResult.Success("Read recorded")
     }
+    override suspend fun incrementWritten(wordId: String): com.sworddao.phoenix.feature.vocabulary.data.VocabularyResult {
+        words.value = words.value.map {
+            if (it.id == wordId) it.copy(timesWritten = it.timesWritten + 1) else it
+        }
+        return com.sworddao.phoenix.feature.vocabulary.data.VocabularyResult.Success("Written recorded")
+    }
     override suspend fun recordDiscovery(wordId: String, source: com.sworddao.phoenix.feature.vocabulary.data.VocabularySource): com.sworddao.phoenix.feature.vocabulary.data.VocabularyResult {
         return discoverWord(wordId)
     }

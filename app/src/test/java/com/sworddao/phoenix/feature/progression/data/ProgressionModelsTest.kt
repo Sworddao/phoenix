@@ -114,8 +114,8 @@ class ProgressionModelsTest {
     // ------------------------------------------------------------------
 
     @Test
-    fun `xp sources has eleven entries`() {
-        assertEquals(11, XpSource.entries.size)
+    fun `xp sources has twelve entries`() {
+        assertEquals(12, XpSource.entries.size)
     }
 
     @Test
@@ -140,8 +140,8 @@ class ProgressionModelsTest {
     // ------------------------------------------------------------------
 
     @Test
-    fun `feature unlocks has seven entries`() {
-        assertEquals(7, FeatureUnlock.entries.size)
+    fun `feature unlocks has eight entries`() {
+        assertEquals(8, FeatureUnlock.entries.size)
     }
 
     @Test
@@ -255,11 +255,12 @@ class ProgressionModelsTest {
     // ------------------------------------------------------------------
 
     @Test
-    fun `learning overall percent is average of nine`() {
+    fun `learning overall percent is average of ten`() {
         val learning = LearningProgress(
             speakingPercent = 1f,
             listeningPercent = 1f,
             readingPercent = 1f,
+            writingPercent = 1f,
             vocabularyPercent = 1f,
             conversationPercent = 1f,
             questPercent = 1f,
@@ -281,6 +282,7 @@ class ProgressionModelsTest {
             speakingPercent = 0.1f,
             listeningPercent = 0.2f,
             readingPercent = 0.3f,
+            writingPercent = 0.35f,
             vocabularyPercent = 0.4f,
             conversationPercent = 0.5f,
             questPercent = 0.6f,
@@ -289,19 +291,19 @@ class ProgressionModelsTest {
             passportPercent = 0.9f,
         )
         assertEquals(0.1f, learning.percentFor(0), 0.001f)
-        assertEquals(0.4f, learning.percentFor(3), 0.001f)
-        assertEquals(0.9f, learning.percentFor(8), 0.001f)
+        assertEquals(0.35f, learning.percentFor(3), 0.001f)
+        assertEquals(0.9f, learning.percentFor(9), 0.001f)
     }
 
     @Test
     fun `percentFor out of range returns zero`() {
-        assertEquals(0f, LearningProgress().percentFor(9), 0.001f)
+        assertEquals(0f, LearningProgress().percentFor(10), 0.001f)
         assertEquals(0f, LearningProgress().percentFor(-1), 0.001f)
     }
 
     @Test
-    fun `learning labels has nine entries`() {
-        assertEquals(9, LearningProgress.LABELS.size)
+    fun `learning labels has ten entries`() {
+        assertEquals(10, LearningProgress.LABELS.size)
     }
 
     // ------------------------------------------------------------------

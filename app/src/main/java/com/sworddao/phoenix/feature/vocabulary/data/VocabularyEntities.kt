@@ -25,6 +25,7 @@ data class VocabularyEntity(
     val timesSpoken: Int = 0,
     val timesHeard: Int = 0,
     val timesRead: Int = 0,
+    val timesWritten: Int = 0,
     val isFavorite: Boolean = false,
     val notes: String? = null,
     val tagsJson: String = "[]"
@@ -38,6 +39,7 @@ data class VocabularyProgressEntity(
     val timesSpoken: Int = 0,
     val timesHeard: Int = 0,
     val timesRead: Int = 0,
+    val timesWritten: Int = 0,
     val lastReviewedAt: Long? = null,
     val discoveredAt: Long? = null,
     val isFavorite: Boolean = false

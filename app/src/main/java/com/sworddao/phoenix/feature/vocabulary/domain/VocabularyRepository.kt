@@ -28,6 +28,7 @@ interface VocabularyRepository {
     suspend fun incrementSpoken(wordId: String): VocabularyResult
     suspend fun incrementHeard(wordId: String): VocabularyResult
     suspend fun incrementRead(wordId: String): VocabularyResult
+    suspend fun incrementWritten(wordId: String): VocabularyResult
     suspend fun recordDiscovery(wordId: String, source: VocabularySource): VocabularyResult
     suspend fun addWords(words: List<VocabularyWord>): VocabularyResult
 }

@@ -250,6 +250,27 @@ class RoomGameProgressRepository @Inject constructor(
         ))
     }
 
+    override suspend fun recordWritingPractice() {
+        ensureSeeded()
+        val current = loadProgress()
+        val milestones = current.milestonesCompleted.toMutableList()
+        if (!current.hasCompletedFirstWriting) {
+            milestones.add(GameMilestone.FIRST_WRITING)
+        }
+
+        saveProgress(current.copy(
+            totalWritingPractices = current.totalWritingPractices + 1,
+            milestonesCompleted = milestones,
+            lastActivityTime = System.currentTimeMillis(),
+        ))
+
+        val summary = loadSummary()
+        saveSummary(summary.copy(
+            milestonesUnlocked = summary.milestonesUnlocked +
+                milestones.filter { it !in summary.milestonesUnlocked },
+        ))
+    }
+
     override suspend fun unlockMilestone(milestone: GameMilestone) {
         ensureSeeded()
         val current = loadProgress()

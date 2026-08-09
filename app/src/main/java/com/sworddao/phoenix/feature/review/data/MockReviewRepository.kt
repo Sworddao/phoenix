@@ -200,6 +200,11 @@ class MockReviewRepository @Inject constructor(
             addSourceItem(ReviewType.READING, ReviewSource.READING, now)
         }
 
+        val writingDelta = snapshot.writingPractices - previous.writingPractices
+        for (i in 0 until writingDelta) {
+            addSourceItem(ReviewType.WRITING, ReviewSource.WRITING, now)
+        }
+
         val questDelta = snapshot.questsCompleted - previous.questsCompleted
         if (questDelta > 0) {
             addQuestReviewItem(now)
@@ -665,6 +670,7 @@ class MockReviewRepository @Inject constructor(
             speakingPractices = gameProgress.totalSpeakingPractices,
             listeningPractices = gameProgress.totalListeningPractices,
             readingPractices = gameProgress.totalReadingPractices,
+            writingPractices = gameProgress.totalWritingPractices,
             regionsUnlocked = regions.count { it.isUnlocked },
         )
     }
@@ -678,6 +684,7 @@ class MockReviewRepository @Inject constructor(
         val speakingPractices: Int,
         val listeningPractices: Int,
         val readingPractices: Int,
+        val writingPractices: Int,
         val regionsUnlocked: Int,
     )
 

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.sworddao.phoenix.data.local.AppMetadataDao
 import com.sworddao.phoenix.data.local.MIGRATION_2_3
+import com.sworddao.phoenix.data.local.MIGRATION_3_4
 import com.sworddao.phoenix.data.local.PhoenixDatabase
 import com.sworddao.phoenix.feature.discovery.data.DiscoveryDao
 import com.sworddao.phoenix.feature.friendship.data.FriendshipDao
@@ -17,6 +18,7 @@ import com.sworddao.phoenix.feature.reading.data.ReadingDao
 import com.sworddao.phoenix.feature.review.data.ReviewDao
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyDao
 import com.sworddao.phoenix.feature.world.data.WorldDao
+import com.sworddao.phoenix.feature.writing.data.WritingDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,7 +40,7 @@ object DatabaseModule {
             PhoenixDatabase::class.java,
             "phoenix_database"
         )
-            .addMigrations(MIGRATION_2_3)
+            .addMigrations(MIGRATION_2_3, MIGRATION_3_4)
             .build()
     }
 
@@ -118,5 +120,11 @@ object DatabaseModule {
     @Singleton
     fun provideProgressionDao(database: PhoenixDatabase): ProgressionDao {
         return database.progressionDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideWritingDao(database: PhoenixDatabase): WritingDao {
+        return database.writingDao()
     }
 }

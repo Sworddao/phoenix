@@ -16,6 +16,7 @@ enum class XpSource(val displayName: String, val baseXp: Int, val icon: String) 
     SPEAKING_PRACTICE("口语练习", 10, "🗣️"),
     LISTENING_PRACTICE("聆听练习", 10, "👂"),
     READING_PRACTICE("阅读练习", 10, "📖"),
+    WRITING_PRACTICE("书写练习", 10, "✍️"),
     EXPLORATION("探索", 25, "🧭"),
     PASSPORT_STAMP("护照盖章", 15, "📮"),
     ACHIEVEMENT("成就", 40, "🏅"),
@@ -94,6 +95,7 @@ enum class FeatureUnlock(
     SPEAKING("Speaking Practice", "口语练习", "Unlock the speaking practice feature", 2, "🗣️"),
     LISTENING("Listening Practice", "聆听练习", "Unlock the listening practice feature", 3, "👂"),
     READING("Reading Practice", "阅读练习", "Unlock the reading practice feature", 4, "📖"),
+    WRITING("Writing Practice", "书写练习", "Unlock the writing practice feature", 5, "✍️"),
     QUEST_TYPES("Quest Types", "新任务类型", "Unlock new quest types", 5, "📜"),
     NPC_ACCESS("New NPCs", "新 NPC", "Unlock access to new NPCs", 7, "🧑‍🌾"),
     CONVERSATIONS("New Conversations", "新对话", "Unlock new conversations", 8, "💬"),
@@ -176,6 +178,7 @@ data class LearningProgress(
     val speakingPercent: Float = 0f,
     val listeningPercent: Float = 0f,
     val readingPercent: Float = 0f,
+    val writingPercent: Float = 0f,
     val vocabularyPercent: Float = 0f,
     val conversationPercent: Float = 0f,
     val questPercent: Float = 0f,
@@ -184,20 +187,21 @@ data class LearningProgress(
     val passportPercent: Float = 0f,
 ) {
     val overallPercent: Float
-        get() = (speakingPercent + listeningPercent + readingPercent + vocabularyPercent +
-            conversationPercent + questPercent + friendshipPercent + explorationPercent +
-            passportPercent) / 9f
+        get() = (speakingPercent + listeningPercent + readingPercent + writingPercent +
+            vocabularyPercent + conversationPercent + questPercent + friendshipPercent +
+            explorationPercent + passportPercent) / 10f
 
     fun percentFor(index: Int): Float = when (index) {
         0 -> speakingPercent
         1 -> listeningPercent
         2 -> readingPercent
-        3 -> vocabularyPercent
-        4 -> conversationPercent
-        5 -> questPercent
-        6 -> friendshipPercent
-        7 -> explorationPercent
-        8 -> passportPercent
+        3 -> writingPercent
+        4 -> vocabularyPercent
+        5 -> conversationPercent
+        6 -> questPercent
+        7 -> friendshipPercent
+        8 -> explorationPercent
+        9 -> passportPercent
         else -> 0f
     }
 
@@ -206,6 +210,7 @@ data class LearningProgress(
             "口语" to "Speaking",
             "聆听" to "Listening",
             "阅读" to "Reading",
+            "书写" to "Writing",
             "词汇" to "Vocabulary",
             "对话" to "Conversation",
             "任务" to "Quest",

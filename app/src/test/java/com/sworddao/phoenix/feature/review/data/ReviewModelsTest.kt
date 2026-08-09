@@ -12,13 +12,13 @@ class ReviewModelsTest {
     // ------------------------------------------------------------------
 
     @Test
-    fun `review sources has nine entries`() {
-        assertEquals(9, ReviewSource.entries.size)
+    fun `review sources has ten entries`() {
+        assertEquals(10, ReviewSource.entries.size)
     }
 
     @Test
-    fun `review types has eight entries`() {
-        assertEquals(8, ReviewType.entries.size)
+    fun `review types has nine entries`() {
+        assertEquals(9, ReviewType.entries.size)
     }
 
     @Test
@@ -62,9 +62,9 @@ class ReviewModelsTest {
     }
 
     @Test
-    fun `memory accuracy is average of modes`() {
+    fun `memory accuracy is average of four modes`() {
         val memory = MemoryStrength(speakingAccuracy = 0.9f, readingAccuracy = 0.3f)
-        assertEquals(0.4f, memory.accuracy, 0.001f)
+        assertEquals(0.3f, memory.accuracy, 0.001f)
     }
 
     @Test

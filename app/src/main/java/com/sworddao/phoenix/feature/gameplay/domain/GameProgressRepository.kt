@@ -16,6 +16,7 @@ interface GameProgressRepository {
     suspend fun recordSpeakingPractice()
     suspend fun recordListeningPractice()
     suspend fun recordReadingPractice()
+    suspend fun recordWritingPractice()
     suspend fun unlockMilestone(milestone: GameMilestone)
     suspend fun resetSession()
 }

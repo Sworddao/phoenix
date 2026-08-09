@@ -191,7 +191,7 @@ class ProgressionRepositoryTest {
         repository.awardXp(XpSource.DIALOGUE, 5)
 
         val timeline = repository.getFeatureUnlockTimeline().first()
-        assertEquals(7, timeline.size)
+        assertEquals(8, timeline.size)
         val speaking = timeline.first { it.feature == FeatureUnlock.SPEAKING }
         assertTrue(speaking.isUnlocked)
         assertNotNull(speaking.unlockedAt)
@@ -442,11 +442,11 @@ class ProgressionRepositoryTest {
     // ------------------------------------------------------------------
 
     @Test
-    fun `objectives expose eight entries`() = runTest {
+    fun `objectives expose nine entries`() = runTest {
         initialRefresh()
 
         val objectives = repository.getCurrentObjectives().first()
-        assertEquals(8, objectives.size)
+        assertEquals(9, objectives.size)
         assertTrue(objectives.all { it.targetCount >= 1 })
     }
 

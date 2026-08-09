@@ -226,9 +226,9 @@ class SpacedRepetitionEngineTest {
     }
 
     @Test
-    fun `memory overall accuracy averages the three modes`() {
+    fun `memory overall accuracy averages the four modes`() {
         val memory = MemoryStrength(speakingAccuracy = 1f, listeningAccuracy = 0.5f, readingAccuracy = 0f)
-        assertEquals(0.5f, memory.accuracy, 0.001f)
+        assertEquals(0.375f, memory.accuracy, 0.001f)
     }
 
     // ------------------------------------------------------------------

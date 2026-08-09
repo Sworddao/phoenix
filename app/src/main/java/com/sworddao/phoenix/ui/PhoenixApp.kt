@@ -47,6 +47,7 @@ import com.sworddao.phoenix.feature.passport.ui.PassportScreen
 import com.sworddao.phoenix.feature.pronunciation.ui.PronunciationScreen
 import com.sworddao.phoenix.feature.listening.ui.ListeningScreen
 import com.sworddao.phoenix.feature.reading.ui.ReadingScreen
+import com.sworddao.phoenix.feature.writing.ui.WritingScreen
 import com.sworddao.phoenix.feature.vocabulary.ui.VocabularyScreen
 import com.sworddao.phoenix.feature.vocabulary.ui.VocabularyDetailScreen
 import com.sworddao.phoenix.feature.vocabulary.viewmodel.VocabularyViewModel
@@ -226,6 +227,9 @@ fun PhoenixApp(
                     },
                     onPracticeReading = {
                         navController.navigate(Screen.Reading.createRoute())
+                    },
+                    onPracticeWriting = {
+                        navController.navigate(Screen.Writing.createRoute())
                     }
                 )
             }
@@ -276,6 +280,24 @@ fun PhoenixApp(
                 ReadingScreen(
                     wordId = wordId,
                     showHanzi = accessibilityPrefs.showHanzi,
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    onComplete = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+            composable(
+                route = Screen.Writing.route,
+                arguments = listOf(
+                    navArgument("wordId") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+                val wordId = backStackEntry.arguments?.getString("wordId") ?: ""
+                WritingScreen(
+                    wordId = wordId,
                     onBack = {
                         navController.popBackStack()
                     },
@@ -420,6 +442,9 @@ fun PhoenixApp(
                         },
                         onPracticeReading = { wordId ->
                             navController.navigate(Screen.Reading.createRoute(wordId))
+                        },
+                        onPracticeWriting = { wordId ->
+                            navController.navigate(Screen.Writing.createRoute(wordId))
                         },
                     )
                 }

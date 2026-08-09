@@ -108,6 +108,9 @@ interface VocabularyDao {
     @Query("UPDATE vocabulary_word SET timesRead = timesRead + 1 WHERE id = :wordId")
     suspend fun incrementRead(wordId: String)
 
+    @Query("UPDATE vocabulary_word SET timesWritten = timesWritten + 1 WHERE id = :wordId")
+    suspend fun incrementWritten(wordId: String)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertAll(words: List<VocabularyEntity>)
 

@@ -61,6 +61,9 @@ class CelebrationViewModel @Inject constructor(
         if (successfulActions.any { it.type == com.sworddao.phoenix.feature.dialogue.data.ActionType.PRACTICE_READING }) {
             milestones.add("阅读练习解锁")
         }
+        if (successfulActions.any { it.type == com.sworddao.phoenix.feature.dialogue.data.ActionType.PRACTICE_WRITING }) {
+            milestones.add("书写练习解锁")
+        }
         return milestones
     }
 }

@@ -311,6 +311,7 @@ fun VocabularyDetailScreen(
     onPractice: ((String) -> Unit)? = null,
     onPracticeListening: ((String) -> Unit)? = null,
     onPracticeReading: ((String) -> Unit)? = null,
+    onPracticeWriting: ((String) -> Unit)? = null,
 ) {
     Scaffold(
         topBar = {
@@ -470,6 +471,32 @@ fun VocabularyDetailScreen(
                 }
             }
 
+            if (word.isDiscovered && onPracticeWriting != null) {
+                item {
+                    Button(
+                        onClick = { onPracticeWriting(word.id) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp),
+                        shape = RoundedCornerShape(26.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Create,
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "练习书写",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+
             if (word.isDiscovered) {
                 item {
                     Card(modifier = Modifier.fillMaxWidth()) {
@@ -495,6 +522,10 @@ fun VocabularyDetailScreen(
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     Text(word.timesRead.toString(), style = MaterialTheme.typography.titleMedium)
                                     Text("阅读", style = MaterialTheme.typography.bodySmall)
+                                }
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text(word.timesWritten.toString(), style = MaterialTheme.typography.titleMedium)
+                                    Text("书写", style = MaterialTheme.typography.bodySmall)
                                 }
                             }
                         }

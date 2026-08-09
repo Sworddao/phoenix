@@ -122,7 +122,7 @@ class RoomProgressionRepositoryTest {
         assertTrue(refreshed.playerProgress.chapters.isNotEmpty())
 
         val objectives = repository.getCurrentObjectives().first()
-        assertEquals(8, objectives.size)
+        assertEquals(9, objectives.size)
     }
 
     @Test
