@@ -405,6 +405,7 @@ class MockReviewRepository @Inject constructor(
         var nextReviewAt = now + SpacedRepetitionEngine.intervalForStage(0)
         var interval = SpacedRepetitionEngine.intervalForStage(0)
         var difficulty = SpacedRepetitionEngine.difficultyFor(strengthAfter)
+        var newStage = schedule.stage
 
         if (memory != null) {
             val adjusted = SpacedRepetitionEngine.adjustMemory(memory, correct, score)
@@ -413,7 +414,7 @@ class MockReviewRepository @Inject constructor(
                 mode = item.type,
                 accuracy = if (correct) score else 0f,
             )
-            val newStage = SpacedRepetitionEngine.nextStage(
+            newStage = SpacedRepetitionEngine.nextStage(
                 correct = correct,
                 score = score,
                 currentStage = schedule.stage,
@@ -456,7 +457,7 @@ class MockReviewRepository @Inject constructor(
                 existing.copy(
                     memoryStrength = if (wordId == null) existing.memoryStrength else strengthAfter,
                     schedule = existing.schedule.copy(
-                        stage = existing.schedule.stage,
+                        stage = newStage,
                         intervalMillis = interval,
                         dueAt = nextReviewAt,
                         lastReviewedAt = now,

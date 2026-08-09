@@ -2,6 +2,7 @@ package com.sworddao.phoenix.feature.passport.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sworddao.phoenix.feature.gameplay.domain.GameProgressRepository
 import com.sworddao.phoenix.feature.passport.data.AchievementProgress
 import com.sworddao.phoenix.feature.passport.data.Collectible
 import com.sworddao.phoenix.feature.passport.data.CollectibleCategory
@@ -43,6 +44,7 @@ data class PassportUiState(
 @HiltViewModel
 class PassportViewModel @Inject constructor(
     private val passportRepository: PassportRepository,
+    private val gameProgressRepository: GameProgressRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PassportUiState())
@@ -171,6 +173,7 @@ class PassportViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = passportRepository.earnStamp(regionId)) {
                 is PassportResult.StampEarned -> {
+                    gameProgressRepository.recordPassportStampEarned(regionId)
                     _uiState.value = _uiState.value.copy(error = null)
                 }
                 is PassportResult.Error -> {

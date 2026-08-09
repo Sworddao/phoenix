@@ -138,6 +138,20 @@ class RoomProgressionRepositoryTest {
     }
 
     @Test
+    fun `passport stamp earned via game progress awards stamp xp on refresh`() = runBlocking {
+        repository.refresh()
+        game.recordPassportStampEarned("qingyuan_village")
+        repository.refresh()
+
+        val player = repository.getPlayerProgress().first()
+        assertEquals(55, player.totalXp)
+        val daily = repository.getDailyProgress().first()
+        assertEquals(55, daily.xpEarnedToday)
+        assertEquals(1, daily.activitiesByType[XpSource.PASSPORT_STAMP])
+        assertEquals(1, daily.activitiesByType[XpSource.ACHIEVEMENT])
+    }
+
+    @Test
     fun `resetProgression clears all progress`() = runBlocking {
         repository.awardXp(XpSource.QUEST_COMPLETION, 5)
         repository.resetProgression()

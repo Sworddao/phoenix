@@ -28,7 +28,7 @@ feature/progression/
 
 ## XP Rules
 
-`XpSource` defines the 10 XP sources. Every action in the game maps to exactly one source:
+`XpSource` defines the 12 XP sources. Every action in the game maps to exactly one source:
 
 | Source | Base XP | Icon | Triggered by |
 |--------|---------|------|--------------|
@@ -39,9 +39,11 @@ feature/progression/
 | SPEAKING_PRACTICE | 10 | 🗣️ | Speaking exercises |
 | LISTENING_PRACTICE | 10 | 👂 | Listening exercises |
 | READING_PRACTICE | 10 | 📖 | Reading exercises |
+| WRITING_PRACTICE | 10 | ✍️ | Writing practices |
 | EXPLORATION | 25 | 🧭 | Region unlocks & completions |
 | PASSPORT_STAMP | 15 | 📮 | Passport stamps earned |
 | ACHIEVEMENT | 40 | 🏅 | Milestones, badges, mastered words |
+| REVIEW | 15 | 🔁 | Review session completions |
 
 ## Level System (`XpCalculator`)
 
@@ -58,6 +60,7 @@ Features unlock purely by level (`FeatureUnlock.requiredLevel`):
 | SPEAKING (口语练习) | 2 |
 | LISTENING (聆听练习) | 3 |
 | READING (阅读练习) | 4 |
+| WRITING (书写练习) | 5 |
 | QUEST_TYPES (新任务类型) | 5 |
 | NPC_ACCESS (新 NPC) | 7 |
 | CONVERSATIONS (新对话) | 8 |
@@ -75,7 +78,7 @@ Production binds the Room-backed `RoomProgressionRepository`. `MockProgressionRe
 
 1. **Snapshots** the current counters (dialogues, words discovered, quests completed, friendship levels, passport stamps, practices, regions, achievements).
 2. **Applies deltas** versus the previous snapshot, awarding XP per source and recording daily activities.
-3. **Rebuilds** `LearningProgress` (9 percentages + overall), `PlayerProgress` (level, chapter, story stage, unlocks, completion), and the 8 current `CurrentObjective`s.
+3. **Rebuilds** `LearningProgress` (10 percentages + overall), `PlayerProgress` (level, chapter, story stage, unlocks, completion), and the 9 current `CurrentObjective`s.
 
 This means XP flows automatically from *any* other system — no manual wiring needed per feature.
 
@@ -88,11 +91,11 @@ This means XP flows automatically from *any* other system — no manual wiring n
 `ProgressionScreen` (route `progression`, entry button in the Qingyuan Village bottom bar) shows:
 1. **Player Level Card** — level badge, current chapter, XP bar, overall completion
 2. **Daily Progress Card** — today's XP, activities vs goal, streak
-3. **Learning Radar** — 9 learning bars (speaking, listening, reading, vocabulary, conversation, quest, friendship, exploration, passport)
+3. **Learning Radar** — 10 learning bars (speaking, listening, reading, writing, vocabulary, conversation, quest, friendship, exploration, passport)
 4. **Chapter Progress** — all 12 chapters with unlock state
-5. **Objectives** — 8 current objectives with progress bars
+5. **Objectives** — 9 current objectives with progress bars
 6. **Recent Unlocks** — activity feed (capped at 20)
-7. **Feature Unlock Timeline** — the 7 features and their unlock state
+7. **Feature Unlock Timeline** — the 8 features and their unlock state
 
 A demo XP button lets players try the flow instantly.
 

@@ -1,5 +1,8 @@
 package com.sworddao.phoenix.feature.review.data
 
+import android.content.Context
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
 import com.sworddao.phoenix.data.local.PhoenixDatabase
 import com.sworddao.phoenix.data.local.RoomTestDb
 import com.sworddao.phoenix.feature.discovery.data.MockDiscoveryRepository
@@ -18,6 +21,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -33,6 +37,10 @@ class RoomReviewRepositoryTest {
     @Before
     fun setup() {
         database = RoomTestDb.create()
+        repository = buildRepository(database)
+    }
+
+    private fun buildRepository(database: PhoenixDatabase): RoomReviewRepository {
         val game = MockGameProgressRepository()
         val world = MockWorldRepository()
         val quest = MockQuestRepository()
@@ -45,7 +53,7 @@ class RoomReviewRepositoryTest {
         val reading = MockReadingRepository(vocabulary, quest, friendship, game, passport, pronunciation, listening, MockHanziRenderer())
         val progression = MockProgressionRepository(game, world, quest, passport, vocabulary, friendship, discovery, pronunciation, listening, reading)
 
-        repository = RoomReviewRepository(
+        return RoomReviewRepository(
             database.reviewDao(),
             vocabulary,
             game,
@@ -57,6 +65,14 @@ class RoomReviewRepositoryTest {
             reading,
             progression,
         )
+    }
+
+    private fun createFileDatabase(dbName: String, deleteExisting: Boolean = false): PhoenixDatabase {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        if (deleteExisting) context.deleteDatabase(dbName)
+        return Room.databaseBuilder(context, PhoenixDatabase::class.java, dbName)
+            .allowMainThreadQueries()
+            .build()
     }
 
     @After
@@ -126,6 +142,21 @@ class RoomReviewRepositoryTest {
     }
 
     @Test
+    fun `submitting an answer advances the persisted item stage`() = runBlocking {
+        repository.refresh()
+        val session = (repository.startSession(ReviewType.MIXED) as ReviewResult.SessionStarted).session
+        val item = session.items.first()
+        assertEquals(0, item.schedule.stage)
+
+        repository.submitAnswer(item.id, correct = true, score = 0.9f)
+
+        val refreshed = repository.getTodayReviews().first() + repository.getUpcomingReviews().first()
+        val updated = refreshed.firstOrNull { it.id == item.id }
+        assertNotNull(updated)
+        assertEquals(1, updated!!.schedule.stage)
+    }
+
+    @Test
     fun `submit wrong answer lowers strength`() = runBlocking {
         repository.refresh()
         val session = (repository.startSession(ReviewType.MIXED) as ReviewResult.SessionStarted).session
@@ -179,5 +210,36 @@ class RoomReviewRepositoryTest {
         assertTrue(repository.getTodayReviews().first().isEmpty())
         assertTrue(repository.getReviewHistory().first().isEmpty())
         assertEquals(0, repository.getReviewStatistics().first().totalReviews)
+    }
+
+    @Test
+    fun `schedules memory history and statistics survive database restart`() = runBlocking {
+        database = createFileDatabase("restart_review_test.db", deleteExisting = true)
+        repository = buildRepository(database)
+        repository.refresh()
+        val session = (repository.startSession(ReviewType.MIXED) as ReviewResult.SessionStarted).session
+        val item = session.items.first()
+        assertEquals(0, item.schedule.stage)
+        repository.submitAnswer(item.id, correct = true, score = 0.9f)
+
+        val memoryBefore = repository.getMemoryStrengths().first().size
+        val historyBefore = repository.getReviewHistory().first().size
+        val statsBefore = repository.getReviewStatistics().first()
+        assertTrue(memoryBefore > 0)
+        assertTrue(historyBefore > 0)
+        database.close()
+
+        database = createFileDatabase("restart_review_test.db")
+        repository = buildRepository(database)
+        val refreshResult = repository.refresh()
+        assertTrue(refreshResult is ReviewResult.Refreshed)
+
+        val refreshed = repository.getTodayReviews().first() + repository.getUpcomingReviews().first()
+        val surviving = refreshed.firstOrNull { it.id == item.id }
+        assertNotNull(surviving)
+        assertEquals(1, surviving!!.schedule.stage)
+        assertEquals(memoryBefore, repository.getMemoryStrengths().first().size)
+        assertEquals(historyBefore, repository.getReviewHistory().first().size)
+        assertEquals(statsBefore.totalReviews, repository.getReviewStatistics().first().totalReviews)
     }
 }
