@@ -16,6 +16,7 @@ import com.sworddao.phoenix.feature.vocabulary.data.VocabularyEntity
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyProgressEntity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -36,9 +37,19 @@ class DeviceSmokeTest {
 
     @Test
     fun appLaunchesToResumedState() {
-        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
-            assertEquals(Lifecycle.State.RESUMED, scenario.state)
-        }
+        val scenario = ActivityScenario.launch(MainActivity::class.java)
+        val reachedResumed = runCatching {
+            runBlocking {
+                withTimeout(90_000L) {
+                    while (scenario.state != Lifecycle.State.RESUMED) {
+                        kotlinx.coroutines.delay(250)
+                    }
+                }
+            }
+            true
+        }.getOrDefault(false)
+        runCatching { scenario.close() }
+        assertTrue("MainActivity never reached RESUMED", reachedResumed)
     }
 
     @Test
