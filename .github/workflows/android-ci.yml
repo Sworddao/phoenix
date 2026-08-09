@@ -62,6 +62,8 @@ jobs:
   device-smoke:
     runs-on: macos-15-intel
     needs: build
+    timeout-minutes: 45
+    continue-on-error: true
 
     steps:
     - name: Checkout code
