@@ -6,8 +6,14 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -27,6 +33,7 @@ import androidx.navigation.navArgument
 import com.sworddao.phoenix.data.model.AccessibilityPreferences
 import com.sworddao.phoenix.data.model.PlayerProfile
 import com.sworddao.phoenix.ui.navigation.Screen
+import com.sworddao.phoenix.ui.navigation.bottomNavigationItems
 import com.sworddao.phoenix.ui.screens.BaoGreetingScreen
 import com.sworddao.phoenix.ui.screens.HomeScreen
 import com.sworddao.phoenix.ui.screens.LearningPreferencesScreen
@@ -67,6 +74,7 @@ fun PhoenixApp(
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+    val currentRoute = currentDestination?.route
 
     var playerProfile by remember { mutableStateOf(PlayerProfile()) }
     var accessibilityPrefs by remember { mutableStateOf(AccessibilityPreferences()) }
@@ -75,34 +83,62 @@ fun PhoenixApp(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        NavHost(
-            navController = navController,
-            startDestination = Screen.Splash.route,
-            enterTransition = {
-                fadeIn(animationSpec = tween(500)) + slideInHorizontally(
-                    animationSpec = tween(500),
-                    initialOffsetX = { fullWidth -> fullWidth / 4 }
-                )
-            },
-            exitTransition = {
-                fadeOut(animationSpec = tween(500)) + slideOutHorizontally(
-                    animationSpec = tween(500),
-                    targetOffsetX = { fullWidth -> -fullWidth / 4 }
-                )
-            },
-            popEnterTransition = {
-                fadeIn(animationSpec = tween(500)) + slideInHorizontally(
-                    animationSpec = tween(500),
-                    initialOffsetX = { fullWidth -> -fullWidth / 4 }
-                )
-            },
-            popExitTransition = {
-                fadeOut(animationSpec = tween(500)) + slideOutHorizontally(
-                    animationSpec = tween(500),
-                    targetOffsetX = { fullWidth -> fullWidth / 4 }
-                )
+        Scaffold(
+            bottomBar = {
+                val bottomRoutes = bottomNavigationItems.map { it.screen.route }
+                if (currentRoute in bottomRoutes) {
+                    NavigationBar {
+                        bottomNavigationItems.forEach { item ->
+                            NavigationBarItem(
+                                selected = currentRoute == item.screen.route,
+                                onClick = {
+                                    navController.navigate(item.screen.route) {
+                                        popUpTo(Screen.QingyuanVillage.route)
+                                        launchSingleTop = true
+                                    }
+                                },
+                                icon = {
+                                    Icon(
+                                        imageVector = item.icon,
+                                        contentDescription = item.label
+                                    )
+                                },
+                                label = { Text(item.label) }
+                            )
+                        }
+                    }
+                }
             }
-        ) {
+        ) { innerPadding ->
+            NavHost(
+                navController = navController,
+                startDestination = Screen.Splash.route,
+                modifier = Modifier.padding(innerPadding),
+                enterTransition = {
+                    fadeIn(animationSpec = tween(500)) + slideInHorizontally(
+                        animationSpec = tween(500),
+                        initialOffsetX = { fullWidth -> fullWidth / 4 }
+                    )
+                },
+                exitTransition = {
+                    fadeOut(animationSpec = tween(500)) + slideOutHorizontally(
+                        animationSpec = tween(500),
+                        targetOffsetX = { fullWidth -> -fullWidth / 4 }
+                    )
+                },
+                popEnterTransition = {
+                    fadeIn(animationSpec = tween(500)) + slideInHorizontally(
+                        animationSpec = tween(500),
+                        initialOffsetX = { fullWidth -> -fullWidth / 4 }
+                    )
+                },
+                popExitTransition = {
+                    fadeOut(animationSpec = tween(500)) + slideOutHorizontally(
+                        animationSpec = tween(500),
+                        targetOffsetX = { fullWidth -> fullWidth / 4 }
+                    )
+                }
+            ) {
             composable(Screen.Splash.route) {
                 SplashScreen(
                     onNavigateToWelcome = {
@@ -451,10 +487,11 @@ fun PhoenixApp(
             }
 
             composable(Screen.Home.route) {
+                val gameProgressViewModel: GameProgressViewModel = hiltViewModel()
+                val gameProgressUiState by gameProgressViewModel.uiState.collectAsState()
                 HomeScreen(
-                    onNavigateToSettings = {
-                        navController.navigate(Screen.Settings.route)
-                    }
+                    vocabularyCount = gameProgressUiState.gameProgress.totalWordsDiscovered,
+                    xp = gameProgressUiState.sessionSummary.totalXpEarned
                 )
             }
 
@@ -499,6 +536,7 @@ fun PhoenixApp(
                         navController.popBackStack()
                     }
                 )
+            }
             }
         }
     }

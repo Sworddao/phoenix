@@ -3,6 +3,7 @@ package com.sworddao.phoenix.feature.friendship
 import com.sworddao.phoenix.data.local.PhoenixDatabase
 import com.sworddao.phoenix.data.local.RoomTestDb
 import com.sworddao.phoenix.feature.friendship.data.RoomFriendshipRepository
+import com.sworddao.phoenix.feature.gameplay.data.RoomGameProgressRepository
 import com.sworddao.phoenix.feature.npc.data.FriendshipLevel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -24,7 +25,10 @@ class RoomFriendshipRepositoryTest {
     @Before
     fun setup() {
         database = RoomTestDb.create()
-        repository = RoomFriendshipRepository(database.friendshipDao())
+        repository = RoomFriendshipRepository(
+            dao = database.friendshipDao(),
+            gameProgressRepository = RoomGameProgressRepository(database.gameProgressDao()),
+        )
     }
 
     @After
@@ -74,6 +78,18 @@ class RoomFriendshipRepositoryTest {
         assertNotNull(state)
         assertEquals(150, state?.friendshipXp)
         assertEquals(FriendshipLevel.VISITOR, state?.friendshipLevel)
+    }
+
+    @Test
+    fun `addFriendshipXp records friendship level up in game progress`() = runBlocking {
+        val gameProgressRepository = RoomGameProgressRepository(database.gameProgressDao())
+
+        repository.initializeFriendship("npc_1")
+        repository.addFriendshipXp("npc_1", 150)
+
+        val progress = gameProgressRepository.getGameProgress().first()
+        assertEquals(1, progress.totalFriendshipLevels)
+        assertTrue(progress.hasCompletedFirstFriendship)
     }
 
     @Test

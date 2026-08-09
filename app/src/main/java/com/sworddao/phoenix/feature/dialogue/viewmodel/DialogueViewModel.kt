@@ -15,6 +15,7 @@ import com.sworddao.phoenix.feature.dialogue.data.DialogueResult
 import com.sworddao.phoenix.feature.dialogue.domain.DialogueRepository
 import com.sworddao.phoenix.feature.friendship.domain.FriendshipRepository
 import com.sworddao.phoenix.feature.gameplay.data.DialogueResultHolder
+import com.sworddao.phoenix.feature.gameplay.domain.GameProgressRepository
 import com.sworddao.phoenix.feature.listening.domain.ListeningRepository
 import com.sworddao.phoenix.feature.pronunciation.domain.PronunciationRepository
 import com.sworddao.phoenix.feature.quest.domain.QuestRepository
@@ -65,6 +66,7 @@ class DialogueViewModel @Inject constructor(
     private val listeningRepository: ListeningRepository,
     private val readingRepository: ReadingRepository,
     private val writingRepository: WritingRepository,
+    private val gameProgressRepository: GameProgressRepository,
     private val dialogueResultHolder: DialogueResultHolder
 ) : ViewModel() {
 
@@ -209,6 +211,19 @@ class DialogueViewModel @Inject constructor(
                 dialogueId = dialogueId,
                 npcId = _uiState.value.dialogue?.npcId ?: "",
                 processedActions = processed
+            )
+        }
+
+        val npcId = _uiState.value.dialogue?.npcId
+        if (!npcId.isNullOrEmpty()) {
+            gameProgressRepository.recordDialogueCompleted(npcId)
+            friendshipRepository.recordConversation(
+                npcId = npcId,
+                dialogueId = dialogueId,
+                dialogueTitle = _uiState.value.dialogue?.title ?: "",
+                xpGained = actions
+                    .filter { it.type == ActionType.ADD_FRIENDSHIP_XP }
+                    .sumOf { it.value.toIntOrNull() ?: 0 },
             )
         }
 

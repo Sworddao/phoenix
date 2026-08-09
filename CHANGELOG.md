@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Hilt `DatabaseModule` providing the Room database, all 13 DAOs, and the v2→v3 migration; feature DI modules updated to bind Room-backed implementations
   - Robolectric-based Room repository tests via `RoomTestDb` in-memory database harness plus `PhoenixDatabaseMigrationTest`
   - Fixes surfaced by persistence tests: `GiftRecord` marked `@Serializable`, `VocabularyDao.searchWords` now matches `hanzi`, seeded `vocabulary_progress` rows, `PlayerProgress` lambda marked `@Transient`
-  - Full unit suite passes (898 tests, 0 failures)
+  - Full unit suite passes (976 tests, 0 failures)
 
 - Device smoke tests and CI emulator job
   - `DeviceSmokeTest` instrumented tests validating the app boots to RESUMED, the real `phoenix_database` opens at v3 with all tables, v2→v3 migration preserves data on-device, and Room DAO round-trips persist
@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Snapshot-delta aggregation that awards XP automatically from all source systems
   - Progression screen with level card, daily card, learning bars, chapter progress, objectives, recent unlocks, and feature unlock timeline
   - ProgressionViewModel observing all source systems for live refresh
-  - Unit tests for XP math, level-ups, feature unlocks, snapshot deltas, chapters, and daily goals (898 tests total)
+  - Unit tests for XP math, level-ups, feature unlocks, snapshot deltas, chapters, and daily goals (976 tests total)
   - Progression entry button in Qingyuan Village
 
 - Adaptive review & spaced repetition system
@@ -47,7 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Review sessions (conversation, listening, speaking, reading, mixed, NPC challenge, quest review, daily) with answer scoring and XP integration (15 XP per session via XpSource.REVIEW)
   - Review dashboard with today's reviews, daily goal, Bao recommendations, statistics, upcoming reviews, and memory strengths
   - ReviewViewModel handling dashboard, sessions, and completion flow
-  - Unit tests for engine, models, repository, and ViewModel (898 tests total, 120 for review)
+  - Unit tests for engine, models, repository, and ViewModel (976 tests total, 120 for review)
   - Review entry button in Qingyuan Village
 
 - Project specification (SPEC.md)
@@ -211,12 +211,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated CHANGELOG with feature history
 - SPEC.md: Added placeholder headings for planned sections (18-29)
 
+### Fixed
+
+- Game progression sources now feed XP, objectives, milestones, and review scheduling correctly
+  - `recordDialogueCompleted`, `recordWordDiscovered`, `recordQuestCompleted`, `recordFriendshipLevelUp`, and `recordConversation` had no production callers, so dialogue/vocabulary XP, obj_dialogue/obj_quest objectives, and six milestones (FIRST_DIALOGUE, VILLAGE_EXPLORER, FIRST_VOCABULARY, WORD_COLLECTOR, FIRST_QUEST, FIRST_FRIENDSHIP) never accrued
+  - Recording is now wired at the event-owner point: DialogueViewModel on conversation end, RoomVocabularyRepository.discoverWord, RoomQuestRepository.completeQuest, and RoomFriendshipRepository on level-up, with idempotency preserved and six new tests
+- Navigation cleanup: removed dead routes (`Screen.GameProgress`, `Screen.DiscoveryHistory`, `Screen.DiscoveryDetail`, `Screen.RegionDetail`) and the unreachable Home stub with hardcoded values
+  - Bottom navigation (首页/词汇/护照/设置) now renders, making the previously unreachable Vocabulary, Passport, and Settings screens reachable
+  - HomeScreen now displays real vocabulary count and XP from game progress instead of hardcoded "0"s
+- Documentation accuracy: README, CONTRIBUTING, and CHANGELOG test counts updated from 898 to 976; SPEC.md milestone header and roadmap updated to reflect implemented features
+
 ### Planned
 
 - Real speech recognition (Android SpeechRecognizer / Vosk / Whisper.cpp) behind PronunciationEngine
 - Real audio playback backend (ExoPlayer / Media3 or packaged TTS samples) behind AudioEngine
 - Additional NPC dialogues
-- Game progression system (further milestones and rewards)
+- Achievement and inventory systems
+- Real-world missions and accessibility settings
 
 ---
 

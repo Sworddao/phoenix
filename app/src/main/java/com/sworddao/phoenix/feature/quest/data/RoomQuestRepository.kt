@@ -1,6 +1,7 @@
 package com.sworddao.phoenix.feature.quest.data
 
 import com.sworddao.phoenix.data.seed.QuestSeedData
+import com.sworddao.phoenix.feature.gameplay.domain.GameProgressRepository
 import com.sworddao.phoenix.feature.quest.domain.QuestRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
@@ -16,6 +17,7 @@ import javax.inject.Singleton
 @Singleton
 class RoomQuestRepository @Inject constructor(
     private val dao: QuestDao,
+    private val gameProgressRepository: GameProgressRepository,
 ) : QuestRepository {
 
     private val seeded = AtomicBoolean(false)
@@ -146,6 +148,7 @@ class RoomQuestRepository @Inject constructor(
                 )).toEntity()
         )
         dao.upsertQuest(quest.copy(status = QuestStatus.COMPLETED).toEntity())
+        gameProgressRepository.recordQuestCompleted(questId)
         refreshQuestAvailability()
         return QuestResult.QuestCompleted(quest, quest.rewards)
     }

@@ -240,7 +240,7 @@ Unit tests live in `app/src/test` and run with:
 ./gradlew testDebugUnitTest
 ```
 
-The suite covers data models, repository logic (both mock and Room-backed via an in-memory `RoomTestDb` harness using Robolectric), ViewModels, the spaced repetition engine, and database migration integrity. Current status: **898 tests, 0 failures**.
+The suite covers data models, repository logic (both mock and Room-backed via an in-memory `RoomTestDb` harness using Robolectric), ViewModels, the spaced repetition engine, and database migration integrity. Current status: **976 tests, 0 failures**.
 
 ---
 

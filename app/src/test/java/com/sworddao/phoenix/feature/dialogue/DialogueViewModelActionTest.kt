@@ -63,6 +63,7 @@ class DialogueViewModelActionTest {
     private lateinit var mockListeningRepository: MockListeningRepository
     private lateinit var mockReadingRepository: MockReadingRepository
     private lateinit var mockWritingRepository: MockWritingRepository
+    private lateinit var mockGameProgressRepository: MockGameProgressRepository
     private lateinit var dialogueResultHolder: DialogueResultHolder
 
     @Before
@@ -72,6 +73,7 @@ class DialogueViewModelActionTest {
         mockFriendshipRepository = FakeFriendshipRepository()
         mockQuestRepository = FakeQuestRepository()
         mockVocabularyRepository = FakeVocabularyRepository()
+        mockGameProgressRepository = MockGameProgressRepository()
         mockPronunciationRepository = MockPronunciationRepository(
             vocabularyRepository = MockVocabularyRepository(),
             questRepository = MockQuestRepository(),
@@ -133,6 +135,7 @@ class DialogueViewModelActionTest {
             listeningRepository = mockListeningRepository,
             readingRepository = mockReadingRepository,
             writingRepository = mockWritingRepository,
+            gameProgressRepository = mockGameProgressRepository,
         )
     }
 
@@ -280,6 +283,31 @@ class DialogueViewModelActionTest {
         assertTrue(state.isConversationComplete)
         assertTrue(state.processedActions.isEmpty())
         assertFalse(state.isProcessingActions)
+    }
+
+    @Test
+    fun `conversation completion records dialogue progress and first milestone`() = runTest {
+        val viewModel = setupAndCreateViewModel(emptyList())
+        waitForDialogueLoaded(viewModel)
+        viewModel.advanceDialogue()
+        waitForConversationComplete(viewModel)
+
+        val progress = mockGameProgressRepository.getGameProgress().first()
+        assertEquals(1, progress.totalDialoguesCompleted)
+        assertTrue(progress.hasCompletedFirstDialogue)
+        assertEquals(listOf("npc_1"), progress.npcsInteractedWith)
+    }
+
+    @Test
+    fun `conversation completion records conversation memory`() = runTest {
+        val viewModel = setupAndCreateViewModel(emptyList())
+        waitForDialogueLoaded(viewModel)
+        viewModel.advanceDialogue()
+        waitForConversationComplete(viewModel)
+
+        val history = mockFriendshipRepository.getConversationHistory("npc_1").first()
+        assertEquals(1, history.size)
+        assertEquals("npc_1", history[0].npcId)
     }
 
     @Test
@@ -508,6 +536,7 @@ private class FakeDialogueRepository : DialogueRepository {
 private class FakeFriendshipRepository : FriendshipRepository {
     var lastXpAdded: Int = 0
         private set
+    private val conversationMemory = mutableListOf<com.sworddao.phoenix.feature.friendship.data.ConversationMemory>()
 
     override fun getFriendshipState(npcId: String): Flow<FriendshipState?> {
         return flowOf(FriendshipState(npcId = npcId))
@@ -527,9 +556,19 @@ private class FakeFriendshipRepository : FriendshipRepository {
         xpGained: Int,
         topicsDiscussed: List<String>,
         choicesSummary: List<String>
-    ) {}
+    ) {
+        conversationMemory += com.sworddao.phoenix.feature.friendship.data.ConversationMemory(
+            npcId = npcId,
+            dialogueId = dialogueId,
+            dialogueTitle = dialogueTitle,
+            xpGained = xpGained,
+            topicsDiscussed = topicsDiscussed,
+            choicesSummary = choicesSummary
+        )
+    }
 
-    override fun getConversationHistory(npcId: String) = flowOf(emptyList<com.sworddao.phoenix.feature.friendship.data.ConversationMemory>())
+    override fun getConversationHistory(npcId: String) =
+        flowOf(conversationMemory.filter { it.npcId == npcId })
 
     override fun getFriendshipEvents(npcId: String) = flowOf(emptyList<com.sworddao.phoenix.feature.friendship.data.FriendshipEvent>())
 

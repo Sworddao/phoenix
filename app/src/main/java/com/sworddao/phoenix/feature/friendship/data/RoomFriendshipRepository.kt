@@ -1,6 +1,7 @@
 package com.sworddao.phoenix.feature.friendship.data
 
 import com.sworddao.phoenix.feature.friendship.domain.FriendshipRepository
+import com.sworddao.phoenix.feature.gameplay.domain.GameProgressRepository
 import com.sworddao.phoenix.feature.npc.data.FriendshipLevel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -11,6 +12,7 @@ import javax.inject.Singleton
 @Singleton
 class RoomFriendshipRepository @Inject constructor(
     private val dao: FriendshipDao,
+    private val gameProgressRepository: GameProgressRepository,
 ) : FriendshipRepository {
 
     override fun getFriendshipState(npcId: String): Flow<FriendshipState?> =
@@ -34,6 +36,7 @@ class RoomFriendshipRepository @Inject constructor(
         dao.upsertFriendshipState(updated.toEntity())
 
         if (hadLevelUp) {
+            gameProgressRepository.recordFriendshipLevelUp(npcId)
             dao.insertFriendshipEvent(
                 FriendshipEvent(
                     type = FriendshipEventType.LEVEL_UP,

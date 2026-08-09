@@ -2,6 +2,7 @@ package com.sworddao.phoenix.feature.quest.data
 
 import com.sworddao.phoenix.data.local.PhoenixDatabase
 import com.sworddao.phoenix.data.local.RoomTestDb
+import com.sworddao.phoenix.feature.gameplay.data.RoomGameProgressRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -22,7 +23,10 @@ class RoomQuestRepositoryTest {
     @Before
     fun setup() {
         database = RoomTestDb.create()
-        repository = RoomQuestRepository(database.questDao())
+        repository = RoomQuestRepository(
+            dao = database.questDao(),
+            gameProgressRepository = RoomGameProgressRepository(database.gameProgressDao()),
+        )
     }
 
     @After
@@ -117,6 +121,23 @@ class RoomQuestRepositoryTest {
 
         val quest = repository.getQuestById("quest_help_grandma_mei").first()
         assertEquals(QuestStatus.COMPLETED, quest?.status)
+    }
+
+    @Test
+    fun `completeQuest records quest completion in game progress`() = runBlocking {
+        val gameProgressRepository = RoomGameProgressRepository(database.gameProgressDao())
+
+        repository.startQuest("quest_help_grandma_mei")
+        repository.updateObjectiveProgress("quest_help_grandma_mei", "obj_1_1", 1)
+        repository.updateObjectiveProgress("quest_help_grandma_mei", "obj_1_2", 5)
+        repository.updateObjectiveProgress("quest_help_grandma_mei", "obj_1_3", 3)
+
+        val result = repository.completeQuest("quest_help_grandma_mei")
+        assertTrue(result is QuestResult.QuestCompleted)
+
+        val progress = gameProgressRepository.getGameProgress().first()
+        assertEquals(1, progress.totalQuestsCompleted)
+        assertTrue(progress.hasCompletedFirstQuest)
     }
 
     @Test

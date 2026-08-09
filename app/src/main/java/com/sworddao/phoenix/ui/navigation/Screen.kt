@@ -30,9 +30,6 @@ sealed class Screen(val route: String) {
         fun createRoute(questId: String) = "quest_detail/$questId"
     }
     data object WorldMap : Screen("world_map")
-    data object RegionDetail : Screen("region_detail/{regionId}") {
-        fun createRoute(regionId: String) = "region_detail/$regionId"
-    }
     data object Home : Screen("home")
     data object Settings : Screen("settings")
     data object Passport : Screen("passport")
@@ -52,14 +49,9 @@ sealed class Screen(val route: String) {
     data object Writing : Screen("writing/{wordId}") {
         fun createRoute(wordId: String = "") = "writing/$wordId"
     }
-    data object DiscoveryHistory : Screen("discovery_history")
-    data object DiscoveryDetail : Screen("discovery_detail/{discoveryId}") {
-        fun createRoute(discoveryId: String) = "discovery_detail/$discoveryId"
-    }
     data object Celebration : Screen("celebration/{dialogueId}/{npcId}") {
         fun createRoute(dialogueId: String, npcId: String) = "celebration/$dialogueId/$npcId"
     }
-    data object GameProgress : Screen("game_progress")
     data object Progression : Screen("progression")
     data object Review : Screen("review")
     data object ReviewSession : Screen("review_session/{type}") {

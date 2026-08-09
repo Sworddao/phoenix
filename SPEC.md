@@ -2,9 +2,9 @@
 Version: 0.1.0
 Status: Active Development
 Specification Version: 1.0
-Current Milestone: Feature 3.4
+Current Milestone: Feature 4.9 — Writing & Hanzi Stroke Foundation
 Author: sworddao
-Last Updated: 2026-08-06
+Last Updated: 2026-08-10
 
 ==================================================================
 
@@ -1150,9 +1150,20 @@ The application must work reliably without internet.
 
 # 29. Roadmap
 
-<!-- Planned -->
+Implemented (see [docs/](docs/) and CHANGELOG for details):
 
-Development milestones:
+- Splash, onboarding, first-time profile setup
+- Bao companion and Qingyuan Village hub
+- NPC framework, dialogue engine, friendship system
+- Quest system, world map and exploration, passport and collectibles
+- Vocabulary tracking, discovery, pronunciation/speaking, listening, reading
+- Feature 4.3: First Playable Experience (vertical slice)
+- Progression & learning path system (XP, levels, chapters, daily goals)
+- Adaptive review & spaced repetition system
+- Room persistence for all game systems
+- Feature 4.9: Writing & Hanzi Stroke Foundation
+
+Planned phases:
 
 Phase 1: Foundation (Current)
 - Onboarding flow

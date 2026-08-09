@@ -2,6 +2,7 @@ package com.sworddao.phoenix.feature.vocabulary.data
 
 import com.sworddao.phoenix.data.local.PhoenixDatabase
 import com.sworddao.phoenix.data.local.RoomTestDb
+import com.sworddao.phoenix.feature.gameplay.data.RoomGameProgressRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -24,7 +25,10 @@ class RoomVocabularyRepositoryTest {
     @Before
     fun setup() {
         database = RoomTestDb.create()
-        repository = RoomVocabularyRepository(database.vocabularyDao())
+        repository = RoomVocabularyRepository(
+            dao = database.vocabularyDao(),
+            gameProgressRepository = RoomGameProgressRepository(database.gameProgressDao()),
+        )
     }
 
     @After
@@ -191,6 +195,32 @@ class RoomVocabularyRepositoryTest {
     fun `discoverWord returns error for already discovered word`() = runBlocking {
         val result = repository.discoverWord("greet_001")
         assertTrue(result is VocabularyResult.Error)
+    }
+
+    @Test
+    fun `discoverWord records game progress milestone`() = runBlocking {
+        val gameProgressRepository = RoomGameProgressRepository(database.gameProgressDao())
+
+        val result = repository.discoverWord("undiscovered_002")
+        assertTrue(result is VocabularyResult.WordDiscovered)
+
+        val progress = gameProgressRepository.getGameProgress().first()
+        assertEquals(1, progress.totalWordsDiscovered)
+        assertTrue(progress.hasCompletedFirstVocabulary)
+    }
+
+    @Test
+    fun `discoverWord does not double record for already discovered word`() = runBlocking {
+        val gameProgressRepository = RoomGameProgressRepository(database.gameProgressDao())
+
+        repository.discoverWord("undiscovered_003")
+        val first = gameProgressRepository.getGameProgress().first()
+        assertEquals(1, first.totalWordsDiscovered)
+
+        val result = repository.discoverWord("undiscovered_003")
+        assertTrue(result is VocabularyResult.Error)
+        val second = gameProgressRepository.getGameProgress().first()
+        assertEquals(1, second.totalWordsDiscovered)
     }
 
     @Test

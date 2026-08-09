@@ -1,6 +1,7 @@
 package com.sworddao.phoenix.feature.vocabulary.data
 
 import com.sworddao.phoenix.data.seed.VocabularySeedData
+import com.sworddao.phoenix.feature.gameplay.domain.GameProgressRepository
 import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
@@ -17,6 +18,7 @@ import javax.inject.Singleton
 @Singleton
 class RoomVocabularyRepository @Inject constructor(
     private val dao: VocabularyDao,
+    private val gameProgressRepository: GameProgressRepository,
 ) : VocabularyRepository {
 
     private val seeded = AtomicBoolean(false)
@@ -140,6 +142,7 @@ class RoomVocabularyRepository @Inject constructor(
             return VocabularyResult.Error("Word already discovered")
         }
         dao.discoverWord(wordId, System.currentTimeMillis())
+        gameProgressRepository.recordWordDiscovered(wordId)
         val updated = dao.getWordById(wordId).first()
         return VocabularyResult.WordDiscovered(updated?.toDomain() ?: word.toDomain())
     }
