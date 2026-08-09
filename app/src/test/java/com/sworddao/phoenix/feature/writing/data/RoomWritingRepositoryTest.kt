@@ -120,7 +120,7 @@ class RoomWritingRepositoryTest {
     }
 
     @Test
-    fun `startSession with unknown characterId creates dynamic exercise from vocabulary`() = runBlocking {
+    fun `startSession with wordId selects seeded character exercises with stroke data`() = runBlocking {
         val session = repository.startSession(
             WritingSessionConfig(characterIds = listOf("greet_001"))
         )
@@ -128,7 +128,31 @@ class RoomWritingRepositoryTest {
         assertTrue(session.exerciseIds.isNotEmpty())
         val exercise = repository.getExerciseById(session.exerciseIds.first()).first()
         assertNotNull(exercise)
-        assertEquals("write_dynamic_greet_001", exercise?.id)
+        assertEquals("write_ex_trace_ni", exercise?.id)
+        assertTrue(exercise?.character?.strokes?.isNotEmpty() ?: false)
+    }
+
+    @Test
+    fun `startSession with unknown characterId creates dynamic exercise from vocabulary`() = runBlocking {
+        val session = repository.startSession(
+            WritingSessionConfig(characterIds = listOf("greet_005"))
+        )
+
+        assertTrue(session.exerciseIds.isNotEmpty())
+        val exercise = repository.getExerciseById(session.exerciseIds.first()).first()
+        assertNotNull(exercise)
+        assertEquals("write_dynamic_greet_005", exercise?.id)
+    }
+
+    @Test
+    fun `default session progresses across multiple exercise types`() = runBlocking {
+        val session = repository.startSession(WritingSessionConfig(exerciseCount = 5))
+
+        val exercises = session.exerciseIds.mapNotNull { id ->
+            repository.getExerciseById(id).first()
+        }
+        assertTrue(exercises.isNotEmpty())
+        assertTrue(exercises.map { it.type }.distinct().size >= 2)
     }
 
     @Test

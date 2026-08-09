@@ -29,6 +29,8 @@ data class WritingUiState(
     val currentExercise: WritingExercise? = null,
     val strokesCompleted: List<Int> = emptyList(),
     val expectedStrokeIndex: Int = 0,
+    val pendingStrokeAttempts: Int = 0,
+    val strokeAnswers: List<WritingStrokeAnswer> = emptyList(),
     val isExerciseComplete: Boolean = false,
     val lastStrokeFeedback: EngineStrokeFeedback? = null,
     val lastResult: WritingResult? = null,
@@ -97,16 +99,32 @@ class WritingViewModel @Inject constructor(
 
     fun recordStroke(direction: StrokeDirection) {
         val sessionId = engineSessionId ?: return
-        val expectedIndex = _uiState.value.expectedStrokeIndex
-        val feedback = engine.recordStroke(sessionId, expectedIndex, direction)
-
+        val pendingIndex = _uiState.value.expectedStrokeIndex
+        val feedback = engine.recordStroke(sessionId, pendingIndex, direction)
         val wasCorrect = feedback.wasCorrect
-        _uiState.update {
-            it.copy(
-                lastStrokeFeedback = feedback,
-                strokesCompleted = if (wasCorrect) it.strokesCompleted + expectedIndex else it.strokesCompleted,
-                expectedStrokeIndex = if (wasCorrect) expectedIndex + 1 else expectedIndex,
-            )
+
+        _uiState.update { state ->
+            val attempts = state.pendingStrokeAttempts + 1
+            if (wasCorrect) {
+                state.copy(
+                    lastStrokeFeedback = feedback,
+                    strokesCompleted = state.strokesCompleted + pendingIndex,
+                    expectedStrokeIndex = pendingIndex + 1,
+                    pendingStrokeAttempts = 0,
+                    strokeAnswers = state.strokeAnswers + WritingStrokeAnswer(
+                        strokeIndex = pendingIndex,
+                        expectedType = feedback.expectedType,
+                        expectedDirection = feedback.expectedDirection,
+                        wasCorrect = true,
+                        attempts = attempts,
+                    ),
+                )
+            } else {
+                state.copy(
+                    lastStrokeFeedback = feedback,
+                    pendingStrokeAttempts = attempts,
+                )
+            }
         }
 
         if (wasCorrect && engine.isComplete(sessionId)) {
@@ -135,6 +153,8 @@ class WritingViewModel @Inject constructor(
                         currentExercise = next,
                         strokesCompleted = emptyList(),
                         expectedStrokeIndex = 0,
+                        pendingStrokeAttempts = 0,
+                        strokeAnswers = emptyList(),
                         isExerciseComplete = false,
                         lastStrokeFeedback = null,
                         lastResult = null,
@@ -167,6 +187,8 @@ class WritingViewModel @Inject constructor(
                 currentExercise = exercise,
                 strokesCompleted = emptyList(),
                 expectedStrokeIndex = 0,
+                pendingStrokeAttempts = 0,
+                strokeAnswers = emptyList(),
                 isExerciseComplete = false,
                 lastStrokeFeedback = null,
                 lastResult = null,
@@ -180,14 +202,16 @@ class WritingViewModel @Inject constructor(
         val exercise = state.currentExercise ?: return
         val timeTakenMs = (System.currentTimeMillis() - exerciseStartedAt).coerceAtLeast(1)
 
-        val strokeAnswers = exercise.character.strokes.mapIndexed { index, stroke ->
-            WritingStrokeAnswer(
-                strokeIndex = index,
-                expectedType = stroke.type,
-                expectedDirection = stroke.direction,
-                wasCorrect = true,
-                attempts = 1,
-            )
+        val strokeAnswers = state.strokeAnswers.ifEmpty {
+            exercise.character.strokes.mapIndexed { index, stroke ->
+                WritingStrokeAnswer(
+                    strokeIndex = index,
+                    expectedType = stroke.type,
+                    expectedDirection = stroke.direction,
+                    wasCorrect = true,
+                    attempts = 1,
+                )
+            }
         }
 
         val attempt = WritingAttempt(

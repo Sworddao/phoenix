@@ -349,7 +349,9 @@ class RoomWritingRepository @Inject constructor(
         var selected: List<WritingExercise> = emptyList()
 
         if (config.characterIds.isNotEmpty()) {
-            selected = unlocked.filter { it.character.id in config.characterIds }
+            selected = unlocked.filter {
+                it.character.id in config.characterIds || it.character.wordId in config.characterIds
+            }
             if (selected.isEmpty()) {
                 val dynamic = config.characterIds.mapNotNull { characterId ->
                     val word = vocabularyRepository.getWordById(characterId).first()
@@ -365,13 +367,36 @@ class RoomWritingRepository @Inject constructor(
                 }
             }
         } else {
-            selected = unlocked.filter { it.type == config.exerciseType && it.difficulty == config.difficulty }
-            if (selected.isEmpty()) {
-                selected = unlocked.filter { it.type == config.exerciseType }
+            selected = if (config.exerciseType == WritingExerciseType.TRACE_STROKES) {
+                val pool = unlocked
+                    .filter { it.difficulty == config.difficulty }
+                    .ifEmpty { unlocked }
+                buildProgressiveSelection(pool, config.exerciseCount)
+            } else {
+                unlocked.filter { it.type == config.exerciseType && it.difficulty == config.difficulty }
+                    .ifEmpty { unlocked.filter { it.type == config.exerciseType } }
             }
         }
 
         return selected.take(config.exerciseCount).ifEmpty { unlocked.take(config.exerciseCount) }
+    }
+
+    private fun buildProgressiveSelection(
+        unlocked: List<WritingExercise>,
+        exerciseCount: Int,
+    ): List<WritingExercise> {
+        val byType = WritingExerciseType.entries.map { type ->
+            unlocked.filter { it.type == type }.sortedBy { it.order }
+        }
+        return buildList {
+            var depth = 0
+            while (size < exerciseCount && byType.any { depth < it.size }) {
+                byType.forEach { list ->
+                    if (size < exerciseCount && depth < list.size) add(list[depth])
+                }
+                depth++
+            }
+        }
     }
 
     private fun createWordExercise(word: VocabularyWord): WritingExercise {

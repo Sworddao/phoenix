@@ -181,6 +181,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Navigation route `reading/{wordId}` accessible from dialogue completion, NPC dialogue bubbles, and vocabulary detail
   - Quest `quest_order_tea` gains a READ_CHARACTERS objective
   - Unit tests for models and repository
+- Writing & hanzi stroke foundation (Feature 4.9)
+  - Writing data models (HanziCharacter, HanziStroke, WritingExercise, WritingAttempt, WritingStrokeAnswer, WritingSession, WritingProgress, WritingMastery, WritingStatistics, WritingBadge, WritingSessionConfig, WritingResult)
+  - 3 exercise types (TRACE_STROKES, STROKE_ORDER, DIRECTION_CHECK) across 4 difficulties; progressive default sessions cycle all three types
+  - 19 seeded characters with ordered stroke data (StrokeType + StrokeDirection) and ~30 initial exercises plus dynamic per-word generation
+  - WritingEngine abstraction with MockWritingEngine validating stroke order and direction (only fully-correct strokes advance; wrong taps retry the pending stroke)
+  - WritingRepository with Room persistence (writing_exercise, progress/statistics/badges/sessions/state docs)
+  - Session lifecycle with real per-stroke attempts, streak tracking, XP (+5 streak bonus), friendship bonus, and personal-best detection
+  - 8 writing badges (first stroke, 3/7/30-day streaks, steady hand, stroke perfect, pen ready, character collector)
+  - Integration with Dialogue (PRACTICE_WRITING action), Vocabulary (timesWritten), Quest (WRITE_CHARACTERS objectives), Game Progress (FIRST_WRITING milestone + WRITING_PRACTICE XP), Passport (WRITING_PRACTICE & ACHIEVEMENT_UNLOCKED entries), and Friendship (greeting bonus)
+  - WritingViewModel recording real stroke answers; WritingScreen with character card, direction buttons, feedback, result, and completion dialog
+  - Navigation route `writing/{wordId}` accessible from dialogue completion, celebration, and vocabulary detail
+  - Unit tests for engine, models, repository (Room + mock), and ViewModel
+- Documentation for writing system
 - Documentation for reading system and related system updates
 - Documentation for listening system and related system updates
 - Documentation for dialogue, NPC, quest, world, passport, and vocabulary systems

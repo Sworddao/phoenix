@@ -72,17 +72,21 @@ class MockWritingEngine @Inject constructor() : WritingEngine {
             message = buildMessage(expectedType, expectedDirection, wasOrderCorrect, wasDirectionCorrect),
         )
 
-        if (isExpectedIndex) {
+        if (wasCorrect) {
             sessions[sessionId] = state.copy(
                 nextStrokeIndex = state.nextStrokeIndex + 1,
                 strokesCompleted = state.strokesCompleted + strokeIndex,
                 correctOrderCount = state.correctOrderCount + 1,
-                correctDirectionCount = state.correctDirectionCount + if (wasDirectionCorrect) 1 else 0,
-                errorCount = state.errorCount + if (wasDirectionCorrect) 0 else 1,
+                correctDirectionCount = state.correctDirectionCount + 1,
+                errorCount = state.errorCount,
                 isComplete = state.nextStrokeIndex + 1 >= state.expectedStrokeCount,
             )
         } else {
-            sessions[sessionId] = state.copy(errorCount = state.errorCount + 1)
+            sessions[sessionId] = state.copy(
+                correctOrderCount = state.correctOrderCount + if (wasOrderCorrect) 1 else 0,
+                correctDirectionCount = state.correctDirectionCount + if (wasDirectionCorrect) 1 else 0,
+                errorCount = state.errorCount + 1,
+            )
         }
 
         return feedback

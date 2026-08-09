@@ -74,6 +74,29 @@ class WritingRepositoryTest {
     }
 
     @Test
+    fun `startSession with wordId selects seeded character exercises with stroke data`() = runTest {
+        val session = repository.startSession(
+            WritingSessionConfig(characterIds = listOf("greet_001"))
+        )
+
+        assertTrue(session.exerciseIds.isNotEmpty())
+        val exercise = repository.getExerciseById(session.exerciseIds.first()).first()
+        assertEquals("write_ex_trace_ni", exercise?.id)
+        assertTrue(exercise?.character?.strokes?.isNotEmpty() ?: false)
+    }
+
+    @Test
+    fun `default session progresses across multiple exercise types`() = runTest {
+        val session = repository.startSession(WritingSessionConfig(exerciseCount = 5))
+
+        val exercises = session.exerciseIds.mapNotNull { id ->
+            repository.getExerciseById(id).first()
+        }
+        assertTrue(exercises.isNotEmpty())
+        assertTrue(exercises.map { it.type }.distinct().size >= 2)
+    }
+
+    @Test
     fun `submitAnswer correct attempt awards xp and updates statistics`() = runTest {
         val character = WritingSeedData.createInitialCharacters().first()
         val exercise = repository.getExercisesByType(WritingExerciseType.TRACE_STROKES).first()

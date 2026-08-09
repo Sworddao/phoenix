@@ -64,6 +64,36 @@ class WritingEngineTest {
     }
 
     @Test
+    fun `recordStroke with wrong direction does not advance to the next stroke`() {
+        val character = WritingSeedData.createInitialCharacters().first { it.hanzi == "好" }
+        val state = engine.startSession(character)
+
+        val feedback = engine.recordStroke(state.sessionId, 0, StrokeDirection.TOP_TO_BOTTOM)
+
+        assertTrue(feedback.wasOrderCorrect)
+        assertFalse(feedback.wasCorrect)
+        assertEquals(0, engine.correctDirectionCount(state.sessionId))
+        assertEquals(0f, engine.progress(state.sessionId), 0.0001f)
+        assertFalse(engine.isComplete(state.sessionId))
+        assertEquals(character.strokes.first(), engine.expectedStroke(state.sessionId))
+    }
+
+    @Test
+    fun `wrong direction then retry with correct direction completes the stroke`() {
+        val character = WritingSeedData.createInitialCharacters().first { it.hanzi == "好" }
+        val state = engine.startSession(character)
+
+        engine.recordStroke(state.sessionId, 0, StrokeDirection.TOP_TO_BOTTOM)
+        val retry = engine.recordStroke(state.sessionId, 0, character.strokes.first().direction)
+
+        assertTrue(retry.wasCorrect)
+        assertEquals(2, engine.correctOrderCount(state.sessionId))
+        assertEquals(1, engine.correctDirectionCount(state.sessionId))
+        assertEquals(1f / character.strokeCount, engine.progress(state.sessionId), 0.0001f)
+        assertEquals(character.strokes[1], engine.expectedStroke(state.sessionId))
+    }
+
+    @Test
     fun `recordStroke with wrong index does not advance the session`() {
         val character = WritingSeedData.createInitialCharacters().first { it.hanzi == "好" }
         val state = engine.startSession(character)
