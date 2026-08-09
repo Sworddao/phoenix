@@ -167,6 +167,12 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
             "CREATE TABLE IF NOT EXISTS `app_metadata` (`key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`key`))"
         )
         db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `conversation_memory` (`id` TEXT NOT NULL, `npcId` TEXT NOT NULL, `dialogueId` TEXT NOT NULL, `dialogueTitle` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `durationSeconds` INTEGER NOT NULL, `topicsDiscussed` TEXT NOT NULL, `xpGained` INTEGER NOT NULL, `choicesSummary` TEXT NOT NULL, PRIMARY KEY(`id`))"
+        )
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `friendship_event` (`id` TEXT NOT NULL, `type` TEXT NOT NULL, `npcId` TEXT NOT NULL, `description` TEXT NOT NULL, `xpChange` INTEGER NOT NULL, `timestamp` INTEGER NOT NULL, `metadata` TEXT NOT NULL, PRIMARY KEY(`id`))"
+        )
+        db.execSQL(
             "CREATE TABLE IF NOT EXISTS `vocabulary_word` (`id` TEXT NOT NULL, `mandarin` TEXT NOT NULL, `pinyin` TEXT NOT NULL, `english` TEXT NOT NULL, `hanzi` TEXT, `audioPath` TEXT, `category` TEXT NOT NULL, `difficulty` TEXT NOT NULL, `exampleSentence` TEXT NOT NULL, `exampleTranslation` TEXT NOT NULL, `examplePinyin` TEXT NOT NULL, `relatedNpcId` TEXT, `relatedQuestId` TEXT, `relatedRegionId` TEXT, `discoveredAt` INTEGER, `mastery` TEXT NOT NULL, `timesReviewed` INTEGER NOT NULL, `timesSpoken` INTEGER NOT NULL, `timesHeard` INTEGER NOT NULL, `timesRead` INTEGER NOT NULL, `isFavorite` INTEGER NOT NULL, `notes` TEXT, `tagsJson` TEXT NOT NULL, PRIMARY KEY(`id`))"
         )
         db.execSQL(

@@ -48,12 +48,6 @@ class PhoenixDatabaseMigrationTest {
             "CREATE TABLE IF NOT EXISTS `friendship_state` (`npcId` TEXT NOT NULL, `friendshipXp` INTEGER NOT NULL, `friendshipLevel` TEXT NOT NULL, `totalConversations` INTEGER NOT NULL, `firstMeetingTimestamp` INTEGER NOT NULL, `lastInteractionTimestamp` INTEGER NOT NULL, `unlockedTopics` TEXT NOT NULL, `recentGifts` TEXT NOT NULL, `completedQuests` TEXT NOT NULL, PRIMARY KEY(`npcId`))"
         )
         db.execSQL(
-            "CREATE TABLE IF NOT EXISTS `conversation_memory` (`id` TEXT NOT NULL, `npcId` TEXT NOT NULL, `dialogueId` TEXT NOT NULL, `dialogueTitle` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `durationSeconds` INTEGER NOT NULL, `topicsDiscussed` TEXT NOT NULL, `xpGained` INTEGER NOT NULL, `choicesSummary` TEXT NOT NULL, PRIMARY KEY(`id`))"
-        )
-        db.execSQL(
-            "CREATE TABLE IF NOT EXISTS `friendship_event` (`id` TEXT NOT NULL, `type` TEXT NOT NULL, `npcId` TEXT NOT NULL, `description` TEXT NOT NULL, `xpChange` INTEGER NOT NULL, `timestamp` INTEGER NOT NULL, `metadata` TEXT NOT NULL, PRIMARY KEY(`id`))"
-        )
-        db.execSQL(
             "INSERT INTO `friendship_state` (`npcId`, `friendshipXp`, `friendshipLevel`, `totalConversations`, `firstMeetingTimestamp`, `lastInteractionTimestamp`, `unlockedTopics`, `recentGifts`, `completedQuests`) VALUES ('v2_npc', 42, 'FRIEND', 3, 1000, 2000, '[]', '[]', '[]')"
         )
     }
