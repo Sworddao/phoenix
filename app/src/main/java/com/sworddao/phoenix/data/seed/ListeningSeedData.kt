@@ -353,7 +353,7 @@ fun createInitialExercises(): List<ListeningExercise> = listOf(
                 text = "miàn bāo",
                 hanzi = "面包",
                 english = "bread",
-                wordId = "food_003",
+                wordId = "food_008",
             ),
             prompt = "听一听，选出对应的图片",
             choices = listOf(
@@ -364,7 +364,7 @@ fun createInitialExercises(): List<ListeningExercise> = listOf(
             ),
             correctChoiceIndex = 0,
             context = "Grandma Mei's fresh bread",
-            relatedWordId = "food_003",
+            relatedWordId = "food_008",
             xpReward = 10,
             isUnlocked = true,
             order = 14,

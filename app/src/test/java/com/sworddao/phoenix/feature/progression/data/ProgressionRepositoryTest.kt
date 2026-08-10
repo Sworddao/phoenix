@@ -49,6 +49,7 @@ class ProgressionRepositoryTest {
         worldRepository = MockWorldRepository()
         discoveryRepository = MockDiscoveryRepository(
             vocabularyRepository = vocabularyRepository,
+            gameProgressRepository = gameProgressRepository,
         )
         pronunciationRepository = MockPronunciationRepository(
             vocabularyRepository = vocabularyRepository,

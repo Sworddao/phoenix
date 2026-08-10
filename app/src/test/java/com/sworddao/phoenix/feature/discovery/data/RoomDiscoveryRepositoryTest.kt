@@ -2,6 +2,7 @@ package com.sworddao.phoenix.feature.discovery.data
 
 import com.sworddao.phoenix.data.local.PhoenixDatabase
 import com.sworddao.phoenix.data.local.RoomTestDb
+import com.sworddao.phoenix.feature.gameplay.data.RoomGameProgressRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -28,6 +29,7 @@ class RoomDiscoveryRepositoryTest {
             database.discoveryDao(),
             database.vocabularyDao(),
             database.appMetadataDao(),
+            RoomGameProgressRepository(database.gameProgressDao()),
         )
     }
 
@@ -172,6 +174,42 @@ class RoomDiscoveryRepositoryTest {
 
         val newCount = repository.getDiscoveryCount()
         assertEquals(initialCount + 1, newCount)
+    }
+
+    @Test
+    fun `discovery statistics reflect game progress`() = runBlocking {
+        val initial = repository.getDiscoveryStatistics().first()
+        assertEquals(0, initial.totalDiscovered)
+
+        repository.discoverWord(
+            wordId = "greet_002",
+            source = DiscoverySourceType.NPC,
+            sourceId = "grandma_mei",
+            sourceName = "Grandma Mei",
+        )
+
+        val after = repository.getDiscoveryStatistics().first()
+        assertEquals(1, after.totalDiscovered)
+        assertTrue(after.completionPercentage > 0f)
+    }
+
+    @Test
+    fun `discovering already known word does not double count progress`() = runBlocking {
+        repository.discoverWord(
+            wordId = "greet_002",
+            source = DiscoverySourceType.NPC,
+            sourceId = "grandma_mei",
+            sourceName = "Grandma Mei",
+        )
+        repository.discoverWord(
+            wordId = "greet_002",
+            source = DiscoverySourceType.NPC,
+            sourceId = "grandma_mei",
+            sourceName = "Grandma Mei",
+        )
+
+        val stats = repository.getDiscoveryStatistics().first()
+        assertEquals(1, stats.totalDiscovered)
     }
 
     @Test

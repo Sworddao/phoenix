@@ -234,8 +234,8 @@ class RoomListeningRepository @Inject constructor(
                 friendshipRepository.addFriendshipXp(exercise.relatedNpcId, friendshipBonusEarned)
             }
             updateListeningQuests()
-            recordFirstListeningPassportEntry(exercise, attempt, statistics)
         }
+        recordFirstListeningPassportEntry(exercise, attempt, statistics)
 
         val badges = recomputeBadges(state, updatedProgressMap)
         saveBadges(badges)

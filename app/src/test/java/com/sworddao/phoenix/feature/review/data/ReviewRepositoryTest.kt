@@ -44,7 +44,10 @@ class ReviewRepositoryTest {
         gameProgressRepository = MockGameProgressRepository()
         passportRepository = MockPassportRepository()
         worldRepository = MockWorldRepository()
-        val discoveryRepository = MockDiscoveryRepository(vocabularyRepository = vocabularyRepository)
+        val discoveryRepository = MockDiscoveryRepository(
+            vocabularyRepository = vocabularyRepository,
+            gameProgressRepository = gameProgressRepository,
+        )
         pronunciationRepository = MockPronunciationRepository(
             vocabularyRepository = vocabularyRepository,
             questRepository = questRepository,

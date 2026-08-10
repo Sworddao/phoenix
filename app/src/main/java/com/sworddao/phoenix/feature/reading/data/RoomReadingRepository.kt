@@ -224,6 +224,12 @@ class RoomReadingRepository @Inject constructor(
         attempt.wordId?.let { state = state.copy(readWords = state.readWords + it) }
         var statistics = updateStatistics(attempt, exercise, correct, updatedProgressMap, state)
         saveStatistics(statistics)
+        if (correct) {
+            state = state.copy(correctCount = state.correctCount + 1)
+            if (exercise.relatedNpcId != null) {
+                state = state.copy(npcExerciseCount = state.npcExerciseCount + 1)
+            }
+        }
         saveState(state)
 
         if (correct) {
@@ -245,8 +251,8 @@ class RoomReadingRepository @Inject constructor(
                 friendshipRepository.addFriendshipXp(exercise.relatedNpcId, friendshipBonusEarned)
             }
             updateReadingQuests()
-            recordFirstReadingPassportEntry(exercise, attempt, statistics)
         }
+        recordFirstReadingPassportEntry(exercise, attempt, statistics)
 
         val badges = recomputeBadges(state, updatedProgressMap)
         saveBadges(badges)

@@ -276,8 +276,8 @@ class RoomPronunciationRepository @Inject constructor(
                 friendshipRepository.addFriendshipXp(exercise.relatedNpcId, friendshipBonusEarned)
             }
             updateSpeakingQuests()
-            recordFirstPracticePassportEntry(exercise, attempt)
         }
+        recordFirstPracticePassportEntry(exercise, attempt)
 
         val badges = recomputeBadges(state, updatedProgress)
         saveBadges(badges)

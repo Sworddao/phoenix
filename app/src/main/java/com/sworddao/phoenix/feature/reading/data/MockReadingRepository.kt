@@ -181,8 +181,8 @@ class MockReadingRepository @Inject constructor(
                 friendshipRepository.addFriendshipXp(exercise.relatedNpcId, friendshipBonusEarned)
             }
             updateReadingQuests()
-            recordFirstReadingPassportEntry(exercise, attempt)
         }
+        recordFirstReadingPassportEntry(exercise, attempt)
 
         recomputeBadges()
         updateBadgePassportEntries()

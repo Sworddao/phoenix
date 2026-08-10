@@ -198,8 +198,8 @@ class MockPronunciationRepository @Inject constructor(
                 friendshipRepository.addFriendshipXp(exercise.relatedNpcId, friendshipBonusEarned)
             }
             updateSpeakingQuests()
-            recordFirstPracticePassportEntry(exercise, attempt)
         }
+        recordFirstPracticePassportEntry(exercise, attempt)
 
         recomputeBadges()
         recordNewBadgeEntries()

@@ -1,5 +1,9 @@
 package com.sworddao.phoenix.feature.discovery.data
 
+import com.sworddao.phoenix.feature.gameplay.data.GameMilestone
+import com.sworddao.phoenix.feature.gameplay.data.GameProgress
+import com.sworddao.phoenix.feature.gameplay.data.SessionSummary
+import com.sworddao.phoenix.feature.gameplay.domain.GameProgressRepository
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyCategory
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyDifficulty
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyMastery
@@ -20,7 +24,10 @@ class DiscoveryRepositoryTest {
 
     @Before
     fun setup() {
-        repository = MockDiscoveryRepository(FakeVocabularyRepository())
+        repository = MockDiscoveryRepository(
+            FakeVocabularyRepository(),
+            FakeGameProgressRepository(),
+        )
     }
 
     @Test
@@ -191,6 +198,42 @@ class DiscoveryRepositoryTest {
     }
 
     @Test
+    fun `discovery statistics reflect game progress`() = runTest {
+        val initial = repository.getDiscoveryStatistics().first()
+        assertEquals(0, initial.totalDiscovered)
+
+        repository.discoverWord(
+            wordId = "greet_002",
+            source = DiscoverySourceType.NPC,
+            sourceId = "grandma_mei",
+            sourceName = "Grandma Mei",
+        )
+
+        val after = repository.getDiscoveryStatistics().first()
+        assertEquals(1, after.totalDiscovered)
+        assertTrue(after.completionPercentage > 0f)
+    }
+
+    @Test
+    fun `discovering already known word does not double count progress`() = runTest {
+        repository.discoverWord(
+            wordId = "greet_002",
+            source = DiscoverySourceType.NPC,
+            sourceId = "grandma_mei",
+            sourceName = "Grandma Mei",
+        )
+        repository.discoverWord(
+            wordId = "greet_002",
+            source = DiscoverySourceType.NPC,
+            sourceId = "grandma_mei",
+            sourceName = "Grandma Mei",
+        )
+
+        val stats = repository.getDiscoveryStatistics().first()
+        assertEquals(1, stats.totalDiscovered)
+    }
+
+    @Test
     fun `quest discovery includes quest metadata`() = runTest {
         val result = repository.discoverWord(
             wordId = "greet_002",
@@ -254,6 +297,29 @@ class DiscoveryRepositoryTest {
         val sessions = repository.getDiscoverySessions().first()
         assertTrue(sessions.any { it.id == "session_001" })
     }
+}
+
+private class FakeGameProgressRepository : GameProgressRepository {
+    private val gameProgress = MutableStateFlow(GameProgress())
+
+    override fun getGameProgress(): Flow<GameProgress> = gameProgress
+    override fun getSessionSummary(): Flow<SessionSummary> = MutableStateFlow(SessionSummary())
+
+    override suspend fun recordWordDiscovered(wordId: String) {
+        gameProgress.value = gameProgress.value.copy(totalWordsDiscovered = gameProgress.value.totalWordsDiscovered + 1)
+    }
+
+    override suspend fun recordDialogueCompleted(npcId: String) = Unit
+    override suspend fun recordQuestCompleted(questId: String) = Unit
+    override suspend fun recordFriendshipLevelUp(npcId: String) = Unit
+    override suspend fun recordPassportStampEarned(regionId: String) = Unit
+    override suspend fun recordSpeakingPractice() = Unit
+    override suspend fun recordListeningPractice() = Unit
+    override suspend fun recordReadingPractice() = Unit
+    override suspend fun recordWritingPractice() = Unit
+    override suspend fun recordXpEarned(xp: Int) = Unit
+    override suspend fun unlockMilestone(milestone: GameMilestone) = Unit
+    override suspend fun resetSession() = Unit
 }
 
 private class FakeVocabularyRepository : VocabularyRepository {

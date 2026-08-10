@@ -167,8 +167,8 @@ class MockListeningRepository @Inject constructor(
                 friendshipRepository.addFriendshipXp(exercise.relatedNpcId, friendshipBonusEarned)
             }
             updateListeningQuests()
-            recordFirstListeningPassportEntry(exercise, attempt)
         }
+        recordFirstListeningPassportEntry(exercise, attempt)
 
         recomputeBadges()
         recordNewBadgeEntries()

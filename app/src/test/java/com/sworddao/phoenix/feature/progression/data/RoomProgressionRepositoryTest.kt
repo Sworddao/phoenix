@@ -40,7 +40,7 @@ class RoomProgressionRepositoryTest {
         val passport = MockPassportRepository()
         val vocabulary = MockVocabularyRepository()
         val friendship = MockFriendshipRepository()
-        val discovery = MockDiscoveryRepository(vocabulary)
+        val discovery = MockDiscoveryRepository(vocabulary, game)
         val pronunciation = MockPronunciationRepository(vocabulary, quest, friendship, game, passport)
         val listening = MockListeningRepository(vocabulary, quest, friendship, game, passport, pronunciation)
         val reading = MockReadingRepository(vocabulary, quest, friendship, game, passport, pronunciation, listening, MockHanziRenderer())

@@ -5,6 +5,7 @@ import com.sworddao.phoenix.data.local.RoomTestDb
 import com.sworddao.phoenix.feature.friendship.data.MockFriendshipRepository
 import com.sworddao.phoenix.feature.gameplay.data.MockGameProgressRepository
 import com.sworddao.phoenix.feature.listening.data.RoomListeningRepository
+import com.sworddao.phoenix.feature.passport.data.EntryType
 import com.sworddao.phoenix.feature.passport.data.MockPassportRepository
 import com.sworddao.phoenix.feature.pronunciation.data.RoomPronunciationRepository
 import com.sworddao.phoenix.feature.quest.data.MockQuestRepository
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -26,6 +28,7 @@ class RoomReadingRepositoryTest {
 
     private lateinit var database: PhoenixDatabase
     private lateinit var repository: RoomReadingRepository
+    private lateinit var passport: MockPassportRepository
 
     @Before
     fun setup() {
@@ -34,7 +37,7 @@ class RoomReadingRepositoryTest {
         val quest = MockQuestRepository()
         val friendship = MockFriendshipRepository()
         val game = MockGameProgressRepository()
-        val passport = MockPassportRepository()
+        passport = MockPassportRepository()
         val pronunciation = RoomPronunciationRepository(
             database.speakingDao(), vocabulary, quest, friendship, game, passport,
         )
@@ -155,6 +158,42 @@ class RoomReadingRepositoryTest {
         val completed = result as ReadingResultStatus.ExerciseCompleted
         assertEquals(0, completed.result.xpEarned)
         assertEquals(0, completed.result.currentStreak)
+    }
+
+    @Test
+    fun `accurate and dialogue badges progress on correct answers`() = runBlocking {
+        repository.startSession(ReadingSessionConfig(wordIds = listOf("greet_001")))
+        repository.submitAnswer(
+            ReadingAttempt(
+                exerciseId = "read_ex_greet_hello",
+                wordId = "greet_001",
+                chosenChoiceId = "choice_0",
+                wasCorrect = true,
+            )
+        )
+
+        val badges = repository.getReadingBadges().first()
+        val accurate = badges.first { it.id == "read_accurate" }
+        val dialogueReady = badges.first { it.id == "read_dialogue_ready" }
+        assertTrue(accurate.progress > 0f)
+        assertTrue(dialogueReady.progress > 0f)
+        assertFalse(accurate.isEarned)
+    }
+
+    @Test
+    fun `first practice passport entry recorded even on wrong first attempt`() = runBlocking {
+        repository.startSession(ReadingSessionConfig(wordIds = listOf("greet_001")))
+        repository.submitAnswer(
+            ReadingAttempt(
+                exerciseId = "read_ex_greet_hello",
+                wordId = "greet_001",
+                chosenChoiceId = "choice_1",
+                wasCorrect = false,
+            )
+        )
+
+        val entries = passport.getRecentEntries(20).first()
+        assertTrue(entries.any { it.type == EntryType.READING_PRACTICE })
     }
 
     @Test

@@ -61,6 +61,13 @@ class RoomListeningRepositoryTest {
     }
 
     @Test
+    fun `bread exercise references the bread vocabulary word`() = runBlocking {
+        val exercise = repository.getAllExercises().first().first { it.id == "listen_ex_match_bread" }
+        assertEquals("food_008", exercise.clip.wordId)
+        assertEquals("food_008", exercise.relatedWordId)
+    }
+
+    @Test
     fun `getExerciseById returns null for missing`() = runBlocking {
         assertNull(repository.getExerciseById("missing").first())
     }

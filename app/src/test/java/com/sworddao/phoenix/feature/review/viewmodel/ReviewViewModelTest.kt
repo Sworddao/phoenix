@@ -44,7 +44,10 @@ class ReviewViewModelTest {
         val friendshipRepository = MockFriendshipRepository()
         val passportRepository = MockPassportRepository()
         val worldRepository = MockWorldRepository()
-        val discoveryRepository = MockDiscoveryRepository(vocabularyRepository = vocabularyRepository)
+        val discoveryRepository = MockDiscoveryRepository(
+            vocabularyRepository = vocabularyRepository,
+            gameProgressRepository = gameProgressRepository,
+        )
         val pronunciationRepository = MockPronunciationRepository(
             vocabularyRepository = vocabularyRepository,
             questRepository = questRepository,

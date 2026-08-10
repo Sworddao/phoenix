@@ -2,12 +2,14 @@ package com.sworddao.phoenix.feature.discovery.data
 
 import com.sworddao.phoenix.data.seed.DiscoverySeedData
 
+import com.sworddao.phoenix.feature.gameplay.domain.GameProgressRepository
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyCategory
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyMastery
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyWord
 import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
@@ -18,6 +20,7 @@ import javax.inject.Singleton
 @Singleton
 class MockDiscoveryRepository @Inject constructor(
     private val vocabularyRepository: VocabularyRepository,
+    private val gameProgressRepository: GameProgressRepository,
 ) : DiscoveryRepository {
 
     private val _discoveries = MutableStateFlow(createInitialDiscoveries())
@@ -101,7 +104,7 @@ class MockDiscoveryRepository @Inject constructor(
         }
 
     override fun getDiscoveryStatistics(): Flow<DiscoveryStatistics> =
-        _discoveries.map { discoveries ->
+        combine(_discoveries, gameProgressRepository.getGameProgress()) { discoveries, gameProgress ->
             val now = System.currentTimeMillis()
             val today = getStartOfDay(now)
             val weekAgo = now - 7 * 24 * 60 * 60 * 1000L
@@ -111,6 +114,7 @@ class MockDiscoveryRepository @Inject constructor(
             val monthCount = discoveries.count { it.discoveredAt >= monthAgo }
 
             val totalAvailable = 100
+            val totalDiscovered = gameProgress.totalWordsDiscovered
             val wordsBySource = discoveries.groupBy { it.source }.mapValues { it.value.size }
             val wordsByCategory = discoveries.mapNotNull { it.word?.category }
                 .groupBy { it }
@@ -128,7 +132,7 @@ class MockDiscoveryRepository @Inject constructor(
             } else 1
 
             DiscoveryStatistics(
-                totalDiscovered = discoveries.size,
+                totalDiscovered = totalDiscovered,
                 totalAvailable = totalAvailable,
                 todayDiscovered = todayCount,
                 weekDiscovered = weekCount,
@@ -140,8 +144,10 @@ class MockDiscoveryRepository @Inject constructor(
                 wordsByCategory = wordsByCategory,
                 wordsByMastery = wordsByMastery,
                 wordsByRegion = wordsByRegion,
-                averageDiscoveriesPerDay = discoveries.size.toFloat() / daysSinceFirst,
-                completionPercentage = discoveries.size.toFloat() / totalAvailable,
+                averageDiscoveriesPerDay = if (totalDiscovered > 0) {
+                    totalDiscovered.toFloat() / daysSinceFirst
+                } else 0f,
+                completionPercentage = totalDiscovered.toFloat() / totalAvailable,
             )
         }
 
@@ -205,6 +211,7 @@ class MockDiscoveryRepository @Inject constructor(
         _discoveries.update { current -> current + discovery }
 
         vocabularyRepository.discoverWord(wordId)
+        gameProgressRepository.recordWordDiscovered(wordId)
 
         updateStreak()
 

@@ -3,6 +3,7 @@ package com.sworddao.phoenix.feature.discovery.data
 import com.sworddao.phoenix.data.local.AppMetadataDao
 import com.sworddao.phoenix.data.local.AppMetadataEntity
 import com.sworddao.phoenix.data.seed.DiscoverySeedData
+import com.sworddao.phoenix.feature.gameplay.domain.GameProgressRepository
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyCategory
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyDao
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyDifficulty
@@ -27,6 +28,7 @@ class RoomDiscoveryRepository @Inject constructor(
     private val dao: DiscoveryDao,
     private val vocabularyDao: VocabularyDao,
     private val metadataDao: AppMetadataDao,
+    private val gameProgressRepository: GameProgressRepository,
 ) : DiscoveryRepository {
 
     private val seeded = AtomicBoolean(false)
@@ -119,19 +121,24 @@ class RoomDiscoveryRepository @Inject constructor(
     }
 
     override fun getDiscoveryStatistics(): Flow<DiscoveryStatistics> = seededFlow {
-        combine(dao.getAllDiscoveries(), streakFlow) { entities, streak ->
+        combine(
+            dao.getAllDiscoveries(),
+            streakFlow,
+            gameProgressRepository.getGameProgress(),
+        ) { entities, streak, gameProgress ->
             val discoveries = entities.map { it.toDomain() }
             val now = System.currentTimeMillis()
             val today = getStartOfDay(now)
             val weekAgo = now - WEEK_MILLIS
             val monthAgo = now - MONTH_MILLIS
             val totalAvailable = 100
+            val totalDiscovered = gameProgress.totalWordsDiscovered
             val daysSinceFirst = if (discoveries.isNotEmpty()) {
                 val firstDiscovery = discoveries.minOf { it.discoveredAt }
                 ((now - firstDiscovery) / DAY_MILLIS).toInt().coerceAtLeast(1)
             } else 1
             DiscoveryStatistics(
-                totalDiscovered = discoveries.size,
+                totalDiscovered = totalDiscovered,
                 totalAvailable = totalAvailable,
                 todayDiscovered = discoveries.count { it.discoveredAt >= today },
                 weekDiscovered = discoveries.count { it.discoveredAt >= weekAgo },
@@ -146,8 +153,10 @@ class RoomDiscoveryRepository @Inject constructor(
                     .groupBy { it }.mapValues { it.value.size },
                 wordsByRegion = discoveries.mapNotNull { it.relatedRegionId }
                     .groupBy { it }.mapValues { it.value.size },
-                averageDiscoveriesPerDay = discoveries.size.toFloat() / daysSinceFirst,
-                completionPercentage = discoveries.size.toFloat() / totalAvailable,
+                averageDiscoveriesPerDay = if (totalDiscovered > 0) {
+                    totalDiscovered.toFloat() / daysSinceFirst
+                } else 0f,
+                completionPercentage = totalDiscovered.toFloat() / totalAvailable,
             )
         }
     }
@@ -216,6 +225,7 @@ class RoomDiscoveryRepository @Inject constructor(
 
         dao.upsert(discovery.toEntity())
         vocabularyDao.discoverWord(wordId, discovery.discoveredAt)
+        gameProgressRepository.recordWordDiscovered(wordId)
         updateStreak()
 
         return DiscoveryResult.WordDiscovered(
