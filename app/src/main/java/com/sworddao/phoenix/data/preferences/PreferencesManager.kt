@@ -72,7 +72,8 @@ class PreferencesManager @Inject constructor(
             preferences[Keys.NATIVE_LANGUAGE] = profile.nativeLanguage
             preferences[Keys.EXPERIENCE_LEVEL] = profile.experienceLevel.name
             preferences[Keys.LEARNING_PACE] = profile.learningPace.name
-            preferences[Keys.ONBOARDING_COMPLETED] = profile.isOnboardingCompleted
+            val alreadyCompleted = preferences[Keys.ONBOARDING_COMPLETED] ?: false
+            preferences[Keys.ONBOARDING_COMPLETED] = profile.isOnboardingCompleted || alreadyCompleted
         }
     }
 

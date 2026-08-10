@@ -2,7 +2,9 @@ package com.sworddao.phoenix.feature.quest.data
 
 import com.sworddao.phoenix.data.local.PhoenixDatabase
 import com.sworddao.phoenix.data.local.RoomTestDb
+import com.sworddao.phoenix.feature.friendship.data.MockFriendshipRepository
 import com.sworddao.phoenix.feature.gameplay.data.RoomGameProgressRepository
+import com.sworddao.phoenix.feature.vocabulary.data.MockVocabularyRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -26,6 +28,8 @@ class RoomQuestRepositoryTest {
         repository = RoomQuestRepository(
             dao = database.questDao(),
             gameProgressRepository = RoomGameProgressRepository(database.gameProgressDao()),
+            vocabularyRepository = MockVocabularyRepository(),
+            friendshipRepository = MockFriendshipRepository(),
         )
     }
 

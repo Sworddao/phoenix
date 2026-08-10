@@ -78,6 +78,10 @@ fun PhoenixApp(
 
     var playerProfile by remember { mutableStateOf(PlayerProfile()) }
     var accessibilityPrefs by remember { mutableStateOf(AccessibilityPreferences()) }
+    val restoredProfile by viewModel.playerProfile.collectAsState(initial = PlayerProfile())
+    val restoredPlayerName = restoredProfile.displayName.ifBlank {
+        LocalContext.current.getString(R.string.default_player_name)
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -141,8 +145,14 @@ fun PhoenixApp(
             ) {
             composable(Screen.Splash.route) {
                 SplashScreen(
+                    isOnboardingCompleted = restoredProfile.isOnboardingCompleted,
                     onNavigateToWelcome = {
                         navController.navigate(Screen.Welcome.route) {
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
+                    },
+                    onNavigateToVillage = {
+                        navController.navigate(Screen.QingyuanVillage.createRoute(restoredPlayerName)) {
                             popUpTo(Screen.Splash.route) { inclusive = true }
                         }
                     }
@@ -162,6 +172,7 @@ fun PhoenixApp(
             composable(Screen.Onboarding.route) {
                 OnboardingScreen(
                     onOnboardingComplete = {
+                        viewModel.completeOnboarding()
                         navController.navigate(Screen.PlayerProfile.route) {
                             popUpTo(Screen.Onboarding.route) { inclusive = true }
                         }
@@ -238,6 +249,18 @@ fun PhoenixApp(
                     },
                     onNavigateToReview = {
                         navController.navigate(Screen.Review.route)
+                    },
+                    onNavigateToHome = {
+                        navController.navigate(Screen.Home.route)
+                    },
+                    onNavigateToVocabulary = {
+                        navController.navigate(Screen.Vocabulary.route)
+                    },
+                    onNavigateToPassport = {
+                        navController.navigate(Screen.Passport.route)
+                    },
+                    onNavigateToSettings = {
+                        navController.navigate(Screen.Settings.route)
                     }
                 )
             }

@@ -10,10 +10,12 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sworddao.phoenix.data.local.AppMetadataEntity
 import com.sworddao.phoenix.data.local.MIGRATION_2_3
+import com.sworddao.phoenix.data.local.MIGRATION_3_4
 import com.sworddao.phoenix.data.local.PhoenixDatabase
 import com.sworddao.phoenix.feature.friendship.data.FriendshipEntity
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyEntity
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyProgressEntity
+import com.sworddao.phoenix.feature.writing.data.WritingExerciseEntity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -53,18 +55,18 @@ class DeviceSmokeTest {
     }
 
     @Test
-    fun realDatabaseOpensAtVersion3WithAllTables() {
+    fun realDatabaseOpensAtLatestSchemaWithAllTables() {
         context.deleteDatabase(DATABASE_NAME)
         val database = Room.databaseBuilder(
             context,
             PhoenixDatabase::class.java,
             DATABASE_NAME
         )
-            .addMigrations(MIGRATION_2_3)
+            .addMigrations(MIGRATION_2_3, MIGRATION_3_4)
             .build()
         try {
             val sqlite = database.openHelper.readableDatabase
-            assertEquals(3, sqlite.version)
+            assertEquals(4, sqlite.version)
             val missing = EXPECTED_TABLES - tableNames(sqlite)
             assertTrue("Missing tables on device: $missing", missing.isEmpty())
         } finally {
@@ -101,6 +103,7 @@ class DeviceSmokeTest {
                 "INSERT INTO `friendship_state` (`npcId`, `friendshipXp`, `friendshipLevel`, `totalConversations`, `firstMeetingTimestamp`, `lastInteractionTimestamp`, `unlockedTopics`, `recentGifts`, `completedQuests`) VALUES ('v2_npc', 42, 'FRIEND', 3, 1000, 2000, '[]', '[]', '[]')"
             )
             MIGRATION_2_3.migrate(db)
+            MIGRATION_3_4.migrate(db)
             val missing = EXPECTED_TABLES - tableNames(db)
             assertTrue("Missing tables after migration on device: $missing", missing.isEmpty())
             val cursor = db.query(
@@ -150,6 +153,18 @@ class DeviceSmokeTest {
 
                 database.appMetadataDao().setValue(AppMetadataEntity("smoke_test", "1"))
                 assertEquals("1", database.appMetadataDao().getValue("smoke_test"))
+
+                database.writingDao().upsertExercise(
+                    WritingExerciseEntity(
+                        id = "write_ni_hao",
+                        type = "TRACE_STROKES",
+                        difficulty = "BEGINNER",
+                        wordId = "w_ni_hao",
+                        characterJson = "{}",
+                        exerciseJson = "{}",
+                    )
+                )
+                assertTrue(database.writingDao().getExerciseById("write_ni_hao").first() != null)
             }
         } finally {
             database.close()
@@ -232,7 +247,13 @@ class DeviceSmokeTest {
             "progression_features",
             "progression_player",
             "progression_learning",
-            "progression_objectives"
+            "progression_objectives",
+            "writing_exercise",
+            "writing_progress_doc",
+            "writing_statistics",
+            "writing_badges",
+            "writing_sessions",
+            "writing_state"
         )
     }
 }

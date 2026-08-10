@@ -271,6 +271,13 @@ class RoomGameProgressRepository @Inject constructor(
         ))
     }
 
+    override suspend fun recordXpEarned(xp: Int) {
+        ensureSeeded()
+        if (xp <= 0) return
+        val summary = loadSummary()
+        saveSummary(summary.copy(totalXpEarned = summary.totalXpEarned + xp))
+    }
+
     override suspend fun unlockMilestone(milestone: GameMilestone) {
         ensureSeeded()
         val current = loadProgress()

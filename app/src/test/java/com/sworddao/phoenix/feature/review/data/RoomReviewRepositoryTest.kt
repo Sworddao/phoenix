@@ -15,6 +15,7 @@ import com.sworddao.phoenix.feature.pronunciation.data.MockPronunciationReposito
 import com.sworddao.phoenix.feature.quest.data.MockQuestRepository
 import com.sworddao.phoenix.feature.reading.data.MockHanziRenderer
 import com.sworddao.phoenix.feature.reading.data.MockReadingRepository
+import com.sworddao.phoenix.feature.writing.data.MockWritingRepository
 import com.sworddao.phoenix.feature.vocabulary.data.MockVocabularyRepository
 import com.sworddao.phoenix.feature.world.data.MockWorldRepository
 import kotlinx.coroutines.flow.first
@@ -51,7 +52,8 @@ class RoomReviewRepositoryTest {
         val pronunciation = MockPronunciationRepository(vocabulary, quest, friendship, game, passport)
         val listening = MockListeningRepository(vocabulary, quest, friendship, game, passport, pronunciation)
         val reading = MockReadingRepository(vocabulary, quest, friendship, game, passport, pronunciation, listening, MockHanziRenderer())
-        val progression = MockProgressionRepository(game, world, quest, passport, vocabulary, friendship, discovery, pronunciation, listening, reading)
+        val writing = MockWritingRepository(vocabulary, quest, friendship, game, passport)
+        val progression = MockProgressionRepository(game, world, quest, passport, vocabulary, friendship, discovery, pronunciation, listening, reading, writing)
 
         return RoomReviewRepository(
             database.reviewDao(),

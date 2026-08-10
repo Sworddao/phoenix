@@ -14,6 +14,7 @@ import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
 import com.sworddao.phoenix.feature.world.data.RegionStatus
 import com.sworddao.phoenix.feature.world.data.WorldRegion
 import com.sworddao.phoenix.feature.world.domain.WorldRepository
+import com.sworddao.phoenix.feature.writing.domain.WritingRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
@@ -40,6 +41,7 @@ class RoomProgressionRepository @Inject constructor(
     private val pronunciationRepository: PronunciationRepository,
     private val listeningRepository: ListeningRepository,
     private val readingRepository: ReadingRepository,
+    private val writingRepository: WritingRepository,
 ) : ProgressionRepository {
 
     private val seeded = AtomicBoolean(false)
@@ -187,7 +189,8 @@ class RoomProgressionRepository @Inject constructor(
         val speakingStats = pronunciationRepository.getSpeakingStatistics().first()
         val listeningStats = listeningRepository.getListeningStatistics().first()
         val readingStats = readingRepository.getReadingStatistics().first()
-        discoveryRepository.getDiscoveryStatistics().first()
+        val writingStats = writingRepository.getWritingStatistics().first()
+        val discoveryStats = discoveryRepository.getDiscoveryStatistics().first()
 
         val snapshot = buildSnapshot(
             gameProgress = gameProgress,
@@ -212,6 +215,8 @@ class RoomProgressionRepository @Inject constructor(
             speakingStats = speakingStats,
             listeningStats = listeningStats,
             readingStats = readingStats,
+            writingStats = writingStats,
+            discoveryStats = discoveryStats,
             gameProgress = gameProgress,
         )
         dao.upsertLearningDoc(ProgressionLearningEntity("all", RoomJson.toJson(learning)))
@@ -226,8 +231,8 @@ class RoomProgressionRepository @Inject constructor(
         val objectives = buildObjectives(
             regions = regions,
             gameProgress = gameProgress,
-            vocabularyStats = vocabularyStats,
             friendshipStates = friendshipStates,
+            discoveryStats = discoveryStats,
         )
         dao.upsertObjectivesDoc(ProgressionObjectivesEntity("all", RoomJson.toJsonList(objectives)))
 
@@ -291,6 +296,8 @@ class RoomProgressionRepository @Inject constructor(
             speakingStats = pronunciationRepository.getSpeakingStatistics().first(),
             listeningStats = listeningRepository.getListeningStatistics().first(),
             readingStats = readingRepository.getReadingStatistics().first(),
+            writingStats = writingRepository.getWritingStatistics().first(),
+            discoveryStats = discoveryRepository.getDiscoveryStatistics().first(),
             gameProgress = gameProgressRepository.getGameProgress().first(),
         )
         dao.upsertLearningDoc(ProgressionLearningEntity("all", RoomJson.toJson(learning)))
@@ -308,8 +315,8 @@ class RoomProgressionRepository @Inject constructor(
             buildObjectives(
                 regions = regions,
                 gameProgress = gameProgress,
-                vocabularyStats = vocabularyRepository.getStatistics().first(),
                 friendshipStates = friendshipRepository.getAllFriendshipStates().first(),
+                discoveryStats = discoveryRepository.getDiscoveryStatistics().first(),
             )
         )))
 
@@ -542,16 +549,24 @@ class RoomProgressionRepository @Inject constructor(
         speakingStats: com.sworddao.phoenix.feature.pronunciation.data.SpeakingStatistics,
         listeningStats: com.sworddao.phoenix.feature.listening.data.ListeningStatistics,
         readingStats: com.sworddao.phoenix.feature.reading.data.ReadingStatistics,
+        writingStats: com.sworddao.phoenix.feature.writing.data.WritingStatistics,
+        discoveryStats: com.sworddao.phoenix.feature.discovery.data.DiscoveryStatistics,
         gameProgress: com.sworddao.phoenix.feature.gameplay.data.GameProgress,
     ): LearningProgress {
         val discovered = vocabularyStats.discoveredWords.coerceAtLeast(1)
         val friendshipMaxLevel = friendshipStates.maxOfOrNull { it.friendshipLevel.level } ?: 0
+        val discoveryPercent = if (discoveryStats.totalAvailable > 0) {
+            discoveryStats.totalDiscovered.toFloat() / discoveryStats.totalAvailable
+        } else {
+            0f
+        }
 
         return LearningProgress(
             speakingPercent = (speakingStats.wordsMastered.toFloat() / discovered).coerceIn(0f, 1f),
             listeningPercent = (listeningStats.wordsMastered.toFloat() / discovered).coerceIn(0f, 1f),
             readingPercent = (readingStats.wordsMastered.toFloat() / discovered).coerceIn(0f, 1f),
-            vocabularyPercent = vocabularyStats.completionPercentage.coerceIn(0f, 1f),
+            writingPercent = (writingStats.charactersMastered.toFloat() / discovered).coerceIn(0f, 1f),
+            vocabularyPercent = discoveryPercent.coerceIn(0f, 1f),
             conversationPercent = (gameProgress.totalDialoguesCompleted.toFloat() / CONVERSATION_TARGET).coerceIn(0f, 1f),
             questPercent = questStats.completionRate.coerceIn(0f, 1f),
             friendshipPercent = (friendshipMaxLevel.toFloat() / MAX_FRIENDSHIP_LEVEL).coerceIn(0f, 1f),
@@ -624,8 +639,8 @@ class RoomProgressionRepository @Inject constructor(
     private suspend fun buildObjectives(
         regions: List<WorldRegion>,
         gameProgress: com.sworddao.phoenix.feature.gameplay.data.GameProgress,
-        vocabularyStats: com.sworddao.phoenix.feature.vocabulary.data.VocabularyStatistics,
         friendshipStates: List<com.sworddao.phoenix.feature.friendship.data.FriendshipState>,
+        discoveryStats: com.sworddao.phoenix.feature.discovery.data.DiscoveryStatistics,
     ): List<CurrentObjective> {
         val unlockedRegions = regions.count { it.isUnlocked }
         val friendshipMax = friendshipStates.maxOfOrNull { it.friendshipLevel.level } ?: 0
@@ -644,7 +659,7 @@ class RoomProgressionRepository @Inject constructor(
                 title = "发现词汇",
                 description = "在冒险中发现新的词汇",
                 category = ObjectiveCategory.LEARNING,
-                currentCount = vocabularyStats.discoveredWords,
+                currentCount = discoveryStats.totalDiscovered,
                 targetCount = 20,
                 icon = "🆕",
             ),

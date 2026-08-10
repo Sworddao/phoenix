@@ -70,6 +70,10 @@ fun QingyuanVillageScreen(
     onNavigateToWorldMap: () -> Unit = {},
     onNavigateToProgression: () -> Unit = {},
     onNavigateToReview: () -> Unit = {},
+    onNavigateToHome: () -> Unit = {},
+    onNavigateToVocabulary: () -> Unit = {},
+    onNavigateToPassport: () -> Unit = {},
+    onNavigateToSettings: () -> Unit = {},
     modifier: Modifier = Modifier,
     npcViewModel: NpcViewModel = hiltViewModel(),
     friendshipViewModel: FriendshipViewModel = hiltViewModel(),
@@ -391,6 +395,30 @@ fun QingyuanVillageScreen(
                         }
                         Button(onClick = onNavigateToReview) {
                             Text(text = stringResource(R.string.village_button_review))
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedButton(onClick = onNavigateToHome) {
+                            Text(text = stringResource(R.string.village_button_home))
+                        }
+                        OutlinedButton(onClick = onNavigateToVocabulary) {
+                            Text(text = stringResource(R.string.village_button_vocabulary))
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedButton(onClick = onNavigateToPassport) {
+                            Text(text = stringResource(R.string.village_button_passport))
+                        }
+                        OutlinedButton(onClick = onNavigateToSettings) {
+                            Text(text = stringResource(R.string.village_button_settings))
                         }
                     }
                 }

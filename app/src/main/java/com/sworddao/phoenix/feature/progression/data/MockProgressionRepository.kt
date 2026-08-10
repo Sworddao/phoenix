@@ -1,5 +1,6 @@
 package com.sworddao.phoenix.feature.progression.data
 
+import com.sworddao.phoenix.feature.discovery.data.DiscoveryStatistics
 import com.sworddao.phoenix.feature.discovery.data.MockDiscoveryRepository
 import com.sworddao.phoenix.feature.friendship.data.FriendshipState
 import com.sworddao.phoenix.feature.friendship.data.MockFriendshipRepository
@@ -21,6 +22,8 @@ import com.sworddao.phoenix.feature.vocabulary.data.VocabularyStatistics
 import com.sworddao.phoenix.feature.world.data.MockWorldRepository
 import com.sworddao.phoenix.feature.world.data.RegionStatus
 import com.sworddao.phoenix.feature.world.data.WorldRegion
+import com.sworddao.phoenix.feature.writing.data.MockWritingRepository
+import com.sworddao.phoenix.feature.writing.data.WritingStatistics
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,6 +45,7 @@ class MockProgressionRepository @Inject constructor(
     private val pronunciationRepository: MockPronunciationRepository,
     private val listeningRepository: MockListeningRepository,
     private val readingRepository: MockReadingRepository,
+    private val writingRepository: MockWritingRepository,
 ) : ProgressionRepository {
 
     private val _playerProgress = MutableStateFlow(PlayerProgress())
@@ -82,7 +86,8 @@ class MockProgressionRepository @Inject constructor(
         val speakingStats = pronunciationRepository.getSpeakingStatistics().first()
         val listeningStats = listeningRepository.getListeningStatistics().first()
         val readingStats = readingRepository.getReadingStatistics().first()
-        discoveryRepository.getDiscoveryStatistics().first()
+        val writingStats = writingRepository.getWritingStatistics().first()
+        val discoveryStats = discoveryRepository.getDiscoveryStatistics().first()
 
         val snapshot = buildSnapshot(
             gameProgress = gameProgress,
@@ -107,6 +112,8 @@ class MockProgressionRepository @Inject constructor(
             speakingStats = speakingStats,
             listeningStats = listeningStats,
             readingStats = readingStats,
+            writingStats = writingStats,
+            discoveryStats = discoveryStats,
             gameProgress = gameProgress,
         )
         _learningProgress.value = learning
@@ -120,8 +127,8 @@ class MockProgressionRepository @Inject constructor(
         _currentObjectives.value = buildObjectives(
             regions = regions,
             gameProgress = gameProgress,
-            vocabularyStats = vocabularyStats,
             friendshipStates = friendshipStates,
+            discoveryStats = discoveryStats,
         )
 
         lastSnapshot = snapshot
@@ -182,6 +189,8 @@ class MockProgressionRepository @Inject constructor(
             speakingStats = pronunciationRepository.getSpeakingStatistics().first(),
             listeningStats = listeningRepository.getListeningStatistics().first(),
             readingStats = readingRepository.getReadingStatistics().first(),
+            writingStats = writingRepository.getWritingStatistics().first(),
+            discoveryStats = discoveryRepository.getDiscoveryStatistics().first(),
             gameProgress = gameProgressRepository.getGameProgress().first(),
         )
         _learningProgress.value = learning
@@ -193,8 +202,8 @@ class MockProgressionRepository @Inject constructor(
         _currentObjectives.value = buildObjectives(
             regions = regions,
             gameProgress = gameProgressRepository.getGameProgress().first(),
-            vocabularyStats = vocabularyRepository.getStatistics().first(),
             friendshipStates = friendshipRepository.getAllFriendshipStates().first(),
+            discoveryStats = discoveryRepository.getDiscoveryStatistics().first(),
         )
 
         return if (levelUp) {
@@ -462,16 +471,24 @@ class MockProgressionRepository @Inject constructor(
         speakingStats: SpeakingStatistics,
         listeningStats: ListeningStatistics,
         readingStats: ReadingStatistics,
+        writingStats: WritingStatistics,
+        discoveryStats: DiscoveryStatistics,
         gameProgress: GameProgress,
     ): LearningProgress {
         val discovered = vocabularyStats.discoveredWords.coerceAtLeast(1)
         val friendshipMaxLevel = friendshipStates.maxOfOrNull { it.friendshipLevel.level } ?: 0
+        val discoveryPercent = if (discoveryStats.totalAvailable > 0) {
+            discoveryStats.totalDiscovered.toFloat() / discoveryStats.totalAvailable
+        } else {
+            0f
+        }
 
         return LearningProgress(
             speakingPercent = (speakingStats.wordsMastered.toFloat() / discovered).coerceIn(0f, 1f),
             listeningPercent = (listeningStats.wordsMastered.toFloat() / discovered).coerceIn(0f, 1f),
             readingPercent = (readingStats.wordsMastered.toFloat() / discovered).coerceIn(0f, 1f),
-            vocabularyPercent = vocabularyStats.completionPercentage.coerceIn(0f, 1f),
+            writingPercent = (writingStats.charactersMastered.toFloat() / discovered).coerceIn(0f, 1f),
+            vocabularyPercent = discoveryPercent.coerceIn(0f, 1f),
             conversationPercent = (gameProgress.totalDialoguesCompleted.toFloat() / CONVERSATION_TARGET).coerceIn(0f, 1f),
             questPercent = questStats.completionRate.coerceIn(0f, 1f),
             friendshipPercent = (friendshipMaxLevel.toFloat() / MAX_FRIENDSHIP_LEVEL).coerceIn(0f, 1f),
@@ -543,8 +560,8 @@ class MockProgressionRepository @Inject constructor(
     private fun buildObjectives(
         regions: List<WorldRegion>,
         gameProgress: GameProgress,
-        vocabularyStats: VocabularyStatistics,
         friendshipStates: List<FriendshipState>,
+        discoveryStats: DiscoveryStatistics,
     ): List<CurrentObjective> {
         val unlockedRegions = regions.count { it.isUnlocked }
         val friendshipMax = friendshipStates.maxOfOrNull { it.friendshipLevel.level } ?: 0
@@ -563,7 +580,7 @@ class MockProgressionRepository @Inject constructor(
                 title = "发现词汇",
                 description = "在冒险中发现新的词汇",
                 category = ObjectiveCategory.LEARNING,
-                currentCount = vocabularyStats.discoveredWords,
+                currentCount = discoveryStats.totalDiscovered,
                 targetCount = 20,
                 icon = "🆕",
             ),

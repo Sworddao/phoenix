@@ -136,7 +136,7 @@ fun createGrandmaMeiDialogue(): Dialogue {
                         DialogueAction(
                             type = ActionType.UNLOCK_VOCABULARY,
                             targetId = "food_basics",
-                            value = "chifan,hao chi"
+                            value = "food_001,rest_004"
                         )
                     )
                 ),

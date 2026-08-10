@@ -10,6 +10,7 @@ import com.sworddao.phoenix.feature.pronunciation.data.MockPronunciationReposito
 import com.sworddao.phoenix.feature.quest.data.MockQuestRepository
 import com.sworddao.phoenix.feature.reading.data.MockHanziRenderer
 import com.sworddao.phoenix.feature.reading.data.MockReadingRepository
+import com.sworddao.phoenix.feature.writing.data.MockWritingRepository
 import com.sworddao.phoenix.feature.review.data.MockReviewRepository
 import com.sworddao.phoenix.feature.review.data.ReviewType
 import com.sworddao.phoenix.feature.vocabulary.data.MockVocabularyRepository
@@ -69,6 +70,13 @@ class ReviewViewModelTest {
             listeningRepository = listeningRepository,
             hanziRenderer = MockHanziRenderer(),
         )
+        val writingRepository = MockWritingRepository(
+            vocabularyRepository = vocabularyRepository,
+            questRepository = questRepository,
+            friendshipRepository = friendshipRepository,
+            gameProgressRepository = gameProgressRepository,
+            passportRepository = passportRepository,
+        )
         val progressionRepository = MockProgressionRepository(
             gameProgressRepository = gameProgressRepository,
             worldRepository = worldRepository,
@@ -80,6 +88,7 @@ class ReviewViewModelTest {
             pronunciationRepository = pronunciationRepository,
             listeningRepository = listeningRepository,
             readingRepository = readingRepository,
+            writingRepository = writingRepository,
         )
         repository = MockReviewRepository(
             vocabularyRepository = vocabularyRepository,

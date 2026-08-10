@@ -10,6 +10,7 @@ import com.sworddao.phoenix.feature.pronunciation.data.MockPronunciationReposito
 import com.sworddao.phoenix.feature.quest.data.MockQuestRepository
 import com.sworddao.phoenix.feature.reading.data.MockHanziRenderer
 import com.sworddao.phoenix.feature.reading.data.MockReadingRepository
+import com.sworddao.phoenix.feature.writing.data.MockWritingRepository
 import com.sworddao.phoenix.feature.vocabulary.data.MockVocabularyRepository
 import com.sworddao.phoenix.feature.world.data.MockWorldRepository
 import kotlinx.coroutines.flow.first
@@ -35,6 +36,7 @@ class ProgressionRepositoryTest {
     private lateinit var pronunciationRepository: MockPronunciationRepository
     private lateinit var listeningRepository: MockListeningRepository
     private lateinit var readingRepository: MockReadingRepository
+    private lateinit var writingRepository: MockWritingRepository
     private lateinit var repository: MockProgressionRepository
 
     @Before
@@ -73,6 +75,13 @@ class ProgressionRepositoryTest {
             listeningRepository = listeningRepository,
             hanziRenderer = MockHanziRenderer(),
         )
+        writingRepository = MockWritingRepository(
+            vocabularyRepository = vocabularyRepository,
+            questRepository = questRepository,
+            friendshipRepository = friendshipRepository,
+            gameProgressRepository = gameProgressRepository,
+            passportRepository = passportRepository,
+        )
         repository = MockProgressionRepository(
             gameProgressRepository = gameProgressRepository,
             worldRepository = worldRepository,
@@ -84,6 +93,7 @@ class ProgressionRepositoryTest {
             pronunciationRepository = pronunciationRepository,
             listeningRepository = listeningRepository,
             readingRepository = readingRepository,
+            writingRepository = writingRepository,
         )
     }
 

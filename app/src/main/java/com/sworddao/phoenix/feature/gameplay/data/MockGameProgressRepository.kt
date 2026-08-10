@@ -212,6 +212,13 @@ class MockGameProgressRepository @Inject constructor() : GameProgressRepository 
         )
     }
 
+    override suspend fun recordXpEarned(xp: Int) {
+        if (xp <= 0) return
+        _sessionSummary.value = _sessionSummary.value.copy(
+            totalXpEarned = _sessionSummary.value.totalXpEarned + xp
+        )
+    }
+
     override suspend fun unlockMilestone(milestone: GameMilestone) {
         val current = _gameProgress.value
         if (milestone !in current.milestonesCompleted) {

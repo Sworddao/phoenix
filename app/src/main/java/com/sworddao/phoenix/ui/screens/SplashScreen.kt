@@ -25,6 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +42,9 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
+    isOnboardingCompleted: Boolean,
     onNavigateToWelcome: () -> Unit,
+    onNavigateToVillage: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val reduceMotion = android.provider.Settings.Global.getFloat(
@@ -57,6 +60,14 @@ fun SplashScreen(
     val taglineAlpha = remember { Animatable(0f) }
     var showContent by remember { mutableStateOf(false) }
 
+    val currentIsCompleted by rememberUpdatedState(isOnboardingCompleted)
+    val currentOnWelcome by rememberUpdatedState(onNavigateToWelcome)
+    val currentOnVillage by rememberUpdatedState(onNavigateToVillage)
+
+    fun navigateAfterSplash() {
+        if (currentIsCompleted) currentOnVillage() else currentOnWelcome()
+    }
+
     LaunchedEffect(Unit) {
         if (reduceMotion) {
             backgroundAlpha.snapTo(1f)
@@ -66,7 +77,7 @@ fun SplashScreen(
             taglineAlpha.snapTo(1f)
             showContent = true
             delay(2000)
-            onNavigateToWelcome()
+            navigateAfterSplash()
         } else {
             backgroundAlpha.animateTo(
                 targetValue = 1f,
@@ -96,7 +107,7 @@ fun SplashScreen(
                 targetValue = 0f,
                 animationSpec = tween(durationMillis = 500, easing = LinearEasing)
             )
-            onNavigateToWelcome()
+            navigateAfterSplash()
         }
     }
 

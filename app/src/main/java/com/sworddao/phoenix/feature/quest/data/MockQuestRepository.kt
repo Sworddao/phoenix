@@ -1,17 +1,34 @@
 package com.sworddao.phoenix.feature.quest.data
 
 import com.sworddao.phoenix.data.seed.QuestSeedData
-
+import com.sworddao.phoenix.feature.friendship.data.MockFriendshipRepository
+import com.sworddao.phoenix.feature.friendship.domain.FriendshipRepository
+import com.sworddao.phoenix.feature.gameplay.data.MockGameProgressRepository
+import com.sworddao.phoenix.feature.gameplay.domain.GameProgressRepository
 import com.sworddao.phoenix.feature.quest.domain.QuestRepository
+import com.sworddao.phoenix.feature.vocabulary.data.MockVocabularyRepository
+import com.sworddao.phoenix.feature.vocabulary.data.VocabularyWord
+import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MockQuestRepository @Inject constructor() : QuestRepository {
+class MockQuestRepository @Inject constructor(
+    private val vocabularyRepository: VocabularyRepository,
+    private val friendshipRepository: FriendshipRepository,
+    private val gameProgressRepository: GameProgressRepository,
+) : QuestRepository {
+
+    constructor() : this(
+        MockVocabularyRepository(),
+        MockFriendshipRepository(),
+        MockGameProgressRepository(),
+    )
 
     private val _quests = MutableStateFlow(createMockQuests())
     private val _progress = MutableStateFlow<Map<String, QuestProgress>>(emptyMap())
@@ -153,7 +170,40 @@ class MockQuestRepository @Inject constructor() : QuestRepository {
             }
         }
 
+        applyRewards(quest)
+
         return QuestResult.QuestCompleted(quest, quest.rewards)
+    }
+
+    private suspend fun applyRewards(quest: Quest) {
+        val rewards = quest.rewards
+        if (rewards.experience > 0) {
+            gameProgressRepository.recordXpEarned(rewards.experience)
+        }
+        if (rewards.friendshipPoints > 0) {
+            quest.npcId?.let { friendshipRepository.addFriendshipXp(it, rewards.friendshipPoints) }
+        }
+        rewards.vocabulary.forEach { reference ->
+            resolveVocabularyWord(reference)?.let { word ->
+                vocabularyRepository.discoverWord(word.id)
+            }
+        }
+        rewards.unlockQuests.forEach { targetId ->
+            _quests.update { quests ->
+                quests.map { q ->
+                    if (q.id == targetId && q.status == QuestStatus.LOCKED) {
+                        q.copy(status = QuestStatus.AVAILABLE)
+                    } else q
+                }
+            }
+        }
+    }
+
+    private suspend fun resolveVocabularyWord(reference: String): VocabularyWord? {
+        val allWords = vocabularyRepository.getAllWords().first()
+        return allWords.find { it.id == reference }
+            ?: allWords.find { it.hanzi == reference }
+            ?: allWords.find { it.mandarin == reference }
     }
 
     override suspend fun abandonQuest(questId: String): QuestResult {

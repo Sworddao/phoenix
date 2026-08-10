@@ -80,6 +80,10 @@
     <string name="village_button_world">世界地图</string>
     <string name="village_button_progression">我的进度</string>
     <string name="village_button_review">复习</string>
+    <string name="village_button_home">首页</string>
+    <string name="village_button_vocabulary">词汇</string>
+    <string name="village_button_passport">护照</string>
+    <string name="village_button_settings">设置</string>
 
     <!-- Village Locations -->
     <string name="location_bakery_name">Grandma Mei\'s Bakery</string>

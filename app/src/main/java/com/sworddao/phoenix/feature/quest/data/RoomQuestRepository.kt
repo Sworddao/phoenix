@@ -1,8 +1,11 @@
 package com.sworddao.phoenix.feature.quest.data
 
 import com.sworddao.phoenix.data.seed.QuestSeedData
+import com.sworddao.phoenix.feature.friendship.domain.FriendshipRepository
 import com.sworddao.phoenix.feature.gameplay.domain.GameProgressRepository
 import com.sworddao.phoenix.feature.quest.domain.QuestRepository
+import com.sworddao.phoenix.feature.vocabulary.data.VocabularyWord
+import com.sworddao.phoenix.feature.vocabulary.domain.VocabularyRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
@@ -18,6 +21,8 @@ import javax.inject.Singleton
 class RoomQuestRepository @Inject constructor(
     private val dao: QuestDao,
     private val gameProgressRepository: GameProgressRepository,
+    private val vocabularyRepository: VocabularyRepository,
+    private val friendshipRepository: FriendshipRepository,
 ) : QuestRepository {
 
     private val seeded = AtomicBoolean(false)
@@ -149,8 +154,38 @@ class RoomQuestRepository @Inject constructor(
         )
         dao.upsertQuest(quest.copy(status = QuestStatus.COMPLETED).toEntity())
         gameProgressRepository.recordQuestCompleted(questId)
+        applyRewards(quest)
         refreshQuestAvailability()
         return QuestResult.QuestCompleted(quest, quest.rewards)
+    }
+
+    private suspend fun applyRewards(quest: Quest) {
+        val rewards = quest.rewards
+        if (rewards.experience > 0) {
+            gameProgressRepository.recordXpEarned(rewards.experience)
+        }
+        if (rewards.friendshipPoints > 0) {
+            quest.npcId?.let { friendshipRepository.addFriendshipXp(it, rewards.friendshipPoints) }
+        }
+        rewards.vocabulary.forEach { reference ->
+            resolveVocabularyWord(reference)?.let { word ->
+                vocabularyRepository.discoverWord(word.id)
+            }
+        }
+        rewards.unlockQuests.forEach { targetId ->
+            dao.getQuestById(targetId).first()?.let { target ->
+                if (target.status == QuestStatus.LOCKED.name) {
+                    dao.updateQuestStatus(targetId, QuestStatus.AVAILABLE.name)
+                }
+            }
+        }
+    }
+
+    private suspend fun resolveVocabularyWord(reference: String): VocabularyWord? {
+        val allWords = vocabularyRepository.getAllWords().first()
+        return allWords.find { it.id == reference }
+            ?: allWords.find { it.hanzi == reference }
+            ?: allWords.find { it.mandarin == reference }
     }
 
     override suspend fun abandonQuest(questId: String): QuestResult {
