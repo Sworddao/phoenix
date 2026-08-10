@@ -8,6 +8,7 @@ import com.sworddao.phoenix.feature.gameplay.data.MockGameProgressRepository
 import com.sworddao.phoenix.feature.passport.data.EntryType
 import com.sworddao.phoenix.feature.passport.data.MockPassportRepository
 import com.sworddao.phoenix.feature.quest.data.MockQuestRepository
+import com.sworddao.phoenix.feature.quest.data.ObjectiveType
 import com.sworddao.phoenix.feature.vocabulary.data.MockVocabularyRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -186,6 +187,99 @@ class RoomWritingRepositoryTest {
         val word = vocabularyRepository.getWordById(character.wordId!!).first()
         assertEquals(1, word?.timesWritten)
         assertEquals(1, gameProgressRepository.getGameProgress().first().totalWritingPractices)
+    }
+
+    @Test
+    fun `submitAnswer on consecutive correct attempts awards streak bonus xp`() = runBlocking {
+        val character = WritingSeedData.createInitialCharacters().first()
+        val exercise = repository.getAllExercises().first().first { it.character.id == character.id }
+        repository.startSession(WritingSessionConfig(characterIds = listOf(character.id)))
+        val yesterday = System.currentTimeMillis() - 24 * 60 * 60 * 1000L
+
+        repository.submitAnswer(correctAttempt(exercise).copy(timestamp = yesterday))
+        val second = repository.submitAnswer(correctAttempt(exercise))
+
+        assertTrue(second is WritingResultStatus.ExerciseCompleted)
+        val result = (second as WritingResultStatus.ExerciseCompleted).result
+        assertEquals(exercise.xpReward + 5, result.xpEarned)
+        assertTrue(result.streakContinued)
+        assertEquals(2, result.currentStreak)
+    }
+
+    @Test
+    fun `submitAnswer correct on greeting character grants friendship xp to grandma_mei`() = runBlocking {
+        val character = WritingSeedData.createInitialCharacters().first { it.wordId?.startsWith("greet_") == true }
+        val exercise = repository.getAllExercises().first().first { it.character.id == character.id }
+        repository.startSession(WritingSessionConfig(characterIds = listOf(character.id)))
+
+        val result = repository.submitAnswer(correctAttempt(exercise))
+
+        assertTrue(result is WritingResultStatus.ExerciseCompleted)
+        val completed = (result as WritingResultStatus.ExerciseCompleted).result
+        assertEquals(2, completed.friendshipBonusEarned)
+        assertEquals(2, friendshipRepository.getFriendshipState("grandma_mei").first()?.friendshipXp)
+    }
+
+    @Test
+    fun `submitAnswer correct earns write_first badge and records achievement entry`() = runBlocking {
+        val character = WritingSeedData.createInitialCharacters().first()
+        val exercise = repository.getAllExercises().first().first { it.character.id == character.id }
+        repository.startSession(WritingSessionConfig(characterIds = listOf(character.id)))
+
+        repository.submitAnswer(correctAttempt(exercise))
+
+        val badges = repository.getWritingBadges().first()
+        assertTrue(badges.find { it.id == "write_first" }?.isEarned == true)
+
+        val entries = passportRepository.getRecentEntries(10).first()
+        assertTrue(entries.any { it.type == EntryType.ACHIEVEMENT_UNLOCKED })
+    }
+
+    @Test
+    fun `submitAnswer correct updates active writing quest objective`() = runBlocking {
+        activateWriteCharacterQuest()
+
+        val character = WritingSeedData.createInitialCharacters().first()
+        val exercise = repository.getAllExercises().first().first { it.character.id == character.id }
+        repository.startSession(WritingSessionConfig(characterIds = listOf(character.id)))
+
+        repository.submitAnswer(correctAttempt(exercise))
+
+        val quest = questRepository.getQuestById("quest_order_tea").first()
+        val objective = quest?.objectives?.find { it.id == "obj_3_6" }
+        assertEquals(1, objective?.currentCount)
+        assertEquals(ObjectiveType.WRITE_CHARACTERS, objective?.type)
+    }
+
+    @Test
+    fun `slower second correct attempt does not claim a new personal best`() = runBlocking {
+        val character = WritingSeedData.createInitialCharacters().first()
+        val exercise = repository.getAllExercises().first().first { it.character.id == character.id }
+        repository.startSession(WritingSessionConfig(characterIds = listOf(character.id)))
+
+        val first = repository.submitAnswer(correctAttempt(exercise).copy(timeTakenMs = 1500))
+        assertTrue(first is WritingResultStatus.ExerciseCompleted)
+        assertTrue((first as WritingResultStatus.ExerciseCompleted).result.isNewPersonalBest)
+
+        val second = repository.submitAnswer(correctAttempt(exercise).copy(timeTakenMs = 3000))
+        assertTrue(second is WritingResultStatus.ExerciseCompleted)
+        assertFalse((second as WritingResultStatus.ExerciseCompleted).result.isNewPersonalBest)
+    }
+
+    private suspend fun activateWriteCharacterQuest() {
+        questRepository.startQuest("quest_help_grandma_mei")
+        listOf("obj_1_1" to 1, "obj_1_2" to 5, "obj_1_3" to 3).forEach { (objectiveId, count) ->
+            questRepository.updateObjectiveProgress("quest_help_grandma_mei", objectiveId, count)
+        }
+        questRepository.completeQuest("quest_help_grandma_mei")
+
+        questRepository.startQuest("quest_buy_dumplings")
+        listOf("obj_2_1" to 1, "obj_2_2" to 5, "obj_2_3" to 3).forEach { (objectiveId, count) ->
+            questRepository.updateObjectiveProgress("quest_buy_dumplings", objectiveId, count)
+        }
+        questRepository.completeQuest("quest_buy_dumplings")
+
+        questRepository.startQuest("quest_order_tea")
     }
 
     @Test

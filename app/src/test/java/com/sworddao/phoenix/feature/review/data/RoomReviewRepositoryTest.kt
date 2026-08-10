@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -34,6 +35,8 @@ class RoomReviewRepositoryTest {
 
     private lateinit var database: PhoenixDatabase
     private lateinit var repository: RoomReviewRepository
+    private lateinit var vocabularyRepository: MockVocabularyRepository
+    private lateinit var progressionRepository: MockProgressionRepository
 
     @Before
     fun setup() {
@@ -46,18 +49,18 @@ class RoomReviewRepositoryTest {
         val world = MockWorldRepository()
         val quest = MockQuestRepository()
         val passport = MockPassportRepository()
-        val vocabulary = MockVocabularyRepository()
+        vocabularyRepository = MockVocabularyRepository()
         val friendship = MockFriendshipRepository()
-        val discovery = MockDiscoveryRepository(vocabulary)
-        val pronunciation = MockPronunciationRepository(vocabulary, quest, friendship, game, passport)
-        val listening = MockListeningRepository(vocabulary, quest, friendship, game, passport, pronunciation)
-        val reading = MockReadingRepository(vocabulary, quest, friendship, game, passport, pronunciation, listening, MockHanziRenderer())
-        val writing = MockWritingRepository(vocabulary, quest, friendship, game, passport)
-        val progression = MockProgressionRepository(game, world, quest, passport, vocabulary, friendship, discovery, pronunciation, listening, reading, writing)
+        val discovery = MockDiscoveryRepository(vocabularyRepository)
+        val pronunciation = MockPronunciationRepository(vocabularyRepository, quest, friendship, game, passport)
+        val listening = MockListeningRepository(vocabularyRepository, quest, friendship, game, passport, pronunciation)
+        val reading = MockReadingRepository(vocabularyRepository, quest, friendship, game, passport, pronunciation, listening, MockHanziRenderer())
+        val writing = MockWritingRepository(vocabularyRepository, quest, friendship, game, passport)
+        progressionRepository = MockProgressionRepository(game, world, quest, passport, vocabularyRepository, friendship, discovery, pronunciation, listening, reading, writing)
 
         return RoomReviewRepository(
             database.reviewDao(),
-            vocabulary,
+            vocabularyRepository,
             game,
             quest,
             friendship,
@@ -65,7 +68,7 @@ class RoomReviewRepositoryTest {
             pronunciation,
             listening,
             reading,
-            progression,
+            progressionRepository,
         )
     }
 
@@ -176,6 +179,59 @@ class RoomReviewRepositoryTest {
         repository.refresh()
         val result = repository.submitAnswer("missing_item", correct = true, score = 0.9f)
         assertTrue(result is ReviewResult.Error)
+    }
+
+    @Test
+    fun `submit correct answer increments vocabulary timesReviewed`() = runBlocking {
+        repository.refresh()
+        val session = (repository.startSession(ReviewType.MIXED) as ReviewResult.SessionStarted).session
+        val item = session.items.first()
+        val wordId = requireNotNull(item.wordId)
+        val before = vocabularyRepository.getWordById(wordId).first()?.timesReviewed ?: 0
+
+        repository.submitAnswer(item.id, correct = true, score = 0.9f)
+
+        val word = vocabularyRepository.getWordById(wordId).first()
+        assertEquals(before + 1, word?.timesReviewed)
+    }
+
+    @Test
+    fun `submit correct answer moves item from today into upcoming`() = runBlocking {
+        repository.refresh()
+        val session = (repository.startSession(ReviewType.MIXED) as ReviewResult.SessionStarted).session
+        val item = session.items.first()
+        assertTrue(repository.getTodayReviews().first().any { it.id == item.id })
+
+        repository.submitAnswer(item.id, correct = true, score = 0.9f)
+
+        assertFalse(repository.getTodayReviews().first().any { it.id == item.id })
+        val upcoming = repository.getUpcomingReviews().first().firstOrNull { it.id == item.id }
+        assertNotNull(upcoming)
+        assertEquals(1, upcoming!!.schedule.stage)
+    }
+
+    @Test
+    fun `repeated wrong answers surface a recovery recommendation`() = runBlocking {
+        repository.refresh()
+        val session = (repository.startSession(ReviewType.MIXED) as ReviewResult.SessionStarted).session
+        val item = session.items.first()
+
+        repository.submitAnswer(item.id, correct = false, score = 0.2f)
+        repository.submitAnswer(item.id, correct = false, score = 0.2f)
+
+        val recommendations = repository.getRecommendations().first()
+        assertTrue(recommendations.any { it.id == "rec_failures" })
+    }
+
+    @Test
+    fun `complete session awards progression xp`() = runBlocking {
+        repository.refresh()
+        val session = (repository.startSession(ReviewType.MIXED) as ReviewResult.SessionStarted).session
+
+        repository.completeSession(session.id)
+
+        val player = progressionRepository.getPlayerProgress().first()
+        assertEquals(15, player.totalXp)
     }
 
     @Test
