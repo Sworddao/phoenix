@@ -5,11 +5,14 @@ import androidx.room.Room
 import com.sworddao.phoenix.data.local.AppMetadataDao
 import com.sworddao.phoenix.data.local.MIGRATION_2_3
 import com.sworddao.phoenix.data.local.MIGRATION_3_4
+import com.sworddao.phoenix.data.local.MIGRATION_4_5
 import com.sworddao.phoenix.data.local.PhoenixDatabase
+import com.sworddao.phoenix.feature.dialogue.data.DialogueDao
 import com.sworddao.phoenix.feature.discovery.data.DiscoveryDao
 import com.sworddao.phoenix.feature.friendship.data.FriendshipDao
 import com.sworddao.phoenix.feature.gameplay.data.GameProgressDao
 import com.sworddao.phoenix.feature.listening.data.ListeningDao
+import com.sworddao.phoenix.feature.npc.data.NpcDao
 import com.sworddao.phoenix.feature.passport.data.PassportDao
 import com.sworddao.phoenix.feature.progression.data.ProgressionDao
 import com.sworddao.phoenix.feature.pronunciation.data.SpeakingDao
@@ -40,7 +43,7 @@ object DatabaseModule {
             PhoenixDatabase::class.java,
             "phoenix_database"
         )
-            .addMigrations(MIGRATION_2_3, MIGRATION_3_4)
+            .addMigrations(MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
             .build()
     }
 
@@ -126,5 +129,17 @@ object DatabaseModule {
     @Singleton
     fun provideWritingDao(database: PhoenixDatabase): WritingDao {
         return database.writingDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNpcDao(database: PhoenixDatabase): NpcDao {
+        return database.npcDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDialogueDao(database: PhoenixDatabase): DialogueDao {
+        return database.dialogueDao()
     }
 }

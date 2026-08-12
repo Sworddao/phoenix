@@ -61,19 +61,20 @@ feature/
         └── {Component}.kt
 ```
 
-Repository implementations: production binds `Room{Feature}Repository` (backed by `PhoenixDatabase`); `Mock{Feature}Repository` is retained for development and unit tests. Features without Room persistence yet (`dialogue`, `npc`) ship only the mock implementation.
+Repository implementations: production binds `Room{Feature}Repository` (backed by `PhoenixDatabase`); `Mock{Feature}Repository` is retained for development and unit tests. All feature modules bind Room-backed implementations.
 
 ## Feature Modules Implemented
 
 ### NPC Framework (`feature/npc/`)
-- NPC data models and in-memory mock repository (Room persistence pending)
+- NPC data models, Room entity/DAO, and mappers
+- Room persistence via `RoomNpcRepository` (lazily seeded from `NpcSeedData`)
 - NPC marker component
 - NPC ViewModel
 
 ### Dialogue System (`feature/dialogue/`)
 - Dialogue data models
-- Dialogue tree engine
-- In-memory mock repository (Room persistence pending)
+- Dialogue tree engine (`DialogueFlow`)
+- Room persistence via `RoomDialogueRepository` (lazily seeded from `DialogueSeedData`)
 - Dialogue screen
 
 ### Friendship System (`feature/friendship/`)
@@ -214,9 +215,9 @@ ui/
 
 ```
 di/
-├── DatabaseModule.kt             # Room database, 13 DAOs, MIGRATION_2_3
-├── feature/npc/di/NpcModule.kt             # NPC repository binding (mock)
-├── feature/dialogue/di/DialogueModule.kt   # Dialogue repository binding (mock)
+├── DatabaseModule.kt             # Room database, 16 DAOs, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5
+├── feature/npc/di/NpcModule.kt             # NPC repository binding (Room)
+├── feature/dialogue/di/DialogueModule.kt   # Dialogue repository binding (Room)
 ├── feature/gameplay/di/GameplayModule.kt
 ├── feature/friendship/di/FriendshipModule.kt
 ├── feature/quest/di/QuestModule.kt
@@ -231,7 +232,7 @@ di/
 └── feature/review/di/ReviewModule.kt
 ```
 
-Feature modules bind `Room{Feature}Repository` as the production implementation, except `npc` and `dialogue` which continue to bind their mock repositories.
+Feature modules bind `Room{Feature}Repository` as the production implementation; mock repositories remain available for development and unit tests.
 
 ## Testing Structure
 

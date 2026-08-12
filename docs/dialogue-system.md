@@ -10,7 +10,11 @@ The Dialogue System is the foundation for all NPC interactions in Phoenix. It pr
 feature/dialogue/
 ├── data/
 │   ├── DialogueModels.kt          # Data classes and enums
-│   └── MockDialogueRepository.kt  # Mock implementation
+│   ├── DialogueEntities.kt        # Room entity and DAO (`dialogue` table)
+│   ├── DialogueMappers.kt         # Entity ↔ domain mapping
+│   ├── DialogueFlow.kt            # Pure conversation traversal
+│   ├── RoomDialogueRepository.kt  # Room-backed implementation
+│   └── MockDialogueRepository.kt  # Mock implementation (tests/dev)
 ├── domain/
 │   └── DialogueRepository.kt      # Repository interface
 ├── ui/
@@ -187,6 +191,8 @@ interface DialogueRepository {
 }
 ```
 
+The dialogue catalog is persisted in Room (`dialogue` table, `DialogueEntity` with nodes stored as `RoomJson`). `RoomDialogueRepository` seeds the catalog from `DialogueSeedData` on first access and runs conversation traversal through the shared pure `DialogueFlow`. Active conversation state remains transient in-memory by design — only the catalog is persisted. `MockDialogueRepository` retains the same behavior for tests and development.
+
 ### DialogueResult
 
 ```kotlin
@@ -253,7 +259,7 @@ Conversations can also offer listening practice after completion:
 
 The system is designed for easy expansion:
 
-1. **New NPCs** — Add dialogue to MockDialogueRepository
+1. **New NPCs** — Add dialogue to DialogueSeedData
 2. **Conditions** — Implement condition checking in repository
 3. **Actions** — Add new action types for game mechanics
 4. **Audio** — Add audio playback for NPC speech

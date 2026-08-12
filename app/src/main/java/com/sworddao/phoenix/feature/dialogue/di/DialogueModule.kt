@@ -1,6 +1,6 @@
 package com.sworddao.phoenix.feature.dialogue.di
 
-import com.sworddao.phoenix.feature.dialogue.data.MockDialogueRepository
+import com.sworddao.phoenix.feature.dialogue.data.RoomDialogueRepository
 import com.sworddao.phoenix.feature.dialogue.domain.DialogueRepository
 import dagger.Binds
 import dagger.Module
@@ -15,6 +15,6 @@ abstract class DialogueModule {
     @Binds
     @Singleton
     abstract fun bindDialogueRepository(
-        impl: MockDialogueRepository
+        impl: RoomDialogueRepository
     ): DialogueRepository
 }

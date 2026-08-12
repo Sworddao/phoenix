@@ -1,5 +1,7 @@
 package com.sworddao.phoenix.feature.npc.data
 
+import kotlinx.serialization.Serializable
+
 enum class FriendshipLevel(
     val displayTitle: String,
     val xpThreshold: Int,
@@ -26,6 +28,7 @@ data class FriendshipProgress(
     val progressPercentage: Float
 )
 
+@Serializable
 enum class TimeOfDay {
     MORNING,
     AFTERNOON,
@@ -33,12 +36,14 @@ enum class TimeOfDay {
     NIGHT
 }
 
+@Serializable
 data class NpcScheduleEntry(
     val timeOfDay: TimeOfDay,
     val locationName: String,
     val description: String
 )
 
+@Serializable
 data class NpcSchedule(
     val entries: List<NpcScheduleEntry>
 ) {

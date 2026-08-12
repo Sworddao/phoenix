@@ -10,7 +10,10 @@ The NPC System is the foundation for all character interactions in Phoenix. NPCs
 feature/npc/
 ├── data/
 │   ├── NpcModels.kt          # Data classes and enums
-│   └── MockNpcRepository.kt  # Mock implementation
+│   ├── NpcEntities.kt        # Room entity and DAO (`npc` table)
+│   ├── NpcMappers.kt         # Entity ↔ domain mapping
+│   ├── RoomNpcRepository.kt  # Room-backed implementation
+│   └── MockNpcRepository.kt  # Mock implementation (tests/dev)
 ├── domain/
 │   └── NpcRepository.kt      # Repository interface
 ├── ui/
@@ -123,6 +126,10 @@ data class NpcSchedule(
 - **Location:** Tea House
 - **Teaches:** Friends, Technology, Music, Gaming, Campus Life
 
+## Persistence
+
+The NPC catalog is persisted in Room (`npc` table, `NpcEntity` with schedule/category/reference lists stored as `RoomJson`). `RoomNpcRepository` seeds the catalog from `NpcSeedData` on first access and tracks persisted friendship XP; the in-memory `MockNpcRepository` remains available for tests and development.
+
 ## Friendship Integration
 
 Each NPC tracks friendship through:
@@ -162,7 +169,7 @@ Detailed dialog showing personality, description, friendship progress, and vocab
 
 The system supports:
 
-1. **New NPCs** — Add to MockNpcRepository
+1. **New NPCs** — Add to NpcSeedData
 2. **Schedule System** — NPCs move based on time of day
 3. **Animation States** — Idle animations for different activities
 4. **Availability System** — NPCs can be busy or sleeping

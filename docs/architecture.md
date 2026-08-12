@@ -233,7 +233,7 @@ The review system (`feature/review/`) closes the learning loop: a pure `SpacedRe
 - **WorkManager** — Background tasks
 - **Room** — Advanced queries
 - **DataStore** — Complex preferences
-- **Dialogue & NPC persistence** — Room persistence for dialogue history and NPC relationships (currently in-memory mocks)
+- **Dialogue history persistence** — Persistent memory of past conversations per NPC
 - **Data sync/export** — Cloud or file-based backup of the Room database
 
 ### Scalability

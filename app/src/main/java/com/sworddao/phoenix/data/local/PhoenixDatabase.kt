@@ -7,6 +7,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.sworddao.phoenix.feature.discovery.data.DiscoverySessionEntity
 import com.sworddao.phoenix.feature.discovery.data.DiscoveryDao
 import com.sworddao.phoenix.feature.discovery.data.VocabularyDiscoveryEntity
+import com.sworddao.phoenix.feature.dialogue.data.DialogueDao
+import com.sworddao.phoenix.feature.dialogue.data.DialogueEntity
 import com.sworddao.phoenix.feature.friendship.data.ConversationMemoryEntity
 import com.sworddao.phoenix.feature.friendship.data.FriendshipDao
 import com.sworddao.phoenix.feature.friendship.data.FriendshipEntity
@@ -21,6 +23,8 @@ import com.sworddao.phoenix.feature.listening.data.ListeningProgressDocEntity
 import com.sworddao.phoenix.feature.listening.data.ListeningSessionsEntity
 import com.sworddao.phoenix.feature.listening.data.ListeningStateEntity
 import com.sworddao.phoenix.feature.listening.data.ListeningStatisticsEntity
+import com.sworddao.phoenix.feature.npc.data.NpcDao
+import com.sworddao.phoenix.feature.npc.data.NpcEntity
 import com.sworddao.phoenix.feature.passport.data.AchievementEntity
 import com.sworddao.phoenix.feature.passport.data.CollectibleEntity
 import com.sworddao.phoenix.feature.passport.data.PassportDao
@@ -149,9 +153,11 @@ import com.sworddao.phoenix.feature.writing.data.WritingStatisticsEntity
         WritingStatisticsEntity::class,
         WritingBadgesEntity::class,
         WritingSessionsEntity::class,
-        WritingStateEntity::class
+        WritingStateEntity::class,
+        NpcEntity::class,
+        DialogueEntity::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class PhoenixDatabase : RoomDatabase() {
@@ -169,6 +175,8 @@ abstract class PhoenixDatabase : RoomDatabase() {
     abstract fun reviewDao(): ReviewDao
     abstract fun progressionDao(): ProgressionDao
     abstract fun writingDao(): WritingDao
+    abstract fun npcDao(): NpcDao
+    abstract fun dialogueDao(): DialogueDao
 }
 
 /**
@@ -380,6 +388,23 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
         )
         db.execSQL(
             "CREATE TABLE IF NOT EXISTS `writing_state` (`id` TEXT NOT NULL, `currentStreak` INTEGER NOT NULL, `longestStreak` INTEGER NOT NULL, `lastWritingDate` INTEGER, `correctCount` INTEGER NOT NULL, `writtenCharactersJson` TEXT NOT NULL, `recordedBadgeIdsJson` TEXT NOT NULL, `firstWritingRecorded` INTEGER NOT NULL, PRIMARY KEY(`id`))"
+        )
+    }
+}
+
+/**
+ * Migration from version 4 to version 5:
+ *  - persists the NPC catalog (previously an in-memory mock)
+ *  - persists the dialogue catalog (previously an in-memory mock)
+ * Active conversation state remains transient in-memory by design.
+ */
+val MIGRATION_4_5 = object : Migration(4, 5) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `npc` (`id` TEXT NOT NULL, `displayName` TEXT NOT NULL, `occupation` TEXT NOT NULL, `personality` TEXT NOT NULL, `currentLocation` TEXT NOT NULL, `friendshipXp` INTEGER NOT NULL, `scheduleJson` TEXT NOT NULL, `avatarEmoji` TEXT NOT NULL, `idleAnimationState` TEXT NOT NULL, `interactionAvailability` TEXT NOT NULL, `unlockRequirements` TEXT, `vocabularyCategoriesJson` TEXT NOT NULL, `dialogueReferencesJson` TEXT NOT NULL, `shortDescription` TEXT NOT NULL, PRIMARY KEY(`id`))"
+        )
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `dialogue` (`id` TEXT NOT NULL, `npcId` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `startNodeId` TEXT NOT NULL, `requiredFriendshipLevel` INTEGER NOT NULL, `nodesJson` TEXT NOT NULL, PRIMARY KEY(`id`))"
         )
     }
 }

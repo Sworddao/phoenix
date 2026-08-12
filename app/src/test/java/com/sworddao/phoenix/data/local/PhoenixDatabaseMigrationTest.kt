@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.core.app.ApplicationProvider
+import com.sworddao.phoenix.feature.dialogue.data.DialogueEntity
 import com.sworddao.phoenix.feature.friendship.data.ConversationMemoryEntity
 import com.sworddao.phoenix.feature.friendship.data.FriendshipEntity
 import com.sworddao.phoenix.feature.friendship.data.FriendshipEventEntity
+import com.sworddao.phoenix.feature.npc.data.NpcEntity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -241,6 +243,91 @@ class PhoenixDatabaseMigrationTest {
             assertTrue(dao.getAllFriendshipStates().first().isNotEmpty())
             assertTrue(dao.getConversationHistory("npc_1").first().isNotEmpty())
             assertTrue(dao.getFriendshipEvents("npc_1").first().isNotEmpty())
+        }
+        database.close()
+    }
+
+    @Test
+    fun `v2 to v5 migration chain runs in sequence without errors`() {
+        MIGRATION_2_3.migrate(db)
+        MIGRATION_3_4.migrate(db)
+        MIGRATION_4_5.migrate(db)
+
+        assertTrue(tableNames().contains("npc"))
+        assertTrue(tableNames().contains("dialogue"))
+    }
+
+    @Test
+    fun `MIGRATION_4_5 creates npc and dialogue tables`() {
+        MIGRATION_2_3.migrate(db)
+        MIGRATION_3_4.migrate(db)
+        MIGRATION_4_5.migrate(db)
+
+        val expected = setOf("npc", "dialogue")
+        assertTrue(
+            "Missing v5 tables: ${expected - tableNames()}",
+            tableNames().containsAll(expected)
+        )
+    }
+
+    @Test
+    fun `MIGRATION_4_5 preserves existing v4 data`() {
+        MIGRATION_2_3.migrate(db)
+        db.execSQL(
+            "INSERT INTO `vocabulary_word` (`id`, `mandarin`, `pinyin`, `english`, `category`, `difficulty`, `exampleSentence`, `exampleTranslation`, `examplePinyin`, `mastery`, `timesReviewed`, `timesSpoken`, `timesHeard`, `timesRead`, `isFavorite`, `tagsJson`) VALUES ('v4_word', 'hǎo', 'hǎo', 'good', 'GREETINGS', 'BEGINNER', 'e', 't', 'p', 'FAMILIAR', 0, 0, 0, 0, 0, '[]')"
+        )
+        MIGRATION_3_4.migrate(db)
+        db.execSQL("UPDATE `vocabulary_word` SET `timesWritten` = 3 WHERE `id` = 'v4_word'")
+        MIGRATION_4_5.migrate(db)
+
+        val friendship = db.query(
+            "SELECT friendshipXp, friendshipLevel, totalConversations FROM friendship_state WHERE npcId = 'v2_npc'"
+        )
+        assertTrue(friendship.moveToFirst())
+        assertTrue(friendship.getInt(0) == 42)
+        assertTrue(friendship.getString(1) == "FRIEND")
+        assertTrue(friendship.getInt(2) == 3)
+        friendship.close()
+
+        val word = db.query("SELECT timesWritten FROM vocabulary_word WHERE id = 'v4_word'")
+        assertTrue(word.moveToFirst())
+        assertTrue(word.getInt(0) == 3)
+        word.close()
+    }
+
+    @Test
+    fun `npc and dialogue entities map to and from rows in v5 database`() {
+        val database = RoomTestDb.create()
+        runBlocking {
+            database.npcDao().upsert(
+                NpcEntity(
+                    id = "npc_1",
+                    displayName = "Grandma Mei",
+                    occupation = "Retired Baker",
+                    personality = "Warm",
+                    currentLocation = "Bakery",
+                    avatarEmoji = "NPC",
+                    idleAnimationState = "SITTING",
+                    interactionAvailability = "AVAILABLE",
+                    vocabularyCategoriesJson = "[\"Greetings\"]",
+                    dialogueReferencesJson = "[\"dlg_1\"]"
+                )
+            )
+            database.dialogueDao().upsert(
+                DialogueEntity(
+                    id = "dlg_1",
+                    npcId = "npc_1",
+                    title = "Intro",
+                    description = "First chat",
+                    startNodeId = "start",
+                    nodesJson = "[]"
+                )
+            )
+
+            assertTrue(database.npcDao().getNpcById("npc_1").first() != null)
+            assertTrue(database.npcDao().getAllNpcs().first().isNotEmpty())
+            assertTrue(database.dialogueDao().getDialogueById("dlg_1").first() != null)
+            assertTrue(database.dialogueDao().getDialogueByNpcId("npc_1").first() != null)
         }
         database.close()
     }

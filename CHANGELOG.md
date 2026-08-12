@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- NPC & dialogue persistence (Feature 5.0)
+  - `PhoenixDatabase` v5 (68 entities, 16 DAOs) with `npc` and `dialogue` tables added via `MIGRATION_4_5`
+  - `RoomNpcRepository` and `RoomDialogueRepository` replace the in-memory mocks as production bindings, seeded lazily on first access
+  - `DialogueFlow` extracts the pure conversation traversal shared by the mock and Room implementations
+  - `NpcEntity`/`DialogueEntity` Room entities with `RoomJson` (kotlinx.serialization) columns and domain mappers
+  - Robolectric repository tests, `DialogueFlow` edge-case tests, v2→v5 migration-chain tests, and a v4 data-preservation test
+  - Device smoke test updated to v5 with `npc`/`dialogue` DAO round-trips
+  - Full unit suite passes (1035 tests, 0 failures)
+
 - Room persistence layer for all game systems
   - `PhoenixDatabase` v3 with 59 entities and 13 DAOs covering vocabulary, discovery, quests, game progress, passport, world, friendship, reading, listening, speaking, review, progression, and app metadata
   - `MIGRATION_2_3` for automatic database upgrades from v2 with schema integrity tests
@@ -202,7 +211,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Migrated repository implementations from in-memory mocks to Room-backed storage (dialogue and NPC remain in-memory mocks pending persistence)
+- Migrated repository implementations from in-memory mocks to Room-backed storage across all game systems
 - `app/build.gradle.kts`: added KSP Room schema configuration, Robolectric test options, and Room/AndroidX-test dependencies
 - Updated NPC markers to navigate to NPCProfileScreen instead of info dialog
 - Updated QingyuanVillageScreen with friendship context

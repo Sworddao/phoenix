@@ -32,7 +32,7 @@ Phoenix should feel closer to playing an adventure game than using a language-le
 - **Reading & hanzi foundation** — Offline pinyin-first reading practice with hanzi renderer abstraction
 - **Game progression & learning path** — Central XP/level engine aggregating all systems, feature unlocks, chapter gating, daily goals, and learning percentages
 - **Adaptive review & spaced repetition** — Smart review engine with per-word memory model, adaptive scheduling, daily goals, and review statistics
-- **Room persistence** — All game systems persisted locally in a Room database (v3, 59 entities, 13 DAOs); dialogue and NPC remain in-memory mocks pending persistence
+- **Room persistence** — All game systems persisted locally in a Room database (v5, 68 entities, 16 DAOs), including the NPC and dialogue catalogs
 - **Accessibility** — Dad Mode, reduced motion, large text, high contrast
 
 ---
@@ -240,7 +240,7 @@ Unit tests live in `app/src/test` and run with:
 ./gradlew testDebugUnitTest
 ```
 
-The suite covers data models, repository logic (both mock and Room-backed via an in-memory `RoomTestDb` harness using Robolectric), ViewModels, the spaced repetition engine, and database migration integrity. Current status: **976 tests, 0 failures**.
+The suite covers data models, repository logic (both mock and Room-backed via an in-memory `RoomTestDb` harness using Robolectric), ViewModels, the spaced repetition engine, and database migration integrity. Current status: **1035 tests, 0 failures**.
 
 ---
 

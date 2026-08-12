@@ -11,8 +11,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sworddao.phoenix.data.local.AppMetadataEntity
 import com.sworddao.phoenix.data.local.MIGRATION_2_3
 import com.sworddao.phoenix.data.local.MIGRATION_3_4
+import com.sworddao.phoenix.data.local.MIGRATION_4_5
 import com.sworddao.phoenix.data.local.PhoenixDatabase
+import com.sworddao.phoenix.feature.dialogue.data.DialogueEntity
 import com.sworddao.phoenix.feature.friendship.data.FriendshipEntity
+import com.sworddao.phoenix.feature.npc.data.NpcEntity
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyEntity
 import com.sworddao.phoenix.feature.vocabulary.data.VocabularyProgressEntity
 import com.sworddao.phoenix.feature.writing.data.WritingExerciseEntity
@@ -62,11 +65,11 @@ class DeviceSmokeTest {
             PhoenixDatabase::class.java,
             DATABASE_NAME
         )
-            .addMigrations(MIGRATION_2_3, MIGRATION_3_4)
+            .addMigrations(MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
             .build()
         try {
             val sqlite = database.openHelper.readableDatabase
-            assertEquals(4, sqlite.version)
+            assertEquals(5, sqlite.version)
             val missing = EXPECTED_TABLES - tableNames(sqlite)
             assertTrue("Missing tables on device: $missing", missing.isEmpty())
         } finally {
@@ -104,6 +107,7 @@ class DeviceSmokeTest {
             )
             MIGRATION_2_3.migrate(db)
             MIGRATION_3_4.migrate(db)
+            MIGRATION_4_5.migrate(db)
             val missing = EXPECTED_TABLES - tableNames(db)
             assertTrue("Missing tables after migration on device: $missing", missing.isEmpty())
             val cursor = db.query(
@@ -165,6 +169,35 @@ class DeviceSmokeTest {
                     )
                 )
                 assertTrue(database.writingDao().getExerciseById("write_ni_hao").first() != null)
+
+                database.npcDao().upsert(
+                    NpcEntity(
+                        id = "npc_smoke",
+                        displayName = "Smoke NPC",
+                        occupation = "test",
+                        personality = "test",
+                        currentLocation = "test_loc",
+                        avatarEmoji = "NPC",
+                        idleAnimationState = "IDLE",
+                        interactionAvailability = "AVAILABLE"
+                    )
+                )
+                assertEquals(1, database.npcDao().countNpcs())
+                assertTrue(database.npcDao().getNpcById("npc_smoke").first() != null)
+                assertTrue(database.npcDao().getNpcsByLocation("test_loc").first().isNotEmpty())
+
+                database.dialogueDao().upsert(
+                    DialogueEntity(
+                        id = "dlg_smoke",
+                        npcId = "npc_smoke",
+                        title = "Smoke",
+                        description = "test",
+                        startNodeId = "start"
+                    )
+                )
+                assertEquals(1, database.dialogueDao().countDialogues())
+                assertTrue(database.dialogueDao().getDialogueById("dlg_smoke").first() != null)
+                assertTrue(database.dialogueDao().getDialogueByNpcId("npc_smoke").first() != null)
             }
         } finally {
             database.close()
@@ -253,7 +286,9 @@ class DeviceSmokeTest {
             "writing_statistics",
             "writing_badges",
             "writing_sessions",
-            "writing_state"
+            "writing_state",
+            "npc",
+            "dialogue"
         )
     }
 }
